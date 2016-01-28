@@ -192,67 +192,22 @@ def blobToDoc():
 			indx_idUpdate.update({x:priceTypeDict})
 		Order['index_id'] = indx_idUpdate
 		
-		#CREATE DICTIONARYS OF DATES/PRICES BY INDEX_ID/PRICE_TYPE
-		USG = {}
-		EMN = {}
-		LAK = {}
-		AUD = {}
-			
-		#AUSD CODE BLOCK
-		for item in blobData:
-			if item['index_id'] == 'AUDUSD_CURNCY_Dummy':
-				type = item['price_type']
-				date = item['date']
-				price = item['index_price']
-				AUD.update({type:{}})
-		for item in blobData:
-			if item['index_id'] == 'AUDUSD_CURNCY_Dummy':
-				for x in AUD:
-					if item['price_type'] == x:
-						AUD[x].update({item['date']:float(item['index_price'])})
-		Order['index_id']['AUDUSD_CURNCY_Dummy'] = AUD
-		
-		#LAK5 CODE BLOCK
-		for item in blobData:
-			if item['index_id'] == 'LAK5_Comdty_Dummy':
-				type = item['price_type']
-				date = item['date']
-				price = item['index_price']
-				LAK.update({type:{}})
-		for item in blobData:
-			if item['index_id'] == 'LAK5_Comdty_Dummy':
-				for x in LAK:
-					if item['price_type'] == x:
-						LAK[x].update({item['date']:float(item['index_price'])})
-		Order['index_id']['LAK5_Comdty_Dummy'] = LAK
-		
-		#USG CODE BLOCK
-		for item in blobData:
-			if item['index_id'] == 'USGG2YR_Index_Dummy':
-				type = item['price_type']
-				date = item['date']
-				price = item['index_price']
-				USG.update({type:{}})
-		for item in blobData:
-			if item['index_id'] == 'USGG2YR_Index_Dummy':
-				for x in USG:
-					if item['price_type'] == x:
-						USG[x].update({item['date']:float(item['index_price'])})
-		Order['index_id']['USGG2YR_Index_Dummy'] = USG
-		
-		#EMN CODE BLOCK
-		for item in blobData:
-			if item['index_id'] == 'EMN_CDS_USD_SR_5Y_MSG1_Corp_Dummy':
-				type = item['price_type']
-				date = item['date']
-				price = item['index_price']
-				EMN.update({type:{}})
-		for item in blobData:
-			if item['index_id'] == 'EMN_CDS_USD_SR_5Y_MSG1_Corp_Dummy':
-				for x in EMN:
-					if item['price_type'] == x:
-						EMN[x].update({item['date']:float(item['index_price'])})
-		Order['index_id']['EMN_CDS_USD_SR_5Y_MSG1_Corp_Dummy'] = EMN
+		#Add date:price to correct index_id & price_type
+		for index_id in Order['index_id']:
+			#Use disposable dict to reset data for each index_id
+			disposableDict = {}
+			for item in blobData:
+				if item['index_id'] == index_id:
+					type = item['price_type']
+					date = item['date']
+					price = item['index_price']
+					disposableDict.update({type:{}})
+			for item in blobData:
+				if item['index_id'] == index_id:
+					for x in disposableDict:
+						if item['price_type'] == x:
+							disposableDict[x].update({item['date']:float(item['index_price'])})
+			Order['index_id'][index_id] = disposableDict
 	
 		#PUT THE CSV DATA RETRIEVED FROM A BLOB & TRANSLATED INTO THE DOCUMENT REPOSITORY
 		rapture.doDoc_PutDoc(docUri, json.dumps(Order))
