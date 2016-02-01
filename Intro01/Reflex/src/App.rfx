@@ -1,3 +1,10 @@
+// This is a tutorial script demonstrating the Reflex programming languade.
+// 
+// For detailed instructions and further information see 
+// https://incapture.atlassian.net/wiki/display/PDT/Rapture+Getting+Started%3A+REFLEX//
+//
+// Reflex and Rapture are trademarks of Incapture Technologies LLC
+
 SERIES_AUTHORITY="datacapture";
 BLOB_AUTHORITY="tutorialBlob";
 DOC_AUTHORITY="tutorialDoc";
@@ -31,10 +38,6 @@ end
 // Note that the REPL window cannot access the local file system.
 // This will only work when invoked using RaptureRunner. 
 // **********************
-
-// ***
-// ** UPLOAD STEP
-// ***
 
 rawCsvUri = BLOB_URI+"/"+CSV_FILE;
 
@@ -124,63 +127,38 @@ introDataTranslated <-- DOC_URI+"/introDataTranslated";
 // For the tutorial we have defined a common data format between all the languages 
 // Write the data as a map of maps using Provider, SeriesType, Frequency and IndexID as keys.");
 
-// ++++
-// NOTE: Reflex throws an exception rather than returning null if you try to access a nonexistent key in a map.
-// So the following will not work:
-//
-//      bar = map[foo];
-//	if bar == null do
-//          bar = {};
-//          map[foo] = bar;
-//	end
-//
-// To get around this do a preliminary iteration through the data and initialise the maps
-// ++++
-
 indexMap = { };
-lastk = "";
-for datum in noheaders do 
-  if (size(datum) > 4) do
-    k = datum[2];
-    if (k != lastk) do
-      m = {};
-      indexMap[k] = m;
-      lastk = k;
-    else do
-      kk = datum[4];
-      m = indexMap[k];
-      m[kk] = {};
-    end
-  end
-end
-
-// **********************
-// Iterate through the data and populate the maps. Write the map as a JSON document
-// **********************
-
-datamap = {};
+dataMap = {};
 firstEntry = noheaders[0];
 for k in [ 0,1,3 ] do
   key = headers[k];
   val = firstEntry[k]; 
-  datamap[key] = val;
+  dataMap[key] = val;
 end
 
 key = headers[2];
-datamap[key] = indexMap;
+dataMap[key] = indexMap;
 
 for datum in noheaders do
   if (size(datum) > 4) do
     index = datum[2];
     priceType = datum[4];
     indexValMap = indexMap[index];
+    if (indexValMap == null) do
+      indexValMap = {};
+      indexMap[index] = indexValMap;
+    end
     priceTypeMap = indexValMap[priceType];
+    if (priceTypeMap == null) do
+      priceTypeMap = {};
+      indexValMap[priceType] = priceTypeMap;  
+    end
     datestr = datum[5];
     val = cast(datum[6], 'number');
     priceTypeMap[datestr] = val;
   end
 end
-#doc.putDoc(DOC_URI+"/introDataTranslated", json(datamap));
+#doc.putDoc(DOC_URI+"/introDataTranslated", json(dataMap));
 
 println("Added JSON document to Rapture at " + DOC_URI+"/introDataTranslated"); 
 
