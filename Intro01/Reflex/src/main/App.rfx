@@ -130,7 +130,7 @@ introDataTranslated <-- DOC_URI+"/introDataTranslated";
 indexMap = { };
 dataMap = {};
 firstEntry = noheaders[0];
-for k in [ 0,1,3 ] do
+for k in [ 1,0,3 ] do
   key = headers[k];
   val = firstEntry[k]; 
   dataMap[key] = val;
