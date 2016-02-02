@@ -65,6 +65,7 @@ public class ReportApp {
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
         for (Map.Entry<String, String> entry : INDEX_IDS.entrySet()) {
             log.info("Processing: " + entry.getKey());
+            // make the api call to the rapture series api to get the points
             List<SeriesPoint> points = series.getPoints(String.format("series://datacapture/HIST/Provider_1a/%s/DAILY/%s", entry.getKey(), FIELD));
             // only graph the last NUM_POINTS points
             points = points.subList(points.size() - NUM_POINTS, points.size());
@@ -72,6 +73,7 @@ public class ReportApp {
                 dataSet.addValue(Double.parseDouble(point.getValue()), entry.getValue(), point.getColumn());
             }
         }
+        // create a graph given the data set of points that we have
         JFreeChart chart = ChartFactory.createLineChart(TITLE_CHART, "Date", "Price", dataSet, PlotOrientation.VERTICAL, true, true, false);
         chart.getCategoryPlot().getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.UP_90);
         writeChartToPDF(chart, 600, 480, FILENAME);
@@ -79,6 +81,7 @@ public class ReportApp {
         try {
             byte[] pdfBytes = Files.readAllBytes(Paths.get(FILENAME));
             HttpBlobApi blob = new HttpBlobApi(login);
+            // make the rapture api call to store the generated pdf back into rapture
             blob.putBlob(String.format("blob://blobmongo/folder1/%s", FILENAME), pdfBytes, "application/pdf");
             log.info("Successfully uploaded report: " + FILENAME);
         } catch (IOException e) {
@@ -86,6 +89,11 @@ public class ReportApp {
         }
     }
 
+    /**
+     * Method to get parameters from the command-line
+     * 
+     * @param args
+     */
     private void readLoginInfo(String[] args) {
         if (args.length != 2) {
             log.error("Usage: ./ReportApp <host> <user>");
