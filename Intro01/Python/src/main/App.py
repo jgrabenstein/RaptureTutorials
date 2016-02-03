@@ -209,11 +209,6 @@ def blobToDoc():
 							disposableDict[x].update({item['date']:float(item['index_price'])})
 			Order['index_id'][index_id] = disposableDict
 		
-		
-		#ATTEMPT TO SORT DATES
-		sortedDate = json.dumps(Order, sort_keys=True)
-		Order = json.loads(sortedDate)
-		#Order['provider'] = 'Provider_1a'
 		#PUT THE CSV DATA RETRIEVED FROM A BLOB & TRANSLATED INTO THE DOCUMENT REPOSITORY
 		rapture.doDoc_PutDoc(docUri, json.dumps(Order, sort_keys=False))
 		print "Successfully translated blob to docs"
