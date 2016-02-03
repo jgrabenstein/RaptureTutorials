@@ -148,7 +148,7 @@ def blobToDoc():
 		# Create doc repo
 		docRepoUri = "//tutorialDoc"
 		docUri = docRepoUri + "/introDataTranslated"
-		config = "REP {} USING MONGODB {prefix=\"tutorialDoc\"}"
+		config = "NREP {} USING MONGODB {prefix=\"tutorialDoc\"}"
 		if(rapture.doDoc_DocRepoExists(docRepoUri)):
 			rapture.doDoc_DeleteDocRepo(docRepoUri)	
 		rapture.doDoc_CreateDocRepo(docRepoUri, config)
