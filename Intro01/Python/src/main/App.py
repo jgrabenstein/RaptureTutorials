@@ -1,5 +1,5 @@
-import csv, ast, base64, itertools, os, getopt, sys, raptureAPI
-import json
+import csv, ast, base64, itertools, os, getopt, sys, json, raptureAPI
+from collections import OrderedDict
 
 rapture = None
 UPLOAD, BLOBTODOC, DOCTOSERIES, ALL = range(4)
@@ -148,7 +148,7 @@ def blobToDoc():
 		# Create doc repo
 		docRepoUri = "//tutorialDoc"
 		docUri = docRepoUri + "/introDataTranslated"
-		config = "NREP {} USING MONGODB {prefix=\"tutorialDoc\"}"
+		config = "REP {} USING MONGODB {prefix=\"tutorialDoc\"}"
 		if(rapture.doDoc_DocRepoExists(docRepoUri)):
 			rapture.doDoc_DeleteDocRepo(docRepoUri)	
 		rapture.doDoc_CreateDocRepo(docRepoUri, config)
@@ -163,12 +163,12 @@ def blobToDoc():
 			rowData = {keys[0]:row[0],keys[1]:row[1],keys[2]:row[2],keys[3]:row[3],keys[4]:row[4],keys[5]:row[5],keys[6]:row[6]}
 			blobData.append(rowData)
 		#This is the top level of json/dict that we will be inserting
-		Order ={}
+		Order = OrderedDict()
 		for entry in blobData:
+			Order['provider'] = entry['provider']
 			Order['series_type'] = entry['series_type']
 			Order['frequency'] = entry['frequency']
 			Order['index_id'] = {}
-			Order['provider'] = entry['provider']
 		index_id = list()
 		#Add index_id's to the master json/dict
 		for x in blobData:
@@ -208,9 +208,14 @@ def blobToDoc():
 						if item['price_type'] == x:
 							disposableDict[x].update({item['date']:float(item['index_price'])})
 			Order['index_id'][index_id] = disposableDict
-	
+		
+		
+		#ATTEMPT TO SORT DATES
+		sortedDate = json.dumps(Order, sort_keys=True)
+		Order = json.loads(sortedDate)
+		#Order['provider'] = 'Provider_1a'
 		#PUT THE CSV DATA RETRIEVED FROM A BLOB & TRANSLATED INTO THE DOCUMENT REPOSITORY
-		rapture.doDoc_PutDoc(docUri, json.dumps(Order))
+		rapture.doDoc_PutDoc(docUri, json.dumps(Order, sort_keys=False))
 		print "Successfully translated blob to docs"
 	else:
 		print "Please make sure that blob repo and blob are uploaded already"
