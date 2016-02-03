@@ -1,6 +1,6 @@
 #!/bin/bash
-# TODO: update host
-host="http://192.168.99.100:8080"
+# TODO: update HOST
+HOST="http://192.168.99.100:8080"
 
 read -p "Enter Etienne User: " user
 read -s -p "Enter Etienne Password: " pass
@@ -8,30 +8,27 @@ echo $'\n'
 
 hashpass=$(echo $pass | md5)
 
-login_url="$host/login/login?user=$user&password=$hashpass"
-env_vars_url="$host/curtisscript/getEnvInfo?username=$user"
+login_url="$HOST/login/login?user=$user&password=$hashpass"
+env_vars_url="$HOST/curtisscript/getEnvInfo?username=$user"
+
+function validate_curl_response {
+  curl_exit_code=$1
+  http_status_code=$2
+  error_message=$3
+
+  if [[ $curl_exit_code -ne 0 || $http_status_code -ne 200 ]] ; then
+    echo $error_message
+    echo "Curl Exit Code: $curl_exit_code     HTTP Status Code: $http_status_code"
+    exit 1
+  fi
+}
 
 curl_results=$( curl -qSsw '\n%{http_code}' --cookie-jar .cookiefile $login_url )
-curl_exit_code=$?
-http_status_code=$(echo "$curl_results" | tail -n1)
-
-if [[ $curl_exit_code -ne 0 || $http_status_code -ne 200 ]] ; then
-  echo "There was a problem logging into $host."
-  echo "Curl Exit Code: $curl_exit_code     HTTP Status Code: $http_status_code"
-  exit 1
-fi
+validate_curl_response $? $(echo "$curl_results" | tail -n1) "There was a problem logging into $HOST."
 
 # get environment variable data, append HTTP status code in separate line
 curl_results=$( curl -qSsw '\n%{http_code}' --cookie .cookiefile $env_vars_url )
-curl_exit_code=$?
-http_status_code=$(echo "$curl_results" | tail -n1)
-
-if [[ $curl_exit_code -ne 0 || $http_status_code -ne 200 ]] ; then
-  echo "There was a problem retrieving the environment variables from $env_vars_url."
-  echo "Curl Exit Code: $curl_exit_code     HTTP Status Code: $http_status_code"
-  exit 1
-fi
-
+validate_curl_response $? $(echo "$curl_results" | tail -n1) "There was a problem retrieving the environment variables from $HOST."
 env_data=$(echo "$curl_results" | sed \$d) #strip http status
 
 # write the export statements to a file to be sourced later
