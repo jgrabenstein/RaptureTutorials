@@ -89,7 +89,7 @@ read -p "Enter Etienne User: " user
 read -s -p "Enter Etienne Password: " pass
 echo $'\n'
 
-hashpass=$(echo $pass | md5)
+hashpass=$(echo -n $pass | md5)
 
 login_url="$HOST/login/login?user=$user&password=$hashpass"
 env_vars_url="$HOST/curtisscript/getEnvInfo?username=$user"
@@ -116,14 +116,14 @@ do
     echo "The data retrieved from $env_vars_url is invalid."
     exit 1
   fi
-  
+
   var_name=${pair_array[0]}
   var_val=${pair_array[1]}
 
   echo "export $var_name=$var_val" >> $env_var_filename
 done
 
-# Also write a welcome banner to the file and change the prompt so it's easier for the user 
+# Also write a welcome banner to the file and change the prompt so it's easier for the user
 # to know that they are in a screen session.
 cat << 'EOF' >> $env_var_filename
 
