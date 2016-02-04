@@ -148,7 +148,7 @@ def blobToDoc():
 		# Create doc repo
 		docRepoUri = "//tutorialDoc"
 		docUri = docRepoUri + "/introDataTranslated"
-		config = "NREP {} USING MONGODB {prefix=\"tutorialDoc\"}"
+		config = "REP {} USING MONGODB {prefix=\"tutorialDoc\"}"
 		if(rapture.doDoc_DocRepoExists(docRepoUri)):
 			rapture.doDoc_DeleteDocRepo(docRepoUri)	
 		rapture.doDoc_CreateDocRepo(docRepoUri, config)
@@ -209,6 +209,11 @@ def blobToDoc():
 							disposableDict[x].update({item['date']:float(item['index_price'])})
 			Order['index_id'][index_id] = disposableDict
 		
+		
+		#ATTEMPT TO SORT DATES
+		sortedDate = json.dumps(Order, sort_keys=True)
+		Order = json.loads(sortedDate)
+		#Order['provider'] = 'Provider_1a'
 		#PUT THE CSV DATA RETRIEVED FROM A BLOB & TRANSLATED INTO THE DOCUMENT REPOSITORY
 		rapture.doDoc_PutDoc(docUri, json.dumps(Order, sort_keys=False))
 		print "Successfully translated blob to docs"
@@ -240,8 +245,7 @@ def docToSeries():
 		# Generate specific URI's based on data points
 		seriesUri = "//datacapture" + "/" 
 		seriesUri = seriesUri + str(doc['series_type']) + "/" 
-		seriesUri = seriesUri + str(doc['provider']) + "/" 
-		seriesUri = seriesUri + str(doc['frequency']) + "/" 
+		seriesUri = seriesUri + str(doc['provider']) + "/"  
 		disposableUri = seriesUri
 		for x in doc['index_id']:
 			#Reset base URI's so that one long URI is not created 
