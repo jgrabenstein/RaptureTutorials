@@ -5,23 +5,10 @@ REFLEX_RUNNER_FILE_NAME="ReflexRunner-2.0.0.20160202182104.zip"
 REFLEX_RUNNER_URL="https://github.com/RapturePlatform/Rapture/releases/download/3.0.0.20160203122306/$REFLEX_RUNNER_FILE_NAME"
 DEFAULT_REFLEX_RUNNER_PATH="/opt/rapture"
 
-if false; then
-read -p "Enter Etienne User: " user
-read -s -p "Enter Etienne Password: " pass
-echo $'\n'
-fi
-user="testuser2"
-pass="testuser2"
-
-hashpass=$(echo $pass | md5)
-
-login_url="$HOST/login/login?user=$user&password=$hashpass"
-env_vars_url="$HOST/curtisscript/getEnvInfo?username=$user"
-
 function validate_curl_response {
-  curl_exit_code=$1
-  http_status_code=$2
-  error_message=$3
+  local curl_exit_code=$1
+  local http_status_code=$2
+  local error_message=$3
 
   if [[ $curl_exit_code -ne 0 || $http_status_code -ne 200 ]] ; then
     echo $error_message
@@ -30,25 +17,30 @@ function validate_curl_response {
   fi
 }
 
-prompt_to_download=true
-while $prompt_to_download; do
-  read -p "Would you like to download ReflexRunner? [Y/n] " response
-  if [ -z "$response" ]; then
-    response="Y"
-  fi
+function prompt_yes_no {
+  local prompt_message="$1 [Y/n] "
 
-  case "$response" in
-    Y*|y*) get_download_path=true
-           prompt_to_download=false
-      ;;
-    N*|n*) get_download_path=false
-           prompt_to_download=false
-      ;;
-    *)
-           prompt_to_download=true
-      ;;
-  esac
-done
+  local do_prompt=true
+  while $do_prompt; do
+    read -p "$prompt_message" response
+    if [ -z "$response" ]; then
+      response="Y"
+    fi
+
+    case "$response" in
+      Y*|y*) return_val=true
+             do_prompt=false
+        ;;
+      N*|n*) return_val=false
+             do_prompt=false
+        ;;
+    esac
+  done
+
+  echo $return_val
+}
+
+get_download_path=$(prompt_yes_no "Would you like to download ReflexRunner?")
 
 do_download=false
 while $get_download_path; do
@@ -74,11 +66,9 @@ if $do_download; then
   # we will create the default directory for the user if we can, just not other directories for now
   if mkdir -p $directory ; then
     directory=${directory%/} # remove trailing slash
-    echo $(date)
-    echo "Downloading ReflexRunner to $directory. Please wait."
+    echo "Downloading ReflexRunner to $directory. Download started at" $(date +"%T")
 
-    #curl_results=$( curl -qSsw '\n%{http_code}' --cookie .cookiefile $REFLEX_RUNNER_URL )
-    curl_results=$( curl -qSsw '\n%{http_code}' $REFLEX_RUNNER_URL )
+    curl_results=$( curl -qLSsw '\n%{http_code}' $REFLEX_RUNNER_URL )
     validate_curl_response $? $(echo "$curl_results" | tail -n1) "There was a problem downloading ReflexRunner from $REFLEX_RUNNER_URL."
     zip_file_data=$(echo "$curl_results" | sed \$d) #strip http status
     echo $zip_file_data >> "$directory/$REFLEX_RUNNER_FILE_NAME"
@@ -90,8 +80,19 @@ if $do_download; then
   fi
 fi
 
-exit 0
+set_vars=$(prompt_yes_no "Would you like to launch a new session with convenient environment variables set?")
+if ! $set_vars; then
+  exit 0
+fi
 
+read -p "Enter Etienne User: " user
+read -s -p "Enter Etienne Password: " pass
+echo $'\n'
+
+hashpass=$(echo $pass | md5)
+
+login_url="$HOST/login/login?user=$user&password=$hashpass"
+env_vars_url="$HOST/curtisscript/getEnvInfo?username=$user"
 
 curl_results=$( curl -qSsw '\n%{http_code}' --cookie-jar .cookiefile $login_url )
 validate_curl_response $? $(echo "$curl_results" | tail -n1) "There was a problem logging into $HOST."
