@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<!-- saved from url=(0090)https://incapture.atlassian.net/wiki/plugins/viewsource/viewpagesrc.action?pageId=71630884 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>View Source</title>
+        <link rel="canonical" href="https://incapture.atlassian.net/wiki/pages/viewpage.action?pageId=71630884">
+        <script>
+window.WRM=window.WRM||{};window.WRM._unparsedData=window.WRM._unparsedData||{};window.WRM._unparsedErrors=window.WRM._unparsedErrors||{};
+WRM._unparsedData["com.atlassian.plugins.atlassian-plugins-webresource-plugin:context-path.context-path"]="\"/wiki\"";
+WRM._unparsedData["com.atlassian.plugins.atlassian-plugins-webresource-rest:web-resource-manager.resource-base-url-pattern"]="\"(?:/wiki(?:/s/.*?/_)?/download|//d1ixbz5qgnvms3\\\\.cloudfront\\\\.net/incapture\\\\.atlassian\\\\.net/wiki(?:/s/.*?/_)?/download)\"";
+if(window.WRM._dataArrived)window.WRM._dataArrived();</script>
+<link type="text/css" rel="stylesheet" href="./Tutorial1_reflex_files/batch.css" media="all">
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="//d1ixbz5qgnvms3.cloudfront.net/incapture.atlassian.net/wiki/s/f0dba99329912ecaf59c4a4c244e0858-CDN/en_GB/6421/badfefcffccc7b241778b56781607367fac95552/7b1da716fc2eccc29be9db219142d10f/_/download/contextbatch/css/_super/batch.css?atlassian.aui.raphael.disabled=true&amp;conditionalComment=lt+IE+9&amp;jquery.external=true&amp;relative-url=true"  media="all">
+<![endif]-->
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="//d1ixbz5qgnvms3.cloudfront.net/incapture.atlassian.net/wiki/s/f0dba99329912ecaf59c4a4c244e0858-CDN/en_GB/6421/badfefcffccc7b241778b56781607367fac95552/7b1da716fc2eccc29be9db219142d10f/_/download/contextbatch/css/_super/batch.css?atlassian.aui.raphael.disabled=true&amp;conditionalComment=lte+IE+9&amp;jquery.external=true&amp;relative-url=true"  media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="./Tutorial1_reflex_files/batch(1).css" media="all">
+<link type="text/css" rel="stylesheet" href="./Tutorial1_reflex_files/batch(2).css" media="all">
+<link type="text/css" rel="stylesheet" href="./Tutorial1_reflex_files/batch(3).css" media="all">
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="//d1ixbz5qgnvms3.cloudfront.net/incapture.atlassian.net/wiki/s/1cd8f1f2576432e5e4bfeaf35b0c0751-CDN/en_GB/6421/badfefcffccc7b241778b56781607367fac95552/aca0fd3f20eae92f8d2ade159a641f25/_/download/contextbatch/css/editor-content,-_super/batch.css?conditionalComment=lte+IE+9&amp;confluence.view.edit.transition=true&amp;relative-url=true"  media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="./Tutorial1_reflex_files/colors.css" media="all">
+
+    </head>
+
+    <body class="mceContentBody aui-theme-default wiki-content fullsize">
+        <p>&nbsp;</p>         <div class="contentLayout2">
+<div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
+<div class="cell aside" data-type="aside">
+<div class="innerCell">
+<hr><h1>Your First Project</h1></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr><p>&nbsp;</p><table class="wysiwyg-macro" data-macro-name="note" data-macro-id="6ef462f6-0d17-4f06-b8fb-4b62877741a4" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e25vdGV9&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><p>Before beginning this demonstration of Rapture it is expected that your environment satisfies the following pre-requisites</p><ol><li>Java 8 (or later) runtime is installed and accessible<br><br></li></ol></td></tr></tbody></table></div>
+</div>
+</div>
+<div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
+<div class="cell aside" data-type="aside">
+<div class="innerCell">
+<hr><p><strong>Options for running Reflex</strong></p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr><p>Running this tutorial requires access to a running Rapture instance.&nbsp;If a demonstration environment is not available then one can be requested at&nbsp;<a href="http://etn.incapture.net/">http://etn.incapture.net</a>. TBD: This should already have been explained in the main Getting Started wiki before they get to this point, so we should reference that.</p><p>Reflex is a scripting language, and as such requires an interpreter. You have three options to execute the scripts in this Reflex tutorial.</p><p>1) RIM demo environment: Reflex REPL window.</p><p>There is an interpreter built into the web interface - login and click on the &gt;_ icon.&nbsp;This will bring up the Reflex REPL window; users can type commands directly into the browser and they will be executed immediately.</p><p>2) RIM demo environment: Script execution UI.</p><p><strong><span style="color: rgb(255,0,0);">TBD if this will be ready: see&nbsp;</span></strong><a class="issue-link" href="https://incapture.atlassian.net/browse/RCM-197" style="line-height: 1.42857;">RCM-197</a>.</p><p>3) Local: ReflexRunner client utility&nbsp;</p><p>The tutorial bundle includes ReflexRunner, a Java interpreter that will read and execute a reflex script from a file. This document will focus on running the tutorial scripts using ReflexRunner, but will also note any differences between this and the REPL window.&nbsp;</p><p><em>Connecting to Rapture</em>:&nbsp;To log in to the Rapture environment via ReflexRunner the user must specify a user name, a password and the location (URL) of the Rapture instance to connect to. This can be done using command line options or environmental variables.</p><p>The tutorial includes a script called <span style="color: rgb(44,45,48);">Intro01/</span>raptureSetup.sh - <strong>if this script has already been executed then the following environmental variables will have been set and the command line options will not be needed</strong>. For reference:</p><p style="margin-left: 30.0px;">The environment can be specified using the -r option, or by setting the RAPTURE_HOME environmental variable. In most cases this will take the form http://<strong><em>envname</em></strong>.incapture.net:8665/rapture</p><p style="margin-left: 30.0px;">The username can be entered manually or specified with the -u option, or by setting the&nbsp;RAPTURE_USER environmental variable. Typically all users will have their own personal accounts; there is also a common 'rapture' account.</p><p style="margin-left: 30.0px;">The password can also be&nbsp;entered manually or specified with the -p option, or by setting the&nbsp;RAPTURE_PASSWORD environmental variable. Obviously in a real world instance for security purposes manual entry is recommended, but for the purposes of a tutorial this is supported.</p><p><em>Executing a script</em>:&nbsp;The script must be specified using the -f option; there is no command line or environmental alternative. So to run the App.rfx script using the default options:</p><pre>$ ReflexRunner -f App.rfx</pre><pre>&nbsp;</pre><pre>&nbsp;</pre></div>
+</div>
+</div>
+<div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
+<div class="cell aside" data-type="aside">
+<div class="innerCell">
+<hr><p>Create new <a href="https://incapture.atlassian.net/wiki/display/ENGRG/Repository">Repositories</a> to store the data.</p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr><p>The script will first create the repositories that will be used for the remainder off the tutorial. <br>If a version of the tutorial has already been run, either Reflex, Java, Python or any other version, then these repositories may already exist.</p><pre>SERIES_AUTHORITY="datacapture";<br>BLOB_AUTHORITY="tutorialBlob";<br>DOC_AUTHORITY="tutorialDoc";</pre><pre>BLOB_URI="blob://"+BLOB_AUTHORITY;<br>DOC_URI="document://"+DOC_AUTHORITY;<br>SERIES_URI="series://"+SERIES_AUTHORITY;</pre><pre>if (!#blob.blobRepoExists(BLOB_URI)) do</pre><pre>     #blob.createBlobRepo(BLOB_URI, "BLOB {} USING MONGODB {prefix=\""+BLOB_AUTHORITY+"\" }", "REP {} USING MONGODB { prefix=\""+BLOB_AUTHORITY+"\"}");<br>end<br>if (!#doc.docRepoExists(DOC_URI)) do<br>     #doc.createDocRepo(DOC_URI, "REP {} USING MONGODB {prefix=\""+DOC_AUTHORITY+"\"}");<br>end<br>if (!#series.seriesRepoExists(SERIES_URI)) do<br>     #series.createSeriesRepo(SERIES_URI, "SREP {} USING MONGODB {prefix=\""+SERIES_AUTHORITY+"\"}");<br>end</pre></div>
+</div>
+</div>
+<div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
+<div class="cell aside" data-type="aside">
+<div class="innerCell">
+<hr><p><u><strong>Capture Data&nbsp;– Load a CSV</strong></u></p><p>&nbsp;</p><p style="text-align: right;">Run upload script to load CSV into Blob</p><p style="text-align: right;">View Blob</p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr><p>The script will attempt to read a data file and store it in the blob repository. <br>The accompanying data file&nbsp;<em><strong>introDataInbound.csv</strong></em> should be in the current working directory.&nbsp;</p><p>To read a different file, or to read from a different directory, set the environmental variable RAPTURE_TUTORIAL_CSV appropriately.</p><table class="wysiwyg-macro" data-macro-name="note" data-macro-id="eebcef86-ecf3-4b78-b28f-5bba786b6ea1" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e25vdGV9&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><p>When using the REPL window or Script UI, Reflex cannot access the local file system. In order to upload data into Rapture a blob uploader is available from the user interface. To use this, create a Blob repository using the [+] icon at the top level if one does not already exist. Then select the repository using the Content Browser and select<span> the [+] icon to upload a blob.</span></p></td></tr></tbody></table><p><span style="color: rgb(255,0,0);"><strong>TBD if Script UI will be ready.</strong></span></p><p>The following Reflex code defines a file with name CSV_FILE. <br>The file operation may take additional parameters to indicate the file type; these include&nbsp;</p><ul><li>CSV - Comma separated values. Each line is a series of values separated by a delimiter. The default delimiter is a comma; an alternate delimiter can be specified as a further argument. The data will be returned as a list of lists.</li><li>CSVHEADER -&nbsp;Comma separated values with separate header. In this case the first line is treated as a list of column headers and kept separate from the rest of the data. As with CSV a different delimiter can be specified. The data will be returned as a list of maps</li><li>JSONDOC - The data is a single JSON formatted document.&nbsp;The data will be returned as a single map.</li><li>JSONARRAY - The data is a list of JSON formatted documents, one per line.&nbsp;The data will be returned as a list of maps.</li></ul><p>Unrecognized data types will be stored with the mine-type text/plain.</p><p>The --&gt; operator, known as "push", takes the data from the file and inserts it directly into the Blob Repository. <br>The blob metadata will hold the type information as well as the time and identity of the uploader.&nbsp;</p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="b2e61629-f721-4bc4-ab28-d1b261ae431f" data-macro-parameters="theme=Eclipse" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6dGhlbWU9RWNsaXBzZX0&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>CSV_FILE = ENV.RAPTURE_TUTORIAL_CSV;
+
+if (CSV_FILE == null) do
+   CSV_FILE = "introDataInbound.csv";
+   println("No CSV specified. Defaulting to "+CSV_FILE);
+end
+rawCsvUri = BLOB_URI+"/"+CSV_FILE;
+if (!#blob.blobExists(rawCsvUri)) do
+   println("Reading CSV from file " + CSV_FILE);
+   file(CSV_FILE, "CSV") --&gt; rawCsvUri;
+   println("CSV uploaded to "+ rawCsvUri);
+else do
+   println("Data has already been uploaded to the BLOB repository.");
+end
+println("\nDone\n");</pre></td></tr></tbody></table><p>&nbsp;</p><p>&nbsp;</p></div>
+</div>
+</div>
+<div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
+<div class="cell aside" data-type="aside">
+<div class="innerCell">
+<hr><p><u><strong>Translate Data&nbsp;– Create documents from raw Data</strong></u></p><p>&nbsp;</p><p style="text-align: right;">Run translate script to create Doc</p><p style="text-align: right;">View Doc</p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr><p>Having loaded the data into Rapture the next step is to convert it into a usable format.</p><p>One option is to use the Pull operator which will interpret the data according to its metadata type. In the case of a CSV, Reflex will split the data into a List of Lists.</p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="bb651351-0da0-4da4-a679-ee8c031cd9b3" data-macro-parameters="theme=Eclipse" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6dGhlbWU9RWNsaXBzZX0&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>data &lt;-- rawCsvUri;</pre></td></tr></tbody></table><p>Another option is to open the blob using the file command and read it as raw text, one line at a time, then parse it accordingly. The split command will break each line into individual columns based on the separator string; the boolean argument indicates whether to ignore the separator if it occurs within quotation marks.</p><p>When using file to read a blob it is not necessary to specify the file type since this information is already stored as metadata. However the information can be supplied or overridden if so desired.&nbsp;</p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="db5147d9-fef4-4c8b-83bd-5bed147bffcd" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGV9&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>data = [];
+for datum in file(rawCsvUri) do
+  if datum == null do
+    println("Nothing found at " + rawCsvUri + ". Please run step 'upload' to add the CSV to Rapture.");
+    // Reflex doesn't have an exit operation but assert(false) is the nearest thing.
+    assert(false);
+   end
+   data.add(split(datum, ",", true));
+end</pre></td></tr></tbody></table><p>Having read the data, process it. In this instance the last column needs to be converted from a string to a number using the cast operation, and the date column has hyphens which must be removed using the replace operation.</p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="abae7ea8-4855-461f-abd6-7429807999e9" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGV9&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>headers = data[0];
+noheaders = data.subList(1, data.size());
+for datum in noheaders do
+    siz = datum.size();
+    if (siz &gt;= 2) do
+      key = datum[siz -2];
+      datum[siz -2] = replace(key,"-","");
+      datum[siz -1] = cast(datum[siz -1], 'number');
+  end
+end</pre></td></tr></tbody></table><p>The data can now be written to the Document repository.&nbsp;In Rapture a Document must be a JSON formatted Map.</p><p>Since the data is in a List of Lists it will need to be converted to a Map.&nbsp;Pushing the List data to the Document repository will automatically convert the data&nbsp;to a nested Map of Maps - every unique entry in the first column will become a Key&nbsp;and the remaining columns will become values. The data can thereafter be pulled from the document repository as a Map.</p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="172b4b4a-e47d-4d14-837f-1addba768056" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGV9&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>noheaders --&gt; DOC_URI+"/introDataTranslated";
+&nbsp;</pre></td></tr></tbody></table><p>Alternatively the data can be written in an application-specific format, as long as it is a JSON compliant map. For this tutorial a format has been defined as described in the main document.</p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="578e7845-fff4-4983-8051-9fd3444aabca" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGV9&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>dataMap = {};
+indexMap = {};
+firstEntry = noheaders[0];
+for k in [ 0,1,3 ] do
+  key = headers[k];
+  val = firstEntry[k];
+  dataMap[key] = val;
+end
+
+key = headers[2];
+dataMap[key] = indexMap;
+
+for datum in noheaders do
+  if (size(datum) &gt; 4) do
+    index = datum[2];
+    priceType = datum[4];
+    indexValMap = indexMap[index];
+    if (indexValMap == null) do
+      indexValMap = {};
+      indexMap[index] = indexValMap;
+    end
+    priceTypeMap = indexValMap[priceType];
+    if (priceTypeMap == null) do
+      priceTypeMap = {};
+      indexValMap[priceType] = priceTypeMap;
+    end
+    datestr = datum[5];
+    val = cast(datum[6], 'number');
+    priceTypeMap[datestr] = val;
+  end
+end
+#doc.putDoc(DOC_URI+"/introDataTranslated", json(dataMap));</pre></td></tr></tbody></table></div>
+</div>
+</div>
+<div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
+<div class="cell aside" data-type="aside">
+<div class="innerCell">
+<hr><p><u><strong>Analyze Data&nbsp;– Update series Data from documents</strong></u></p><p>&nbsp;</p><p style="text-align: right;">Run analyze script to create/update Series</p><p style="text-align: right;">View Series</p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<p>The data can be pulled from the Document Repository as a Map or read as a JSON String and converted to a Map using the fromjson operator:</p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="e7c50d3d-a6fe-486f-8486-fd8ebd07ef32" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGV9&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>data &lt;-- DOC_URI+"/introDataTranslated";
+&nbsp;
+// or
+&nbsp;
+docStr = #doc.getDoc(DOC_URI+"/introDataTranslated");
+data = fromjson(docStr);</pre></td></tr></tbody></table><p>And of course the original list can be rebuilt</p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="2984203d-1584-4942-b066-61cdc812fa12" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGV9&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>csv = [ ] ;
+indexes = docMap.index_id;
+for i in keys(indexes) do
+  index = indexes[i];
+  for prices in keys(index) do
+    priceMap = index[prices];
+    for dateVal in keys(priceMap) do
+      row = [];
+      row.add(docMap.series_type);
+      row.add(docMap.provider);
+      row.add(i);
+      row.add(docMap.frequency);
+      row.add(prices);
+      row.add(dateVal);
+      row.add(priceMap[dateVal]);
+      csv.add(row);
+    end
+  end
+end</pre></td></tr></tbody></table><p>The data can also be written to a Series. If it is already in the correct format it can simply be pushed to the Series repository:</p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="b7e84e75-ff1f-4848-b430-5482899ec31f" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGV9&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>csv --&gt; SERIES_URI;
+// This is equivalent to
+for line in csv.subList(1, size(csv)) do
+   location = SERIES_URI;
+   columns = size(line);
+   if (columns &gt;= 2) do
+     for field in line do
+       if (columns == 1) do
+         value = field;
+       else if (columns == 2) do
+         key = field;
+       else do
+         location = location+"/"+field;
+       end
+       columns = columns - 1;
+     end
+     #series.addDoubleToSeries(location, key, value);
+   else do
+     println("Line has less than 2 values: it will be skipped");
+   end
+end</pre></td></tr></tbody></table></div>
+</div>
+</div>
+<div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
+<div class="cell aside" data-type="aside">
+<div class="innerCell">
+<p><u><strong>Optional: Reset Data</strong></u></p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<p>Finally the data can be cleared out using the following script.</p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="9aef8104-c589-4492-94b9-a2b23dbdc0b9" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGV9&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>// This is a reflex script that will clean up the extra data that is added by the demonstration scripts in
+// the Getting Started guide.  It deletes from series, docs, and blobs.
+
+// start date for the series column which we will be deleting from
+startDateInclusive = "20141028";
+
+// get a map from uri to RaptureFolderInfo object
+uris = #series.listSeriesByUriPrefix("series://datacapture/HIST/Provider_1a", 3);
+// convert it so we can access its fields
+uriMap = fromjson(json(uris));
+for k in keys(uriMap) do
+    v = uriMap[k];
+    // if its a folder, we skip it
+    if v['folder'] == false do
+        println("Cleaning series: " + k);
+        // get the points after a starting point
+        pts = #series.getPointsAfter(k, startDateInclusive, 10000);
+        columnsToRemove = [];
+        for pt in pts do
+            ptMap = fromjson(json(pt));
+            columnsToRemove += ptMap['column'];
+        end
+        // finally delete the series points using our list of column keys
+        #series.deletePointsFromSeriesByPointKey(k, columnsToRemove);
+    end
+end
+
+// delete the demo doc repo
+#doc.deleteDocRepo("document://demoDoc");
+// delete the demo blob repo
+#blob.deleteBlobRepo("blob://demoBlob");
+&nbsp;
+println("Done!");</pre></td></tr></tbody></table></div>
+</div>
+</div>
+<div class="columnLayout single" data-layout="single">
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<h3>Where to go from here.</h3><p>???</p></div>
+</div>
+</div>
+<div class="columnLayout single" data-layout="single">
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<div class="page" title="Page 6"><div class="layoutArea"><div class="column"><p><span>Reflex is a scripting language developed at Incapture Technologies. It is designed for performing cloud-based data manipulation. Reflex takes very little resource overhead, and therefore handles the data interactions more efficiently than JRuby, Jython, or any other standard scripting tool. We will demonstrate how to perform various operations using Reflex; for those interested in learning more, please check out the <a class="confluence-link" href="https://incapture.atlassian.net/wiki/download/attachments/71630884/Reflex%20Language%20Reference_v1pt10.pdf?version=1&amp;modificationDate=1453918930264&amp;api=v2" data-linked-resource-container-id="71630884" data-linked-resource-container-version="7" data-linked-resource-content-type="application/pdf" data-linked-resource-id="71630872" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Reflex Language Reference_v1pt10.pdf" data-base-url="https://incapture.atlassian.net/wiki">Reflex Language Reference</a>. &nbsp;</span></p></div></div></div></div>
+</div>
+</div>
+</div>
+        <p>&nbsp;</p>
+    
+
+</body></html>

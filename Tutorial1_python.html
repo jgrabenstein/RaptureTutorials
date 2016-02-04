@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!-- saved from url=(0090)https://incapture.atlassian.net/wiki/plugins/viewsource/viewpagesrc.action?pageId=71630930 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>View Source</title>
+        <link rel="canonical" href="https://incapture.atlassian.net/wiki/pages/viewpage.action?pageId=71630930">
+        <script>
+window.WRM=window.WRM||{};window.WRM._unparsedData=window.WRM._unparsedData||{};window.WRM._unparsedErrors=window.WRM._unparsedErrors||{};
+WRM._unparsedData["com.atlassian.plugins.atlassian-plugins-webresource-plugin:context-path.context-path"]="\"/wiki\"";
+WRM._unparsedData["com.atlassian.plugins.atlassian-plugins-webresource-rest:web-resource-manager.resource-base-url-pattern"]="\"(?:/wiki(?:/s/.*?/_)?/download|//d1ixbz5qgnvms3\\\\.cloudfront\\\\.net/incapture\\\\.atlassian\\\\.net/wiki(?:/s/.*?/_)?/download)\"";
+if(window.WRM._dataArrived)window.WRM._dataArrived();</script>
+<link type="text/css" rel="stylesheet" href="./Tutorial1_python_files/batch.css" media="all">
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="//d1ixbz5qgnvms3.cloudfront.net/incapture.atlassian.net/wiki/s/f0dba99329912ecaf59c4a4c244e0858-CDN/en_GB/6421/badfefcffccc7b241778b56781607367fac95552/7b1da716fc2eccc29be9db219142d10f/_/download/contextbatch/css/_super/batch.css?atlassian.aui.raphael.disabled=true&amp;conditionalComment=lt+IE+9&amp;jquery.external=true&amp;relative-url=true"  media="all">
+<![endif]-->
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="//d1ixbz5qgnvms3.cloudfront.net/incapture.atlassian.net/wiki/s/f0dba99329912ecaf59c4a4c244e0858-CDN/en_GB/6421/badfefcffccc7b241778b56781607367fac95552/7b1da716fc2eccc29be9db219142d10f/_/download/contextbatch/css/_super/batch.css?atlassian.aui.raphael.disabled=true&amp;conditionalComment=lte+IE+9&amp;jquery.external=true&amp;relative-url=true"  media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="./Tutorial1_python_files/batch(1).css" media="all">
+<link type="text/css" rel="stylesheet" href="./Tutorial1_python_files/batch(2).css" media="all">
+<link type="text/css" rel="stylesheet" href="./Tutorial1_python_files/batch(3).css" media="all">
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="//d1ixbz5qgnvms3.cloudfront.net/incapture.atlassian.net/wiki/s/1cd8f1f2576432e5e4bfeaf35b0c0751-CDN/en_GB/6421/badfefcffccc7b241778b56781607367fac95552/aca0fd3f20eae92f8d2ade159a641f25/_/download/contextbatch/css/editor-content,-_super/batch.css?conditionalComment=lte+IE+9&amp;confluence.view.edit.transition=true&amp;relative-url=true"  media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="./Tutorial1_python_files/colors.css" media="all">
+
+    </head>
+
+    <body class="mceContentBody aui-theme-default wiki-content fullsize">
+        <p>&nbsp;</p>         <div class="contentLayout2">
+<div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
+<div class="cell aside" data-type="aside">
+<div class="innerCell">
+<hr><h1>Your First Project</h1></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr><p>&nbsp;</p><table class="wysiwyg-macro" data-macro-name="note" data-macro-id="6ef462f6-0d17-4f06-b8fb-4b62877741a4" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e25vdGV9&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><p>Before beginning this demonstration of Rapture it is expected that your environment satisfies the following pre-requisites</p><ol><li>Java 8 (or later) runtime is installed and accessible</li><li>Python 2.7.10 (or later) is installed with the following python modules installed:<ol><li>requests (<a href="https://pypi.python.org/pypi/requests">https://pypi.python.org/pypi/requests</a>)</li><li>numpy (<a href="https://pypi.python.org/pypi/numpy">https://pypi.python.org/pypi/numpy</a>)</li></ol></li></ol></td></tr></tbody></table></div>
+</div>
+</div>
+<div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
+<div class="cell aside" data-type="aside">
+<div class="innerCell">
+<hr><p>Create new Repo</p><p>&nbsp;</p><ol><li>Blob / Mongo</li><li>Doc &nbsp;/ Redis</li><li>Series / Cassandra</li></ol></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr><p><img class="confluence-embedded-image" src="./Tutorial1_python_files/image2016-1-15 15-31-19.png" data-image-src="/wiki/download/attachments/71630930/image2016-1-15%2015%3A31%3A19.png?version=1&amp;modificationDate=1453919160914&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="71630912" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-1-15 15:31:19.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="71630930" data-linked-resource-container-version="2" title="PRODUCT &gt; Rapture Getting Started: Python &gt; image2016-1-15 15:31:19.png" data-location="PRODUCT &gt; Rapture Getting Started: Python &gt; image2016-1-15 15:31:19.png" data-image-height="54" data-image-width="122">--&gt;&nbsp;<img class="confluence-embedded-image" src="./Tutorial1_python_files/image2016-1-15 15-31-1.png" data-image-src="/wiki/download/attachments/71630930/image2016-1-15%2015%3A31%3A1.png?version=1&amp;modificationDate=1453919160901&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="71630913" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-1-15 15:31:1.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="71630930" data-linked-resource-container-version="2" title="PRODUCT &gt; Rapture Getting Started: Python &gt; image2016-1-15 15:31:1.png" data-location="PRODUCT &gt; Rapture Getting Started: Python &gt; image2016-1-15 15:31:1.png" data-image-height="317" data-image-width="632"></p><p>&nbsp;</p><p>For the Demo:</p><p>Blob: Mongo: demoBlob</p><p>Doc: Mongo: demoDoc</p></div>
+</div>
+</div>
+<div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
+<div class="cell aside" data-type="aside">
+<div class="innerCell">
+<hr><p><u><strong>Capture Data&nbsp;– Load a CSV</strong></u></p><p>&nbsp;</p><p style="text-align: right;">Run upload script to load CSV into Blob</p><p style="text-align: right;">View Blob</p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr><p>&nbsp;</p><table class="confluenceTable"><tbody><tr><th class="confluenceTh">Python Instructions</th></tr><tr><td class="confluenceTd"><ol><li>Command line: python App.py -s UPLOAD</li></ol></td></tr><tr><td class="confluenceTd">&nbsp;</td></tr></tbody></table></div>
+</div>
+</div>
+<div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
+<div class="cell aside" data-type="aside">
+<div class="innerCell">
+<hr><p><u><strong>Translate Data&nbsp;– Create documents from raw Data</strong></u></p><p>&nbsp;</p><p style="text-align: right;">Run translate script to create Doc</p><p style="text-align: right;">View Doc</p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr><p>&nbsp;</p><table class="confluenceTable"><tbody><tr><th class="confluenceTh">Python Instructions</th></tr><tr><td class="confluenceTd">1. Command line: python App.py -s BLOBTODOC</td></tr><tr><td class="confluenceTd">&nbsp;</td></tr></tbody></table></div>
+</div>
+</div>
+<div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
+<div class="cell aside" data-type="aside">
+<div class="innerCell">
+<hr><p><u><strong>Analyze Data&nbsp;– Update series Data from documents</strong></u></p><p>&nbsp;</p><p style="text-align: right;">Run analyze script to create/update Series</p><p style="text-align: right;">View Series</p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr><p>&nbsp;</p><table style="line-height: 1.42857;" class="confluenceTable"><tbody><tr><th class="confluenceTh">Python Instructions</th></tr><tr><td class="confluenceTd"><ol><li>Command line: python App.py -s DOCTOSERIES</li></ol></td></tr><tr><td class="confluenceTd">&nbsp;</td></tr></tbody></table></div>
+</div>
+</div>
+<div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
+<div class="cell aside" data-type="aside">
+<div class="innerCell">
+<p><u><strong>Optional: Reset Data</strong></u></p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<p>Steps to blow away data and changes made above so Demo can be run again:</p><ol><li><p>Copy the following Reflex script code into the Reflex Repl screen. &nbsp;The Reflex Repl screen can be accessed by clicking the "&gt;__" icon in the top upper left of the RIM web-application (3 icons from the left).</p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="9aef8104-c589-4492-94b9-a2b23dbdc0b9" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGV9&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>// This is a reflex script that will clean up the extra data that is added by the demonstration scripts in
+// the Getting Started guide.  It deletes from series, docs, and blobs.
+
+// start date for the series column which we will be deleting from
+startDateInclusive = "20141028";
+
+// get a map from uri to RaptureFolderInfo object
+uris = #series.listSeriesByUriPrefix("series://datacapture/HIST/Provider_1a", 3);
+// convert it so we can access its fields
+uriMap = fromjson(json(uris));
+for k in keys(uriMap) do
+    v = uriMap[k];
+    // if its a folder, we skip it
+    if v['folder'] == false do
+        println("Cleaning series: " + k);
+        // get the points after a starting point
+        pts = #series.getPointsAfter(k, startDateInclusive, 10000);
+        columnsToRemove = [];
+        for pt in pts do
+            ptMap = fromjson(json(pt));
+            columnsToRemove += ptMap['column'];
+        end
+        // finally delete the series points using our list of column keys
+        #series.deletePointsFromSeriesByPointKey(k, columnsToRemove);
+    end
+end
+
+// delete the demo doc repo
+#doc.deleteDocRepo("document://demoDoc");
+// delete the demo blob repo
+#blob.deleteBlobRepo("blob://demoBlob");
+&nbsp;
+println("Done!");</pre></td></tr></tbody></table></li></ol><p>2. Click return and everything will be reset back to its original starting point before the demo scripts were run.</p></div>
+</div>
+</div>
+<div class="columnLayout single" data-layout="single">
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<h3>Where to go from here.</h3><p>???</p></div>
+</div>
+</div>
+<div class="columnLayout single" data-layout="single">
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<div class="page" title="Page 6"><div class="layoutArea"><div class="column"><p><span>Reflex is a scripting language developed at Incapture Technologies. It is designed for performing cloud-based data manipulation. Reflex takes very little resource overhead, and therefore handles the data interactions more efficiently than JRuby, Jython, or any other standard scripting tool. We will demonstrate how to perform various operations using Reflex; for those interested in learning more, please check out the <a class="confluence-link" href="https://incapture.atlassian.net/wiki/download/attachments/71630930/Reflex%20Language%20Reference_v1pt10.pdf?version=1&amp;modificationDate=1453919160833&amp;api=v2" data-linked-resource-container-id="71630930" data-linked-resource-container-version="2" data-linked-resource-content-type="application/pdf" data-linked-resource-id="71630918" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Reflex Language Reference_v1pt10.pdf" data-base-url="https://incapture.atlassian.net/wiki">Reflex Language Reference</a>. &nbsp;</span></p></div></div></div></div>
+</div>
+</div>
+</div>
+        <p>&nbsp;</p>
+    
+
+</body></html>
