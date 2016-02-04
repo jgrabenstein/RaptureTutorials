@@ -233,8 +233,6 @@ def docToSeries():
 		print "Error: document "+docUri+" does not exist. Please create the document from the blob first."
 
 	docContent = ast.literal_eval(rapture.doDoc_GetDoc(docUri))
-	print docContent
-	
 
 	# Check if datacapture repo exists
 	if rapture.doSeries_SeriesRepoExists("//datacapture"):
@@ -259,7 +257,6 @@ def docToSeries():
 				seriesUri = seriesUri + str(priceType)
 				for date in doc['index_id'][x][priceType].keys():
 					for price in doc['index_id'][x][priceType].values():
-						print seriesUri
 						# Store each date and price in the appropriate series
 						rapture.doSeries_AddDoubleToSeries(seriesUri, date, float(price))
 		print "Successfully updated series"
