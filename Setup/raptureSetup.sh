@@ -1,6 +1,5 @@
 #!/bin/bash
-# TODO: update HOST
-HOST="http://192.168.99.100:8080" #http://etienne.incapture.net:8080
+HOST="http://etienne.incapture.net:8080"
 REFLEX_RUNNER_LATEST_HOST="https://github.com"
 REFLEX_RUNNER_LATEST="$REFLEX_RUNNER_LATEST_HOST/RapturePlatform/Rapture/releases/latest"
 DEFAULT_REFLEX_RUNNER_PATH="/opt/rapture"
