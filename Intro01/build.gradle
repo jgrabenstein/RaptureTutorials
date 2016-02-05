@@ -5,7 +5,6 @@ buildscript {
     apply from : fromFile.getAbsolutePath();
 }
 
-apply plugin: 'license'
 apply plugin: 'sonar'
 
 project.version = '2.0.0'
@@ -24,11 +23,6 @@ subprojects {
     project.ext.set('raptureBootstrapDisablePlugins', 'false')
     apply plugin: 'rapture-bootstrap'
     
-    license {
-        header rootProject.file('etc/license.txt')
-        mapping('rfx','JAVADOC_STYLE')
-    }
-
     project.group = parent.group
     project.version = parent.version
 
@@ -82,14 +76,6 @@ APIVersion=${version}
         into 'build/webapp'
     }
 
-    task copyLicenseFile(type: Copy) {
-        dependsOn copyConfigFiles
-        from '.'
-        include '*.license'
-        into 'build/config'
-        outputs.upToDateWhen { false }
-    }
-        
     task copyProps(type:Copy) {
         from 'src/main/java'
         into 'build/classes/main'
