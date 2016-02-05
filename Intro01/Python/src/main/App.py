@@ -53,7 +53,7 @@ def retrieveParams():
 			errors.append("No Rapture password specified. Please set the environment variable RAPTURE_PASSWORD or supply the -p option on the command line.")	
 	if not file_location:
 		try:
-			file_location = os.environ.get('RAPTURE_DEMO_CSV')
+			file_location = os.environ.get('RAPTURE_TUTORIAL_CSV')
 		except:
 			hasErrors = True
 			errors.append("No CSV specified. Please set the environment variable RAPTURE_TUTORIAL_CSV or supply the -f option on the command line.")	
@@ -73,7 +73,7 @@ def retrieveParams():
 		errors.append("No Rapture password specified. Please set the environment variable RAPTURE_PASSWORD or supply the -p option on the command line.")
 	if not file_location:
 		hasErrors = True
-		errors.append("No CSV specified. Please set the environment variable RAPTURE_DEMO_CSV or supply the -f option on the command line.")
+		errors.append("No CSV specified. Please set the environment variable RAPTURE_TUTORIAL_CSV or supply the -f option on the command line.")
 
 	# If errors exist, print all errors and exit, else return params
 	if hasErrors:
