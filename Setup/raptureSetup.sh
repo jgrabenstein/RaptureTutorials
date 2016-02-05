@@ -19,9 +19,9 @@ function validate_curl_response {
 
 function prompt_yes_no {
   local prompt_message="$1 [Y/n] "
+  local return_val
 
-  local do_prompt=true
-  while $do_prompt; do
+  while true; do
     read -p "$prompt_message" response
     if [ -z "$response" ]; then
       response="Y"
@@ -29,10 +29,10 @@ function prompt_yes_no {
 
     case "$response" in
       Y*|y*) return_val=true
-             do_prompt=false
+             break
         ;;
       N*|n*) return_val=false
-             do_prompt=false
+             break
         ;;
     esac
   done
@@ -59,29 +59,28 @@ function get_download_link {
   echo "$REFLEX_RUNNER_LATEST_HOST$download_link"
 }
 
-get_download_path=$(prompt_yes_no "Would you like to download ReflexRunner?")
+do_download=$(prompt_yes_no "Would you like to download ReflexRunner?")
 
-do_download=false
-while $get_download_path; do
-  read -p "Enter the directory where you would like to save it, or 'skip' to cancel. [$DEFAULT_REFLEX_RUNNER_PATH] " directory
-  if [ -z "$directory" ]; then
-    directory=$DEFAULT_REFLEX_RUNNER_PATH
-    get_download_path=false
-    do_download=true
-  elif [ "$directory" = "skip" ]; then
-    get_download_path=false
-    do_download=false
-  elif [ "$directory" != "$DEFAULT_REFLEX_RUNNER_PATH" ] && [ ! -e "$directory" ]; then
-    echo "Path $directory doesn't exist."
-  elif [ ! -w "$directory" ]; then
-    echo "Path $directory exists but cannot be written to."
-  elif [ ! -d "$directory" ]; then
-    echo "Path $directory is not a directory."
-  else
-    get_download_path=false
-    do_download=true
-  fi
-done
+if $do_download; then
+  while true; do
+    read -p "Enter the directory where you would like to save it, or 'skip' to cancel. [$DEFAULT_REFLEX_RUNNER_PATH] " directory
+    if [ -z "$directory" ]; then
+      directory=$DEFAULT_REFLEX_RUNNER_PATH
+      break
+    elif [ "$directory" = "skip" ]; then
+      do_download=false
+      break
+    elif [ "$directory" != "$DEFAULT_REFLEX_RUNNER_PATH" ] && [ ! -e "$directory" ]; then
+      echo "Path $directory doesn't exist."
+    elif [ ! -w "$directory" ]; then
+      echo "Path $directory exists but cannot be written to."
+    elif [ ! -d "$directory" ]; then
+      echo "Path $directory is not a directory."
+    else
+      break
+    fi
+  done
+fi
 
 if $do_download; then
   # we will create the default directory for the user if we can, just not other directories for now
@@ -91,7 +90,7 @@ if $do_download; then
     download_link=$(get_download_link)
     file_name=${download_link##*/} # extract file name from full link
 
-    echo "Downloading $file_name to $directory. Download started at" $(date +"%T")
+    echo "Downloading $file_name to $directory. Download started at" $(date +"%T")"."
     curl -qLSs -o "$directory/$file_name" $download_link
     validate_curl_response $? 200 "There was a problem downloading $file_name from $download_link."
 
