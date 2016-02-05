@@ -330,22 +330,22 @@ public class App {
                 missingOptions = true;
             }
 
+            if ( commandLine.hasOption("s") ) {
+                currentStep = commandLine.getOptionValue("s");
+            }
+            if (!Arrays.asList(steps).contains(currentStep)) {
+                System.out.println("No tutorial step specified. Please supply the -s option on the command line.");
+                missingOptions = true;
+            }
+
             if ( commandLine.hasOption("f") ) {
                 csvFile = commandLine.getOptionValue("f");
             }
             else {
                 csvFile = System.getenv("RAPTURE_TUTORIAL_CSV");
             }
-            if (csvFile == null) {
+            if (csvFile == null && currentStep.equals("upload")) {
                 System.out.println("No CSV specified. Please set the environment variable RAPTURE_TUTORIAL_CSV or supply the -f option on the command line.");
-                missingOptions = true;
-            }
-
-            if ( commandLine.hasOption("s") ) {
-                currentStep = commandLine.getOptionValue("s");
-            }
-            if (!Arrays.asList(steps).contains(currentStep)) {
-                System.out.println("No tutorial step specified. Please supply the -s option on the command line.");
                 missingOptions = true;
             }
 
