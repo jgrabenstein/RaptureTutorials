@@ -1,8 +1,8 @@
 #!/bin/bash
 # TODO: update HOST
 HOST="http://192.168.99.100:8080" #http://etienne.incapture.net:8080
-REFLEX_RUNNER_FILE_NAME="ReflexRunner-2.0.0.20160202182104.zip"
-REFLEX_RUNNER_URL="https://github.com/RapturePlatform/Rapture/releases/download/3.0.0.20160203122306/$REFLEX_RUNNER_FILE_NAME"
+REFLEX_RUNNER_LATEST_HOST="https://github.com"
+REFLEX_RUNNER_LATEST="$REFLEX_RUNNER_LATEST_HOST/RapturePlatform/Rapture/releases/latest"
 DEFAULT_REFLEX_RUNNER_PATH="/opt/rapture"
 
 function validate_curl_response {
@@ -40,8 +40,28 @@ function prompt_yes_no {
   echo $return_val
 }
 
+function get_download_link {
+  local curl_results=$( curl -qLSsw '\n%{http_code}' $REFLEX_RUNNER_LATEST )
+  validate_curl_response $? $(echo "$curl_results" | tail -n1) "There was a problem getting the link to the latest version of ReflexRunner at $REFLEX_RUNNER_LATEST."
+  local page_html=$(echo "$curl_results" | sed \$d) #strip http status
+
+  local pattern="href=\"(.*ReflexRunner.*\.zip)\""
+  local use_next_zip=false
+  while read line; do
+    if $use_next_zip && [[ $line =~ $pattern ]]; then
+      download_link="${BASH_REMATCH[1]}"
+      break
+    elif [[ $line =~ release-downloads ]]; then
+      use_next_zip=true
+    fi
+  done <<< "$page_html"
+
+  echo "$REFLEX_RUNNER_LATEST_HOST$download_link"
+}
+
 get_download_path=$(prompt_yes_no "Would you like to download ReflexRunner?")
 
+#TODO: make sure it's a directory
 do_download=false
 while $get_download_path; do
   read -p "Enter the directory where you would like to save it, or 'skip' to cancel. [$DEFAULT_REFLEX_RUNNER_PATH] " directory
@@ -66,12 +86,13 @@ if $do_download; then
   # we will create the default directory for the user if we can, just not other directories for now
   if mkdir -p $directory ; then
     directory=${directory%/} # remove trailing slash
-    echo "Downloading ReflexRunner to $directory. Download started at" $(date +"%T")
+    echo "Getting location of latest ReflexRunner release."
+    download_link=$(get_download_link)
+    file_name=${download_link##*/} # extract file name from full link
 
-    curl_results=$( curl -qLSsw '\n%{http_code}' $REFLEX_RUNNER_URL )
-    validate_curl_response $? $(echo "$curl_results" | tail -n1) "There was a problem downloading ReflexRunner from $REFLEX_RUNNER_URL."
-    zip_file_data=$(echo "$curl_results" | sed \$d) #strip http status
-    echo $zip_file_data >> "$directory/$REFLEX_RUNNER_FILE_NAME"
+    echo "Downloading $file_name to $directory. Download started at" $(date +"%T")
+    curl -qLSs -o "$directory/$file_name" $download_link
+    validate_curl_response $? 200 "There was a problem downloading $file_name from $download_link."
 
     echo "Done downloading."
   else
