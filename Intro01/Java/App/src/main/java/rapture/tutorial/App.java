@@ -92,7 +92,7 @@ public class App {
         blobRepoUri = createBlobRepo();
         docRepoUri = createDocumentRepo();
 
-        rawCsvUri = blobRepoUri + "introDataInbound.csv";
+        rawCsvUri = blobRepoUri + "introDataInbound";
         jsonDocumentUri = docRepoUri + "introDataTranslated";
 
         System.out.println("Logged in and initialized");
@@ -244,7 +244,7 @@ public class App {
 
     private void docToSeries() {
         String seriesRepoUri = RaptureURI.builder(Scheme.SERIES, SERIES_AUTHORITY).build().toString();
-        System.out.println("Adding price data from " + jsonDocumentUri + " to series at " + seriesRepoUri);
+        System.out.println("Adding price data from " + jsonDocumentUri + " to series repo " + seriesRepoUri);
 
         String jsonDocument = docApi.getDoc(jsonDocumentUri);
         if (jsonDocument == null) {
