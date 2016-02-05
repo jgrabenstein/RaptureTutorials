@@ -19,6 +19,7 @@ import rapture.common.impl.jackson.JacksonUtil;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class App {
 
     private static String host;
     private static String username;
-    private static String password;
+    private static char[] password;
     private static String csvFile;
     private static String currentStep = "";
 
@@ -76,7 +77,9 @@ public class App {
         System.out.println("Starting up..");
         System.out.println("Logging in to " + host);
 
-        SimpleCredentialsProvider creds = new SimpleCredentialsProvider(username, password);
+        SimpleCredentialsProvider creds = new SimpleCredentialsProvider(username, new String(password));
+        java.util.Arrays.fill(password, ' ');
+
         loginApi = new HttpLoginApi(host, creds);
         loginApi.login();
 
@@ -318,16 +321,21 @@ public class App {
                 missingOptions = true;
             }
 
-            // TODO: better password handling
             if ( commandLine.hasOption("p") ) {
-                password = commandLine.getOptionValue("p");
+                password = ((String) commandLine.getOptionValue("p")).toCharArray();
             }
             else {
-                password = System.getenv("RAPTURE_PASSWORD");
+                String envPasswd = System.getenv("RAPTURE_PASSWORD");
+                if (envPasswd != null) {
+                    password = envPasswd.toCharArray();
+                }
             }
             if (password == null) {
-                System.out.println("No Rapture password specified. Please set the environment variable RAPTURE_PASSWORD or supply the -p option on the command line.");
-                missingOptions = true;
+                Console cons;
+                if ((cons = System.console()) == null || (password = cons.readPassword("%s", "Password:")) == null) {
+                    System.out.println("No Rapture password specified. Please set the environment variable RAPTURE_PASSWORD or supply the -p option on the command line.");
+                    missingOptions = true;
+                }
             }
 
             if ( commandLine.hasOption("s") ) {
