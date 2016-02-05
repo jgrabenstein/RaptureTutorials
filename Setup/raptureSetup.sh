@@ -61,7 +61,6 @@ function get_download_link {
 
 get_download_path=$(prompt_yes_no "Would you like to download ReflexRunner?")
 
-#TODO: make sure it's a directory
 do_download=false
 while $get_download_path; do
   read -p "Enter the directory where you would like to save it, or 'skip' to cancel. [$DEFAULT_REFLEX_RUNNER_PATH] " directory
@@ -72,10 +71,12 @@ while $get_download_path; do
   elif [ "$directory" = "skip" ]; then
     get_download_path=false
     do_download=false
-  elif [ "$directory" != "$DEFAULT_REFLEX_RUNNER_PATH" ] && [ ! -d "$directory" ]; then
+  elif [ "$directory" != "$DEFAULT_REFLEX_RUNNER_PATH" ] && [ ! -e "$directory" ]; then
     echo "Path $directory doesn't exist."
   elif [ ! -w "$directory" ]; then
     echo "Path $directory exists but cannot be written to."
+  elif [ ! -d "$directory" ]; then
+    echo "Path $directory is not a directory."
   else
     get_download_path=false
     do_download=true
