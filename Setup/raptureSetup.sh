@@ -1,5 +1,5 @@
 #!/bin/bash
-HOST="http://etn.incapture.net:8080"
+HOST="http://192.168.99.100:8080"
 REFLEX_RUNNER_LATEST_HOST="https://github.com"
 REFLEX_RUNNER_LATEST="$REFLEX_RUNNER_LATEST_HOST/RapturePlatform/Rapture/releases/latest"
 
@@ -173,9 +173,14 @@ if [ -n "$reflex_runner_path" ] && [ !$reflex_runner_is_in_path ] ; then
   echo "export PATH=$PATH:$add_to_path" >> $env_var_filename
 fi
 
-echo "Examining your filesystem for the location of Tutorial resources."
-csv_path=$(find / -name introDataInbound.csv 2>/dev/null |grep -m 1 RaptureTutorials/Intro01/resources/introDataInbound.csv)
-echo "export RAPTURE_TUTORIAL_CSV=$csv_path" >> $env_var_filename
+tutorial_var_ls=$(ls $RAPTURE_TUTORIAL_CSV)
+if [[ "$tutorial_var_ls" != "$RAPTURE_TUTORIAL_CSV" ]]; then
+  echo "Examining your filesystem for the location of Tutorial resources."
+  echo "To avoid this search in the future, set the environment variable RAPTURE_TUTORIAL_CSV to the full path to introDataInbound.csv"
+  csv_path=$(find / -name introDataInbound.csv 2>/dev/null |grep -m 1 RaptureTutorials/Intro01/resources/introDataInbound.csv)
+  echo "export RAPTURE_TUTORIAL_CSV=$csv_path" >> $env_var_filename
+fi
+
 
 # Also write a welcome banner to the file and change the prompt so it's easier for the user
 # to know that they are in a screen session.
