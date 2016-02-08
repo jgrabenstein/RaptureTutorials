@@ -1,5 +1,5 @@
-import csv, ast, base64, itertools, os, getopt, sys, raptureAPI
-import json
+import csv, ast, base64, itertools, os, getopt, sys, json, raptureAPI
+from collections import OrderedDict
 
 rapture = None
 UPLOAD, BLOBTODOC, DOCTOSERIES, ALL = range(4)
@@ -53,7 +53,7 @@ def retrieveParams():
 			errors.append("No Rapture password specified. Please set the environment variable RAPTURE_PASSWORD or supply the -p option on the command line.")	
 	if not file_location:
 		try:
-			file_location = os.environ.get('RAPTURE_DEMO_CSV')
+			file_location = os.environ.get('RAPTURE_TUTORIAL_CSV')
 		except:
 			hasErrors = True
 			errors.append("No CSV specified. Please set the environment variable RAPTURE_TUTORIAL_CSV or supply the -f option on the command line.")	
@@ -73,7 +73,7 @@ def retrieveParams():
 		errors.append("No Rapture password specified. Please set the environment variable RAPTURE_PASSWORD or supply the -p option on the command line.")
 	if not file_location:
 		hasErrors = True
-		errors.append("No CSV specified. Please set the environment variable RAPTURE_DEMO_CSV or supply the -f option on the command line.")
+		errors.append("No CSV specified. Please set the environment variable RAPTURE_TUTORIAL_CSV or supply the -f option on the command line.")
 
 	# If errors exist, print all errors and exit, else return params
 	if hasErrors:
@@ -148,7 +148,7 @@ def blobToDoc():
 		# Create doc repo
 		docRepoUri = "//tutorialDoc"
 		docUri = docRepoUri + "/introDataTranslated"
-		config = "REP {} USING MONGODB {prefix=\"tutorialDoc\"}"
+		config = "NREP {} USING MONGODB {prefix=\"tutorialDoc\"}"
 		if(rapture.doDoc_DocRepoExists(docRepoUri)):
 			rapture.doDoc_DeleteDocRepo(docRepoUri)	
 		rapture.doDoc_CreateDocRepo(docRepoUri, config)
@@ -163,12 +163,12 @@ def blobToDoc():
 			rowData = {keys[0]:row[0],keys[1]:row[1],keys[2]:row[2],keys[3]:row[3],keys[4]:row[4],keys[5]:row[5],keys[6]:row[6]}
 			blobData.append(rowData)
 		#This is the top level of json/dict that we will be inserting
-		Order ={}
+		Order = OrderedDict()
 		for entry in blobData:
+			Order['provider'] = entry['provider']
 			Order['series_type'] = entry['series_type']
 			Order['frequency'] = entry['frequency']
 			Order['index_id'] = {}
-			Order['provider'] = entry['provider']
 		index_id = list()
 		#Add index_id's to the master json/dict
 		for x in blobData:
@@ -208,9 +208,10 @@ def blobToDoc():
 						if item['price_type'] == x:
 							disposableDict[x].update({item['date']:float(item['index_price'])})
 			Order['index_id'][index_id] = disposableDict
-	
+		
+
 		#PUT THE CSV DATA RETRIEVED FROM A BLOB & TRANSLATED INTO THE DOCUMENT REPOSITORY
-		rapture.doDoc_PutDoc(docUri, json.dumps(Order))
+		rapture.doDoc_PutDoc(docUri, json.dumps(Order, sort_keys=False))
 		print "Successfully translated blob to docs"
 	else:
 		print "Please make sure that blob repo and blob are uploaded already"
@@ -228,8 +229,6 @@ def docToSeries():
 		print "Error: document "+docUri+" does not exist. Please create the document from the blob first."
 
 	docContent = ast.literal_eval(rapture.doDoc_GetDoc(docUri))
-	print docContent
-	
 
 	# Check if datacapture repo exists
 	if rapture.doSeries_SeriesRepoExists("//datacapture"):
@@ -240,8 +239,7 @@ def docToSeries():
 		# Generate specific URI's based on data points
 		seriesUri = "//datacapture" + "/" 
 		seriesUri = seriesUri + str(doc['series_type']) + "/" 
-		seriesUri = seriesUri + str(doc['provider']) + "/" 
-		seriesUri = seriesUri + str(doc['frequency']) + "/" 
+		seriesUri = seriesUri + str(doc['provider']) + "/"  
 		disposableUri = seriesUri
 		for x in doc['index_id']:
 			#Reset base URI's so that one long URI is not created 
@@ -255,7 +253,6 @@ def docToSeries():
 				seriesUri = seriesUri + str(priceType)
 				for date in doc['index_id'][x][priceType].keys():
 					for price in doc['index_id'][x][priceType].values():
-						print seriesUri
 						# Store each date and price in the appropriate series
 						rapture.doSeries_AddDoubleToSeries(seriesUri, date, float(price))
 		print "Successfully updated series"

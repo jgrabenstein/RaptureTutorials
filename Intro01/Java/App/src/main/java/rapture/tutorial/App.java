@@ -19,6 +19,7 @@ import rapture.common.impl.jackson.JacksonUtil;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class App {
 
     private static String host;
     private static String username;
-    private static String password;
+    private static char[] password;
     private static String csvFile;
     private static String currentStep = "";
 
@@ -76,7 +77,9 @@ public class App {
         System.out.println("Starting up..");
         System.out.println("Logging in to " + host);
 
-        SimpleCredentialsProvider creds = new SimpleCredentialsProvider(username, password);
+        SimpleCredentialsProvider creds = new SimpleCredentialsProvider(username, new String(password));
+        java.util.Arrays.fill(password, ' ');
+
         loginApi = new HttpLoginApi(host, creds);
         loginApi.login();
 
@@ -89,7 +92,7 @@ public class App {
         blobRepoUri = createBlobRepo();
         docRepoUri = createDocumentRepo();
 
-        rawCsvUri = blobRepoUri + "introDataInbound.csv";
+        rawCsvUri = blobRepoUri + "introDataInbound";
         jsonDocumentUri = docRepoUri + "introDataTranslated";
 
         System.out.println("Logged in and initialized");
@@ -241,7 +244,7 @@ public class App {
 
     private void docToSeries() {
         String seriesRepoUri = RaptureURI.builder(Scheme.SERIES, SERIES_AUTHORITY).build().toString();
-        System.out.println("Adding price data from " + jsonDocumentUri + " to series at " + seriesRepoUri);
+        System.out.println("Adding price data from " + jsonDocumentUri + " to series repo " + seriesRepoUri);
 
         String jsonDocument = docApi.getDoc(jsonDocumentUri);
         if (jsonDocument == null) {
@@ -318,15 +321,28 @@ public class App {
                 missingOptions = true;
             }
 
-            // TODO: better password handling
             if ( commandLine.hasOption("p") ) {
-                password = commandLine.getOptionValue("p");
+                password = ((String) commandLine.getOptionValue("p")).toCharArray();
             }
             else {
-                password = System.getenv("RAPTURE_PASSWORD");
+                String envPasswd = System.getenv("RAPTURE_PASSWORD");
+                if (envPasswd != null) {
+                    password = envPasswd.toCharArray();
+                }
             }
             if (password == null) {
-                System.out.println("No Rapture password specified. Please set the environment variable RAPTURE_PASSWORD or supply the -p option on the command line.");
+                Console cons;
+                if ((cons = System.console()) == null || (password = cons.readPassword("%s", "Password:")) == null) {
+                    System.out.println("No Rapture password specified. Please set the environment variable RAPTURE_PASSWORD or supply the -p option on the command line.");
+                    missingOptions = true;
+                }
+            }
+
+            if ( commandLine.hasOption("s") ) {
+                currentStep = commandLine.getOptionValue("s");
+            }
+            if (!Arrays.asList(steps).contains(currentStep)) {
+                System.out.println("No tutorial step specified. Please supply the -s option on the command line.");
                 missingOptions = true;
             }
 
@@ -336,16 +352,8 @@ public class App {
             else {
                 csvFile = System.getenv("RAPTURE_TUTORIAL_CSV");
             }
-            if (csvFile == null) {
+            if (csvFile == null && currentStep.equals("upload")) {
                 System.out.println("No CSV specified. Please set the environment variable RAPTURE_TUTORIAL_CSV or supply the -f option on the command line.");
-                missingOptions = true;
-            }
-
-            if ( commandLine.hasOption("s") ) {
-                currentStep = commandLine.getOptionValue("s");
-            }
-            if (!Arrays.asList(steps).contains(currentStep)) {
-                System.out.println("No tutorial step specified. Please supply the -s option on the command line.");
                 missingOptions = true;
             }
 
