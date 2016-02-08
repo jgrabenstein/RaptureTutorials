@@ -1,19 +1,8 @@
-version = '2.0.0'
-adjustVersion.execute()
-
-apply plugin: 'application'
-
 jar.manifest.attributes "Implementation-Title" : "Rapture Tutorials Java Application"
-jar.manifest.attributes "Implementation-Version" : version
- 
-dependencies {
-  compile "com.rapture:RaptureCore:$project.platformVersion"
-}
+jar.manifest.attributes "Implementation-Version" : project.version
 
 task srcFolder {
-  outputs.dir file("src")
+    outputs.dir file("src")
 }
-
 applicationDistribution.from(srcFolder) { into "src" }
-
 mainClassName = "rapture.tutorial.App"
