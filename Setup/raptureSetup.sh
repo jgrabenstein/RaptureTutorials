@@ -57,17 +57,29 @@ function get_download_link {
   echo "$REFLEX_RUNNER_LATEST_HOST$download_link"
 }
 
+set_up_reflex_runner=false
 reflex_runner_is_in_path=false
 reflex_runner_path=$(which ReflexRunner)
 if [ -z "$reflex_runner_path" ]; then
-  echo "Looking for ReflexRunner in your filesystem."
-  reflex_runner_path=$(find / -name ReflexRunner 2>/dev/null |grep -m 1 bin/ReflexRunner)
+  set_up_reflex_runner=$(prompt_yes_no "Are you interested in setting up ReflexRunner?")
 else
   reflex_runner_is_in_path=true
 fi
 
-if [ -z "$reflex_runner_path" ]; then
-  do_download=$(prompt_yes_no "ReflexRunner not found. Would you like to download it?")
+if $set_up_reflex_runner; then
+  already_downloaded=$(prompt_yes_no "Have you already downloaded ReflexRunner?")
+
+  if $already_downloaded; then
+    echo "Looking for ReflexRunner in your filesystem. To avoid this search in the future, add ReflexRunner to your PATH."
+    reflex_runner_path=$(find / -name ReflexRunner 2>/dev/null |grep -m 1 bin/ReflexRunner)
+    if [ -z "$reflex_runner_path" ]; then
+      echo "ReflexRunner not found in your filesystem."
+    fi
+  fi
+fi
+
+if $set_up_reflex_runner && [ -z "$reflex_runner_path" ]; then
+  do_download=$(prompt_yes_no "Would you like to download ReflexRunner?")
 
   if $do_download; then
     default_reflex_runner_path=$(pwd)
