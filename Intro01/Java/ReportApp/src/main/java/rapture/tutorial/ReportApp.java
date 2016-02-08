@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -95,12 +96,20 @@ public class ReportApp {
      * @param args
      */
     private void readLoginInfo(String[] args) {
-        if (args.length != 2) {
-            log.error("Usage: ./ReportApp <host> <user>");
-            System.exit(1);
+        if (args.length == 2) {
+            host = args[0];
+            credentials = new SimpleCredentialsProvider(args[1], new String(System.console().readPassword("Password: ")));
+        } else {
+            String hostFromEnv = System.getenv("RAPTURE_HOST");
+            String userFromEnv = System.getenv("RAPTURE_USER");
+            if (!StringUtils.isBlank(hostFromEnv) && !StringUtils.isBlank(userFromEnv)) {
+                host = hostFromEnv;
+                credentials = new SimpleCredentialsProvider(userFromEnv, new String(System.console().readPassword("Password: ")));
+            } else {
+                log.error("Usage: ./ReportApp <host> <user>");
+                System.exit(1);
+            }
         }
-        host = args[0];
-        credentials = new SimpleCredentialsProvider(args[1], new String(System.console().readPassword("Password: ")));
     }
 
     /**
