@@ -57,48 +57,59 @@ function get_download_link {
   echo "$REFLEX_RUNNER_LATEST_HOST$download_link"
 }
 
-do_download=$(prompt_yes_no "Would you like to download ReflexRunner?")
-
-if $do_download; then
-  default_reflex_runner_path=$(pwd)
-  while true; do
-    read -p "Enter the directory where you would like to save it, or 'skip' to cancel. [$default_reflex_runner_path] " directory
-    if [ -z "$directory" ]; then
-      directory=$default_reflex_runner_path
-      break
-    elif [ "$directory" = "skip" ]; then
-      do_download=false
-      break
-    elif [ "$directory" != "$default_reflex_runner_path" ] && [ ! -e "$directory" ]; then
-      echo "Path $directory doesn't exist."
-    elif [ ! -w "$directory" ]; then
-      echo "Path $directory exists but cannot be written to."
-    elif [ ! -d "$directory" ]; then
-      echo "Path $directory is not a directory."
-    else
-      break
-    fi
-  done
+reflex_runner_is_in_path=false
+reflex_runner_path=$(which ReflexRunner)
+if [ -z "$reflex_runner_path" ]; then
+  echo "Looking for ReflexRunner in your filesystem."
+  reflex_runner_path=$(find / -name ReflexRunner 2>/dev/null |grep -m 1 bin/ReflexRunner)
+else
+  reflex_runner_is_in_path=true
 fi
 
-if $do_download; then
-  # we will create the default directory for the user if we can, just not other directories for now
-  if mkdir -p $directory ; then
-    directory=${directory%/} # remove trailing slash
-    echo "Getting location of latest ReflexRunner release."
-    download_link=$(get_download_link)
-    file_name=${download_link##*/} # extract file name from full link
+if [ -z "$reflex_runner_path" ]; then
+  do_download=$(prompt_yes_no "ReflexRunner not found. Would you like to download it?")
 
-    echo "Downloading $file_name to $directory. Download started at" $(date +"%T")"."
-    curl -qLSs -o "$directory/$file_name" $download_link
-    validate_curl_response $? 200 "There was a problem downloading $file_name from $download_link."
+  if $do_download; then
+    default_reflex_runner_path=$(pwd)
+    while true; do
+      read -p "Enter the directory where you would like to save it, or 'skip' to cancel. [$default_reflex_runner_path] " directory
+      if [ -z "$directory" ]; then
+        directory=$default_reflex_runner_path
+        break
+      elif [ "$directory" = "skip" ]; then
+        do_download=false
+        break
+      elif [ "$directory" != "$default_reflex_runner_path" ] && [ ! -e "$directory" ]; then
+        echo "Path $directory doesn't exist."
+      elif [ ! -w "$directory" ]; then
+        echo "Path $directory exists but cannot be written to."
+      elif [ ! -d "$directory" ]; then
+        echo "Path $directory is not a directory."
+      else
+        break
+      fi
+    done
+  fi
 
-    echo "Done downloading."
-    echo "Setting up ReflexRunner."
-    unzip -qq "$directory/$file_name"
-  else
-    echo "Unable to create directory $directory."
-    exit 1
+  if $do_download; then
+    # we will create the default directory for the user if we can, just not other directories for now
+    if mkdir -p $directory ; then
+      directory=${directory%/} # remove trailing slash
+      echo "Getting location of latest ReflexRunner release."
+      download_link=$(get_download_link)
+      file_name=${download_link##*/} # extract file name from full link
+
+      echo "Downloading $file_name to $directory. Download started at" $(date +"%T")"."
+      curl -qLSs -o "$directory/$file_name" $download_link
+      validate_curl_response $? 200 "There was a problem downloading $file_name from $download_link."
+
+      echo "Done downloading."
+      echo "Setting up ReflexRunner."
+      unzip -qq "$directory/$file_name"
+    else
+      echo "Unable to create directory $directory."
+      exit 1
+    fi
   fi
 fi
 
@@ -144,6 +155,15 @@ do
 
   echo "export $var_name=$var_val" >> $env_var_filename
 done
+
+if [ -n "$reflex_runner_path" ] && [ !$reflex_runner_is_in_path ] ; then
+  add_to_path=$(dirname $reflex_runner_path)
+  echo "export PATH=$PATH:$add_to_path" >> $env_var_filename
+fi
+
+echo "Examining your filesystem for the location of Tutorial resources."
+csv_path=$(find / -name introDataInbound.csv 2>/dev/null |grep -m 1 RaptureTutorials/Intro01/resources/introDataInbound.csv)
+echo "export RAPTURE_TUTORIAL_CSV=$csv_path" >> $env_var_filename
 
 # Also write a welcome banner to the file and change the prompt so it's easier for the user
 # to know that they are in a screen session.
