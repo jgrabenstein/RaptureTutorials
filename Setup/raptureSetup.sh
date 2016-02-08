@@ -2,7 +2,6 @@
 HOST="http://etn.incapture.net:8080"
 REFLEX_RUNNER_LATEST_HOST="https://github.com"
 REFLEX_RUNNER_LATEST="$REFLEX_RUNNER_LATEST_HOST/RapturePlatform/Rapture/releases/latest"
-DEFAULT_REFLEX_RUNNER_PATH="/opt/rapture"
 
 function validate_curl_response {
   local curl_exit_code=$1
@@ -61,15 +60,16 @@ function get_download_link {
 do_download=$(prompt_yes_no "Would you like to download ReflexRunner?")
 
 if $do_download; then
+  default_reflex_runner_path=$(pwd)
   while true; do
-    read -p "Enter the directory where you would like to save it, or 'skip' to cancel. [$DEFAULT_REFLEX_RUNNER_PATH] " directory
+    read -p "Enter the directory where you would like to save it, or 'skip' to cancel. [$default_reflex_runner_path] " directory
     if [ -z "$directory" ]; then
-      directory=$DEFAULT_REFLEX_RUNNER_PATH
+      directory=$default_reflex_runner_path
       break
     elif [ "$directory" = "skip" ]; then
       do_download=false
       break
-    elif [ "$directory" != "$DEFAULT_REFLEX_RUNNER_PATH" ] && [ ! -e "$directory" ]; then
+    elif [ "$directory" != "$default_reflex_runner_path" ] && [ ! -e "$directory" ]; then
       echo "Path $directory doesn't exist."
     elif [ ! -w "$directory" ]; then
       echo "Path $directory exists but cannot be written to."
@@ -94,6 +94,8 @@ if $do_download; then
     validate_curl_response $? 200 "There was a problem downloading $file_name from $download_link."
 
     echo "Done downloading."
+    echo "Setting up ReflexRunner."
+    unzip -qq "$directory/$file_name"
   else
     echo "Unable to create directory $directory."
     exit 1
