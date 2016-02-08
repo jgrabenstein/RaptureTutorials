@@ -42,14 +42,9 @@ end
 rawCsvUri = BLOB_URI+"/"+CSV_FILE;
 
 if (!#blob.blobExists(rawCsvUri)) do
-  println("Reading CSV from file " + CSV_FILE);
-  file(CSV_FILE, "CSV") --> rawCsvUri;
-  println("CSV uploaded to "+ rawCsvUri);
-else do
-  println("Data has already been uploaded to the BLOB repository.");
+  println("Data has not been uploaded to the BLOB repository.");
+  assert(false);
 end
-
-println("\nDone\n");
 
 // **********************
 // Get data from the blob using the pull operation
@@ -163,62 +158,4 @@ end
 println("Added JSON document to Rapture at " + DOC_URI+"/introDataTranslated"); 
 
 println("\nDone\n");
-
-// **********************
-// Read the document as a JSON String. Convert the String to a Map
-// then iterate through the map and recreate the lists.
-// **********************
-
-println("Read the document back and reconstitute the lists");
-
-docStr = #doc.getDoc(DOC_URI+"/introDataTranslated");
-docMap = fromjson(docStr);
-
-csv = [ ] ;
-indexes = docMap.index_id;
-for i in keys(indexes) do
-  index = indexes[i];
-  for prices in keys(index) do
-    priceMap = index[prices];
-    for dateVal in keys(priceMap) do
-      row = [];
-      row.add(docMap.series_type);
-      row.add(docMap.provider);
-      row.add(i);
-      row.add(docMap.frequency);
-      row.add(prices);
-      row.add(dateVal);
-      row.add(priceMap[dateVal]);
-      csv.add(row);
-    end
-  end
-end
-
-println("Adding price data from " + DOC_URI+"/introDataTranslated to series at " + SERIES_URI);
-
-// add each date/price pair to the series, using the following template for the URI:
-// seriesRepoUri + series_type + "/" + "provider" + "/" + "index_id" + "/" + "frequency" + "/" + "price_type"
-// Since that is the order of the columns it's straightforward.
-// Note that this can also be dome using the push operator: csv --> SERIES_URI;
-
-
-for line in csv.subList(1, size(csv)) do
-  location = SERIES_URI;
-  columns = size(line);
-  if (columns >= 2) do
-     for field in line do
-       if (columns == 1) do
-         value = field;
-       else if (columns == 2) do
-         key = field;
-       else do
-         location = location+"/"+field;
-       end
-       columns = columns - 1;
-     end
-     #series.addDoubleToSeries(location, key, value);
-   else do
-     println("Line has less than 2 values: it will be skipped");
-   end
-end 
-println("\nDone\n");
+return("Done");
