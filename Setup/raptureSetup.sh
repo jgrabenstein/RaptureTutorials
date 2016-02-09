@@ -57,6 +57,28 @@ function get_download_link {
   echo "$REFLEX_RUNNER_LATEST_HOST$download_link"
 }
 
+function find_in_filesystem {
+  local search_string=$1
+  local validation_string=$2
+  local return_val
+
+  local cur_dir=$(pwd)
+  local pattern="(.*RaptureTutorials).*"
+  if [[ $cur_dir =~ $pattern ]]; then
+    search_path="${BASH_REMATCH[1]}"
+  fi
+
+  if [ -n "$search_path" ]; then
+    return_val=$(find $search_path -name $search_string 2>/dev/null |grep -m 1 $validation_string)
+  fi
+
+  if [ -z "$return_val" ]; then
+    return_val=$(find / -name $search_string 2>/dev/null |grep -m 1 $validation_string)
+  fi
+
+  echo $return_val
+}
+
 set_up_reflex_runner=false
 reflex_runner_is_in_path=false
 reflex_runner_path=$(which ReflexRunner)
@@ -71,7 +93,7 @@ if $set_up_reflex_runner; then
 
   if $already_downloaded; then
     echo "Looking for ReflexRunner in your filesystem. To avoid this search in the future, add ReflexRunner to your PATH."
-    reflex_runner_path=$(find / -name ReflexRunner 2>/dev/null |grep -m 1 bin/ReflexRunner)
+    reflex_runner_path=$(find_in_filesystem ReflexRunner bin/ReflexRunner)
     if [ -z "$reflex_runner_path" ]; then
       echo "ReflexRunner not found in your filesystem."
     fi
@@ -177,7 +199,7 @@ tutorial_var_ls=$(ls $RAPTURE_TUTORIAL_CSV)
 if [[ "$tutorial_var_ls" != "$RAPTURE_TUTORIAL_CSV" ]]; then
   echo "Examining your filesystem for the location of Tutorial resources."
   echo "To avoid this search in the future, set the environment variable RAPTURE_TUTORIAL_CSV to the full path to introDataInbound.csv"
-  csv_path=$(find / -name introDataInbound.csv 2>/dev/null |grep -m 1 RaptureTutorials/Intro01/resources/introDataInbound.csv)
+  csv_path=$(find_in_filesystem introDataInbound.csv RaptureTutorials/Intro01/resources/introDataInbound.csv)
   echo "export RAPTURE_TUTORIAL_CSV=$csv_path" >> $env_var_filename
 fi
 
