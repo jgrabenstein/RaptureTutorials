@@ -202,7 +202,9 @@ if [[ "$tutorial_var_ls" != "$RAPTURE_TUTORIAL_CSV" ]]; then
   echo "Examining your filesystem for the location of Tutorial resources."
   echo "To avoid this search in the future, set the environment variable RAPTURE_TUTORIAL_CSV to the full path to introDataInbound.csv"
   csv_path=$(find_in_filesystem introDataInbound.csv RaptureTutorials/Intro01/resources/introDataInbound.csv)
-  echo "export RAPTURE_TUTORIAL_CSV=$csv_path" >> $env_var_filename
+  if [ -n $csv_path ] ; then
+    echo "export RAPTURE_TUTORIAL_CSV=$csv_path" >> $env_var_filename
+  fi
 fi
 
 
