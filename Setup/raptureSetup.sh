@@ -60,17 +60,26 @@ function get_download_link {
 function find_in_filesystem {
   local search_string=$1
   local validation_string=$2
+  local search_path=$3
   local return_val
 
-  # It'll probably be within RaptureTutorials, but where is that? We're probably inside of it.
-  local cur_dir=$(pwd)
-  local pattern="(.*RaptureTutorials).*"
-  if [[ $cur_dir =~ $pattern ]]; then
-    search_path="${BASH_REMATCH[1]}"
-  fi
-
+  # If we were given a directory to look in, look there first
   if [ -n "$search_path" ]; then
     return_val=$(find $search_path -name $search_string 2>/dev/null |grep -m 1 $validation_string)
+  fi
+
+  # Then try standard locations
+  if [ -z "$return_val" ]; then
+    # It'll probably be within RaptureTutorials, but where is that? We're probably inside of it.
+    local cur_dir=$(pwd)
+    local pattern="(.*RaptureTutorials).*"
+    if [[ $cur_dir =~ $pattern ]]; then
+      search_path="${BASH_REMATCH[1]}"
+    fi
+
+    if [ -n "$search_path" ]; then
+      return_val=$(find $search_path -name $search_string 2>/dev/null |grep -m 1 $validation_string)
+    fi
   fi
 
   # If we couldn't find it in RaptureTutorials, search everywhere.
@@ -98,6 +107,8 @@ if $set_up_reflex_runner; then
     reflex_runner_path=$(find_in_filesystem ReflexRunner bin/ReflexRunner)
     if [ -z "$reflex_runner_path" ]; then
       echo "ReflexRunner not found in your filesystem."
+    else
+      echo "Found ReflexRunner at $reflex_runner_path."
     fi
   fi
 fi
@@ -142,6 +153,7 @@ if $set_up_reflex_runner && [ -z "$reflex_runner_path" ]; then
       echo "Done downloading."
       echo "Setting up ReflexRunner."
       unzip -qq "$directory/$file_name"
+      reflex_runner_path=$(find_in_filesystem ReflexRunner bin/ReflexRunner $directory)
     else
       echo "Unable to create directory $directory."
       exit 1
@@ -152,6 +164,24 @@ fi
 set_vars=$(prompt_yes_no "Would you like to launch a new session with convenient environment variables set?")
 if ! $set_vars; then
   exit 0
+fi
+
+# write the export statements to a file to be sourced later
+env_var_filename=".rapture_client.$RANDOM.env"
+
+if [ -n "$reflex_runner_path" ] && [ !$reflex_runner_is_in_path ] ; then
+  add_to_path=$(dirname $reflex_runner_path)
+  echo "export PATH=$PATH:$add_to_path" >> $env_var_filename
+fi
+
+tutorial_var_ls=$(ls $RAPTURE_TUTORIAL_CSV)
+if [[ "$tutorial_var_ls" != "$RAPTURE_TUTORIAL_CSV" ]]; then
+  echo "Searching your filesystem for Tutorial resources. To avoid this search in the future, set the environment variable RAPTURE_TUTORIAL_CSV to the full path to introDataInbound.csv"
+  csv_path=$(find_in_filesystem introDataInbound.csv RaptureTutorials/Intro01/resources/introDataInbound.csv)
+  if [ -n $csv_path ] ; then
+    echo "Found introDataInbound.csv at $csv_path."
+    echo "export RAPTURE_TUTORIAL_CSV=$csv_path" >> $env_var_filename
+  fi
 fi
 
 read -p "Enter Etienne User: " user
@@ -171,8 +201,6 @@ curl_results=$( curl -qSsw '\n%{http_code}' --cookie .cookiefile $env_vars_url )
 validate_curl_response $? $(echo "$curl_results" | tail -n1) "There was a problem retrieving the environment variables from $HOST."
 env_data=$(echo "$curl_results" | sed \$d) #strip http status
 
-# write the export statements to a file to be sourced later
-env_var_filename=".rapture_client.$RANDOM.env"
 
 IFS='|' read -a env_var_array <<< "$env_data"
 
@@ -192,20 +220,6 @@ do
   echo "export $var_name=$var_val" >> $env_var_filename
 done
 
-if [ -n "$reflex_runner_path" ] && [ !$reflex_runner_is_in_path ] ; then
-  add_to_path=$(dirname $reflex_runner_path)
-  echo "export PATH=$PATH:$add_to_path" >> $env_var_filename
-fi
-
-tutorial_var_ls=$(ls $RAPTURE_TUTORIAL_CSV)
-if [[ "$tutorial_var_ls" != "$RAPTURE_TUTORIAL_CSV" ]]; then
-  echo "Examining your filesystem for the location of Tutorial resources."
-  echo "To avoid this search in the future, set the environment variable RAPTURE_TUTORIAL_CSV to the full path to introDataInbound.csv"
-  csv_path=$(find_in_filesystem introDataInbound.csv RaptureTutorials/Intro01/resources/introDataInbound.csv)
-  if [ -n $csv_path ] ; then
-    echo "export RAPTURE_TUTORIAL_CSV=$csv_path" >> $env_var_filename
-  fi
-fi
 
 
 # Also write a welcome banner to the file and change the prompt so it's easier for the user
