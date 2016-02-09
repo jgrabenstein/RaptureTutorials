@@ -3,7 +3,7 @@ project.version = '1.0.0'
 apply plugin: 'java'
 
 def gradleProjects() { 
-    return subprojects.findAll { new File(it.projectDir, "build.gradle").exists() }
+    return subprojects.findAll { new File(it.projectDir, 'build.gradle').exists() }
 } 
 
 configure(gradleProjects()) { 
@@ -12,7 +12,7 @@ configure(gradleProjects()) {
     repositories {
         mavenCentral()
         maven {
-            url "http://repo.incapturesolutions.com/public/repository"
+            url 'http://repo.incapturesolutions.com/public/repository'
         }
     }
     dependencies {
@@ -22,9 +22,9 @@ configure(gradleProjects()) {
 
 task zipAll(type: Zip) {
     dependsOn gradleProjects().installDist
-    from "."
+    from '.'
     into project.name
-    exclude "**/*.zip"
+    exclude '**/*.zip'
     exclude '**/.gradle'
     exclude '**/.classpath'
     exclude '**/.project'
