@@ -62,6 +62,7 @@ function find_in_filesystem {
   local validation_string=$2
   local return_val
 
+  # It'll probably be within RaptureTutorials, but where is that? We're probably inside of it.
   local cur_dir=$(pwd)
   local pattern="(.*RaptureTutorials).*"
   if [[ $cur_dir =~ $pattern ]]; then
@@ -72,6 +73,7 @@ function find_in_filesystem {
     return_val=$(find $search_path -name $search_string 2>/dev/null |grep -m 1 $validation_string)
   fi
 
+  # If we couldn't find it in RaptureTutorials, search everywhere.
   if [ -z "$return_val" ]; then
     return_val=$(find / -name $search_string 2>/dev/null |grep -m 1 $validation_string)
   fi
