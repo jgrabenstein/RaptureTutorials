@@ -1,149 +1,23 @@
-import groovy.text.SimpleTemplateEngine
-
-buildscript {
-    File fromFile = new File(new File(getGradle().getGradleUserHomeDir(), "incapture"), "incapture.gradle");
-    apply from : fromFile.getAbsolutePath();
-}
-
-apply plugin: 'sonar'
-
-project.version = '2.0.0'
-project.group = 'com.rapture'
 
 ext {
-    platformVersion = '2.0.+'
+    raptureVersion = '2.0.+'
 }
 
-project.ext.set('raptureBootstrapDisablePlugins', 'true')
-apply plugin: 'rapture-bootstrap'
-
-//configure(subprojects) {
 subprojects {
-
-    project.ext.set('raptureBootstrapDisablePlugins', 'false')
-    apply plugin: 'rapture-bootstrap'
-    
-    project.group = parent.group
-    project.version = parent.version
-
-    project.ext {
-        generatedMainJava = "$buildDir/generated-sources/main/java"
-        generatedTestJava = "$buildDir/generated-sources/test/java"
+    if (name == 'Java') {
+        return
     }
-
-    def loggingVersion = '1.6.1'
-    def httpVersion = '4.2.2'
-    def jacksonVersion = '1.9.2'
-    def incaptureRepo = 'http://release.incapturesolutions.com/repository'
-
-    // Include messages/bundle properties files from the java area
-
-    final RAPTURE_CONFIG_DIR = 'rapture/config';
-    task generateApplicationConfig {
-        description 'Generates the application configuration file'
-        def output = file('build/config/' + RAPTURE_CONFIG_DIR + '/RaptureAPPLICATION.cfg')
-        outputs.files output
-        outputs.upToDateWhen { false }
-        doLast {
-            def templ = '''
-# Application Configuration
-# Auto generated
-APIVersion=${version}
-'''
-            def binding = [ 'version' : project.version ]
-            def writable = new SimpleTemplateEngine().createTemplate(templ).make(binding)
-            File dir = output.getParentFile()
-            dir.mkdirs()
-            def destination = new FileWriter(output)
-            writable.writeTo(destination)
-            destination.flush()
-            destination.close()
-            println("Created application configuration")
+    project.version = '1.0.0'
+    apply plugin: 'java'
+    apply plugin: 'application'
+    repositories {
+        mavenCentral()
+        maven {
+            url "http://repo.incapturesolutions.com/public/repository"
         }
     }
-
-    task copyConfigFiles (type: Copy) {
-        dependsOn generateApplicationConfig
-        from 'src/main/resources';
-        include RAPTURE_CONFIG_DIR + '/*.cfg'
-        into 'build/config'
-        outputs.upToDateWhen { false }
-    }
-
-  task copyWebApplication(type: Copy) {
-        dependsOn copyConfigFiles
-        from 'src/main/webapp'
-        into 'build/webapp'
-    }
-
-    task copyProps(type:Copy) {
-        from 'src/main/java'
-        into 'build/classes/main'
-        include '**/*.txt', '**/*.xml', '**/*.properties', '**/*.proto'
-    }
-
-    compileJava.dependsOn(copyProps)
-
-    test {
-        include 'rapture/**'
-        include 'reflex/**'
-        include 'config/**'
-
-    }
-    
-    sourceSets {
-        integrationTest {
-            java.srcDir file('src/integrationTest/java')
-            resources.srcDir file('src/integrationTest/resources')
-        }
-        integrationQATest {
-            java.srcDir file('src/integrationTest/java')
-            resources.srcDir file('src/integrationTest/resources')
-        }
-
-    }
-
-    task integrationTest(type: Test, dependsOn: jar) {
-        description = 'Runs the integration tests.'
-        group = "verification"
-        testClassesDir = sourceSets.integrationTest.output.classesDir
-        classpath = sourceSets.integrationTest.runtimeClasspath
-    }
-
-    task integrationQATest(type: Test) {
-        useTestNG()
-        description = 'Runs the QA integration tests.'
-        group = "verification"
-        testClassesDir = sourceSets.integrationTest.output.classesDir
-        classpath = sourceSets.integrationTest.runtimeClasspath
-    }
-
-    jar {
-        manifest {
-            attributes "Implementation-Vendor" : "Incapture Technologies"
-            attributes "Implementation-Version" : project.version
-            attributes "Built-By" : System.getProperty('user.name')
-            attributes "Built-Date" : project.timestamp
-        }
-    }
-
-    tasks.withType(Zip) { task ->
-        task.doLast {
-            ant.checksum file: it.archivePath
-        }
-    }
-
     dependencies {
-       testCompile 'junit:junit:4.10'
-        testCompile 'org.testng:testng:6.8.7'
-        testCompile 'com.googlecode.catch-exception:catch-exception:1.0.4'
-        testCompile 'org.objenesis:objenesis:2.0'
-        testCompile 'org.powermock:powermock-module-junit4:1.5.1'
-        testCompile 'org.powermock:powermock-api-easymock:1.5.1'
-        testCompile 'org.easymock:easymock:3.2'
-        integrationTestCompile sourceSets.main.output
-        integrationTestCompile configurations.testCompile
-        integrationTestCompile sourceSets.test.output
-        integrationTestRuntime configurations.testRuntime
+        compile "com.rapture:RaptureCore:$project.raptureVersion"
     }
 }
+
