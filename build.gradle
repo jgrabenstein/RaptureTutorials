@@ -4,7 +4,7 @@ ext {
 }
 
 subprojects {
-    if (name == 'Java') {
+    if (name == "Intro01" || name == 'Java') {
         return
     }
     project.version = '1.0.0'
