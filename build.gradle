@@ -1,14 +1,13 @@
+project.version = '1.0.0'
 
-ext {
-    raptureVersion = '2.0.+'
-}
+apply plugin: 'java'
 
-subprojects {
-    if (name == "Intro01" || name == 'Java') {
-        return
-    }
-    project.version = '1.0.0'
-    apply plugin: 'java'
+def gradleProjects() { 
+    return subprojects.findAll { new File(it.projectDir, "build.gradle").exists() }
+} 
+
+configure(gradleProjects()) { 
+    project.version = rootProject.version 
     apply plugin: 'application'
     repositories {
         mavenCentral()
@@ -17,7 +16,17 @@ subprojects {
         }
     }
     dependencies {
-        compile "com.rapture:RaptureCore:$project.raptureVersion"
+        compile "com.rapture:RaptureCore:2.0.+"
     }
 }
 
+task zipAll(type: Zip) {
+    dependsOn gradleProjects().installDist
+    from "."
+    into project.name
+    exclude "**/*.zip"
+    exclude '**/.gradle'
+    exclude '**/.classpath'
+    exclude '**/.project'
+    exclude '**/.settings'
+}
