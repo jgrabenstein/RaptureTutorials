@@ -83,7 +83,7 @@ public class ReportApp {
             byte[] pdfBytes = Files.readAllBytes(Paths.get(FILENAME));
             HttpBlobApi blob = new HttpBlobApi(login);
             // make the rapture api call to store the generated pdf back into rapture
-            blob.putBlob(String.format("blob://blobmongo/folder1/%s", FILENAME), pdfBytes, "application/pdf");
+            blob.putBlob(String.format("blob://tutorialBlob/%s", FILENAME), pdfBytes, "application/pdf");
             log.info("Successfully uploaded report: " + FILENAME);
         } catch (IOException e) {
             e.printStackTrace();
