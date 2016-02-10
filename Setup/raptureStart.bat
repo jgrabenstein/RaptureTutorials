@@ -34,8 +34,8 @@ REM "*************************************************************"
 REM split the line into RAPTURE_HOST and RAPTURE_USER env vars
 FOR /F "tokens=1 delims=|" %%a in (tmpenvinfo.txt) DO SET LINE1=%%a
 FOR /F "tokens=2 delims=|" %%b in (tmpenvinfo.txt) DO SET LINE2=%%b
-FOR /F "tokens=2 delims=," %%G IN ("%LINE1%") DO SET RAPTURE_HOST=%%G 
-FOR /F "tokens=2 delims=," %%H IN ("%LINE2%") DO SET RAPTURE_USER=%%H 
+FOR /F "tokens=2 delims=," %%G IN ("%LINE1%") DO SET RAPTURE_HOST=%%G
+FOR /F "tokens=2 delims=," %%H IN ("%LINE2%") DO SET RAPTURE_USER=%%H
 DEL tmpenvinfo.txt
 
 REM "*************************************************************"
@@ -78,3 +78,5 @@ SET "REFLEX_RUNNER_DOWNLOAD_PREFIX="
 SET "RRUNNER_LATEST_TAG="
 SET "REFLEX_RUNNER_LATEST="
 SET "RRUNNER_LATEST_REDIRECT_URL="
+SET "user="
+SET "pass="
