@@ -27,8 +27,8 @@ SET "SERVICE_URL=http://%etienneurl%:8080/curtisscript/getEnvInfo?username=%user
 
 REM "*************************************************************"
 REM call login url to get cookie and then get the enn details 
-curl --silent --cookie-jar cookiefile.txt %LOGIN_URL% > nul 2>&1
-curl --silent --cookie cookiefile.txt %SERVICE_URL% > tmpenvinfo.txt
+%CD%\tools\curl --silent --cookie-jar cookiefile.txt %LOGIN_URL% > nul 2>&1
+%CD%\tools\curl --silent --cookie cookiefile.txt %SERVICE_URL% > tmpenvinfo.txt
 
 REM "*************************************************************"
 REM split the line into RAPTURE_HOST and RAPTURE_USER env vars
@@ -59,8 +59,9 @@ IF NOT EXIST %CD%\ReflexRunner-%RRUNNER_LATEST_TAG%.zip (
 )
 DEL rrlocation.txt
 
-REM set the csv path and reflex runner bin
-SET "RAPTURE_TUTORIAL_CSV=%RAPTURE_DEMO_HOME_DIR%\Intro01\resources\introDataInbound.csv"
+REM Set the csvv(introDataInbound) path and reflex runner bin
+REM Have to revisit the RAPTURE_TUTORIAL_CSV to make it more scalabale as we add more tutorials!
+FOR /f "delims=" %%F in ('dir /b /s "%RAPTURE_DEMO_HOME_DIR%\introDataInbound.csv" 2^>nul') do set RAPTURE_TUTORIAL_CSV=%%F
 SET "PATH=%PATH%;%RAPTURE_DEMO_HOME_DIR%\Setup\ReflexRunner-%RRUNNER_LATEST_TAG%\bin"
 
 REM leave user in home dir
