@@ -3,6 +3,15 @@ HOST="http://etn.incapture.net:8080"
 REFLEX_RUNNER_LATEST_HOST="https://github.com"
 REFLEX_RUNNER_LATEST="$REFLEX_RUNNER_LATEST_HOST/RapturePlatform/Rapture/releases/latest"
 
+cur_dir=$(pwd)
+pattern="(.*RaptureTutorials).*"
+if [[ $cur_dir =~ $pattern ]]; then
+  rapture_tutorials_dir="${BASH_REMATCH[1]}"
+else
+  echo "Please run this script from within the RaptureTutorials directory."
+fi
+
+
 function validate_curl_response {
   local curl_exit_code=$1
   local http_status_code=$2
@@ -57,113 +66,49 @@ function get_download_link {
   echo "$REFLEX_RUNNER_LATEST_HOST$download_link"
 }
 
-function find_in_filesystem {
+function find_in_directory {
   local search_string=$1
   local validation_string=$2
   local search_path=$3
-  local return_val
 
-  # If we were given a directory to look in, look there first
-  if [ -n "$search_path" ]; then
-    return_val=$(find $search_path -name $search_string 2>/dev/null |grep -m 1 $validation_string)
-  fi
-
-  # Then try standard locations
-  if [ -z "$return_val" ]; then
-    # It'll probably be within RaptureTutorials, but where is that? We're probably inside of it.
-    local cur_dir=$(pwd)
-    local pattern="(.*RaptureTutorials).*"
-    if [[ $cur_dir =~ $pattern ]]; then
-      search_path="${BASH_REMATCH[1]}"
-    fi
-
-    if [ -n "$search_path" ]; then
-      return_val=$(find $search_path -name $search_string 2>/dev/null |grep -m 1 $validation_string)
-    fi
-  fi
-
-  # If we couldn't find it in RaptureTutorials, search everywhere.
-  if [ -z "$return_val" ]; then
-    return_val=$(find / -name $search_string 2>/dev/null |grep -m 1 $validation_string)
-  fi
-
-  echo $return_val
+  echo $(find $search_path -name $search_string 2>/dev/null |grep -m 1 $validation_string)
 }
 
-set_up_reflex_runner=false
+tutorial_var_ls=$(ls $RAPTURE_TUTORIAL_CSV)
+if [[ "$tutorial_var_ls" != "$RAPTURE_TUTORIAL_CSV" ]]; then
+  csv_path=$(find_in_directory introDataInbound.csv RaptureTutorials/Intro01/resources/introDataInbound.csv $rapture_tutorials_dir)
+  if [ -z $csv_path ] ; then
+    echo "Could not find tutorial resources. Please run this script from within the RaptureTutorials directory."
+    exit 1
+  fi
+fi
+
 reflex_runner_is_in_path=false
 reflex_runner_path=$(which ReflexRunner)
+
 if [ -z "$reflex_runner_path" ]; then
-  set_up_reflex_runner=$(prompt_yes_no "Are you interested in setting up ReflexRunner?")
+  reflex_runner_path=$(find_in_directory ReflexRunner bin/ReflexRunner $rapture_tutorials_dir)
 else
   reflex_runner_is_in_path=true
 fi
 
-if $set_up_reflex_runner; then
-  already_downloaded=$(prompt_yes_no "Have you already downloaded ReflexRunner?")
-
-  if $already_downloaded; then
-    echo "Looking for ReflexRunner in your filesystem. To avoid this search in the future, add ReflexRunner to your PATH."
-    reflex_runner_path=$(find_in_filesystem ReflexRunner bin/ReflexRunner)
-    if [ -z "$reflex_runner_path" ]; then
-      echo "ReflexRunner not found in your filesystem."
-    else
-      echo "Found ReflexRunner at $reflex_runner_path."
-    fi
-  fi
-fi
-
-if $set_up_reflex_runner && [ -z "$reflex_runner_path" ]; then
+if [ -z "$reflex_runner_path" ]; then
   do_download=$(prompt_yes_no "Would you like to download ReflexRunner?")
 
   if $do_download; then
-    default_reflex_runner_path=$(pwd)
-    while true; do
-      read -p "Enter the directory where you would like to save it, or 'skip' to cancel. [$default_reflex_runner_path] " directory
-      if [ -z "$directory" ]; then
-        directory=$default_reflex_runner_path
-        break
-      elif [ "$directory" = "skip" ]; then
-        do_download=false
-        break
-      elif [ "$directory" != "$default_reflex_runner_path" ] && [ ! -e "$directory" ]; then
-        echo "Path $directory doesn't exist."
-      elif [ ! -w "$directory" ]; then
-        echo "Path $directory exists but cannot be written to."
-      elif [ ! -d "$directory" ]; then
-        echo "Path $directory is not a directory."
-      else
-        break
-      fi
-    done
+    echo "Getting location of latest ReflexRunner release."
+    download_link=$(get_download_link)
+    file_name=${download_link##*/} # extract file name from full link
+
+    echo "Downloading $file_name to $rapture_tutorials_dir. Download started at" $(date +"%T")"."
+    curl -qLSs -o "$rapture_tutorials_dir/$file_name" $download_link
+    validate_curl_response $? 200 "There was a problem downloading $file_name from $download_link."
+
+    echo "Done downloading."
+    echo "Setting up ReflexRunner."
+    unzip -qq "$rapture_tutorials_dir/$file_name"
+    reflex_runner_path=$(find_in_directory ReflexRunner bin/ReflexRunner $rapture_tutorials_dir)
   fi
-
-  if $do_download; then
-    # we will create the default directory for the user if we can, just not other directories for now
-    if mkdir -p $directory ; then
-      directory=${directory%/} # remove trailing slash
-      echo "Getting location of latest ReflexRunner release."
-      download_link=$(get_download_link)
-      file_name=${download_link##*/} # extract file name from full link
-
-      echo "Downloading $file_name to $directory. Download started at" $(date +"%T")"."
-      curl -qLSs -o "$directory/$file_name" $download_link
-      validate_curl_response $? 200 "There was a problem downloading $file_name from $download_link."
-
-      echo "Done downloading."
-      echo "Setting up ReflexRunner."
-      unzip -qq "$directory/$file_name"
-      reflex_runner_path=$(find_in_filesystem ReflexRunner bin/ReflexRunner $directory)
-    else
-      echo "Unable to create directory $directory."
-      exit 1
-    fi
-  fi
-fi
-
-set_vars=$(prompt_yes_no "Would you like to launch a new session with convenient environment variables set?")
-if ! $set_vars; then
-  exit 0
 fi
 
 # write the export statements to a file to be sourced later
@@ -174,15 +119,6 @@ if [ -n "$reflex_runner_path" ] && [ !$reflex_runner_is_in_path ] ; then
   echo "export PATH=$PATH:$add_to_path" >> $env_var_filename
 fi
 
-tutorial_var_ls=$(ls $RAPTURE_TUTORIAL_CSV)
-if [[ "$tutorial_var_ls" != "$RAPTURE_TUTORIAL_CSV" ]]; then
-  echo "Searching your filesystem for Tutorial resources. To avoid this search in the future, set the environment variable RAPTURE_TUTORIAL_CSV to the full path to introDataInbound.csv"
-  csv_path=$(find_in_filesystem introDataInbound.csv RaptureTutorials/Intro01/resources/introDataInbound.csv)
-  if [ -n $csv_path ] ; then
-    echo "Found introDataInbound.csv at $csv_path."
-    echo "export RAPTURE_TUTORIAL_CSV=$csv_path" >> $env_var_filename
-  fi
-fi
 
 read -p "Enter Etienne User: " user
 read -s -p "Enter Etienne Password: " pass
@@ -219,6 +155,8 @@ do
 
   echo "export $var_name=$var_val" >> $env_var_filename
 done
+
+echo "export RAPTURE_TUTORIAL_CSV=$csv_path" >> $env_var_filename
 
 
 
