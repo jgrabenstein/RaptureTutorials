@@ -63,6 +63,8 @@ public class App {
     private static final int PROVIDER_INDEX = 1;
     private static final int INDEX_ID_INDEX = 2;
     private static final int FREQUENCY_INDEX = 3;
+    private static final int PRICE_TYPE_INDEX = 4;
+    private static final int DATE_INDEX = 5;
 
     public static final void main(String args[]) {
         App tutorialApp = new App();
@@ -182,7 +184,7 @@ public class App {
             String seriesType = "";
             String frequency = "";
 
-            Map<String, Object> nestedMap = new TreeMap();
+            IndexToPriceTypeMap indexToPriceTypeMap = new IndexToPriceTypeMap();
             while ((csvLine = reader.readLine()) != null) {
                 String[] data = csvLine.split(delimiter);
                 if (headers.length != data.length) {
@@ -197,33 +199,36 @@ public class App {
                 }
 
                 // Build a nested map of the rest of the data
-                Map<String, Object> currentMapLevel = nestedMap;
+                PriceTypeToDateMap currentPriceTypeToDateMap = new PriceTypeToDateMap();
+                DateToPriceMap currentDateToPriceMap = new DateToPriceMap();
                 for (int i = INDEX_ID_INDEX; i < data.length - 1; i++) {
-                    if (i == FREQUENCY_INDEX) {
-                        continue;
-                    }
-
-                    if (i == data.length - 2) {
-                        // If we've reached the last two values, add them as a simple key-value pair
-                        currentMapLevel.put(data[i], Double.parseDouble(data[i + 1]));
-                    }
-                    else {
-                        // Otherwise, make sure this key exists in the current map level
-                        if (!currentMapLevel.containsKey(data[i])) {
-                            currentMapLevel.put(data[i], new TreeMap<String, Object>());
+                    switch (i) {
+                    case INDEX_ID_INDEX:
+                        if (!indexToPriceTypeMap.containsKey(data[i])) {
+                            indexToPriceTypeMap.put(data[i], new PriceTypeToDateMap());
                         }
-
-                        // And keep moving down into the nested map
-                        currentMapLevel = (Map<String, Object>) currentMapLevel.get(data[i]);
+                        currentPriceTypeToDateMap = indexToPriceTypeMap.get(data[i]);
+                        break;
+                    case FREQUENCY_INDEX:
+                        continue;
+                    case PRICE_TYPE_INDEX:
+                        if (!currentPriceTypeToDateMap.containsKey(data[i])) {
+                            currentPriceTypeToDateMap.put(data[i], new DateToPriceMap());
+                        }
+                        currentDateToPriceMap = currentPriceTypeToDateMap.get(data[i]);
+                        break;
+                    case DATE_INDEX:
+                        currentDateToPriceMap.put(data[i], Double.parseDouble(data[i + 1]));
+                        break;
                     }
                 }
             }
 
-            Map<String, Object> finalMap = new LinkedHashMap();
+            Map<String, Object> finalMap = new LinkedHashMap<String, Object>();
             finalMap.put(PROVIDER_HEADER, provider);
             finalMap.put(SERIES_TYPE_HEADER, seriesType);
             finalMap.put(FREQUENCY_HEADER, frequency);
-            finalMap.put(INDEX_ID_HEADER, nestedMap);
+            finalMap.put(INDEX_ID_HEADER, indexToPriceTypeMap);
 
             String jsonDocument = JacksonUtil.jsonFromObject(finalMap);
 
@@ -240,7 +245,9 @@ public class App {
         }
     }
 
-
+    class DateToPriceMap extends TreeMap<String, Double> {}
+    class PriceTypeToDateMap extends TreeMap<String, DateToPriceMap> {}
+    class IndexToPriceTypeMap extends TreeMap<String, PriceTypeToDateMap> {}
 
     private void docToSeries() {
         String seriesRepoUri = RaptureURI.builder(Scheme.SERIES, SERIES_AUTHORITY).build().toString();
