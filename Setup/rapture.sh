@@ -120,8 +120,8 @@ if [ -n "$reflex_runner_path" ] && [ !$reflex_runner_is_in_path ] ; then
 fi
 
 
-read -p "Enter Etienne User: " user
-read -s -p "Enter Etienne Password: " pass
+read -p "Enter Incapture User: " user
+read -s -p "Enter Incapture Password: " pass
 echo $'\n'
 
 hashpass=$(echo -n $pass | md5)
