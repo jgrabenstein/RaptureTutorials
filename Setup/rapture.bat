@@ -1,7 +1,4 @@
 @echo off 
-REM Download and install curl  http://curl.haxx.se/dlwiz/?type=bin&os=Win32 to use this script 
-REM Envinfo is returned in a single line RAPTURE_HOME,http://<demo env address>:8665/rapture|RAPTURE_USER,<username>
-
 ECHO ***************************************************************
 ECHO Starting Rapture Demo Client Environment Setup
 SET "REFLEX_RUNNER_LATEST=https://github.com/RapturePlatform/Rapture/releases/latest"
@@ -10,7 +7,7 @@ SET "RAPTURE_DEMO_HOME_DIR=%CD%\.."
 
 REM "*************************************************************"
 REM get etienne credentials to setup env info
-SET "etienneurl=etn.incapture.net"
+SET "etienneurl=developer.incapture.net"
 SET /P user=Enter Etienne User: 
 SET /P pass=Enter Etienne Password: 
 
