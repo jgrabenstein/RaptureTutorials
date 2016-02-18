@@ -45,9 +45,9 @@ FOR /F "tokens=7 delims=/" %%N IN ("%RRUNNER_LATEST_REDIRECT_URL%") DO SET RRUNN
 set "RRUNNER_LATEST_DOWNLOAD_URL=%REFLEX_RUNNER_DOWNLOAD_PREFIX%/%RRUNNER_LATEST_TAG%/ReflexRunner-%RRUNNER_LATEST_TAG%.zip"
 REM If reflexrunner.zip file already exists then dont download it
 IF NOT EXIST %CD%\ReflexRunner-%RRUNNER_LATEST_TAG%.zip (
-	ECHO Starting download of ReflexRunner version %RRUNNER_LATEST_TAG% at %TIME%
+	ECHO Starting download of ReflexRunner version %RRUNNER_LATEST_TAG%
 	curl -qLSs -O %RRUNNER_LATEST_DOWNLOAD_URL%
-	ECHO Finished download of ReflexRunner version %RRUNNER_LATEST_TAG% at %TIME%
+	ECHO Finished download of ReflexRunner version %RRUNNER_LATEST_TAG%
 	REM unzip it. -bd:hide % indicator -y:assume yes to all prompts
 	%CD%\tools\7z x -bd -y ReflexRunner-%RRUNNER_LATEST_TAG%.zip > nul 2>&1
 	ECHO ReflexRunner-%RRUNNER_LATEST_TAG%.zip unzipped to %CD%\ReflexRunner-%RRUNNER_LATEST_TAG%
