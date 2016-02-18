@@ -1,5 +1,5 @@
 #!/bin/bash
-HOST="http://etn.incapture.net:8080"
+HOST="http://developer.incapture.net:8080"
 REFLEX_RUNNER_LATEST_HOST="https://github.com"
 REFLEX_RUNNER_LATEST="$REFLEX_RUNNER_LATEST_HOST/RapturePlatform/Rapture/releases/latest"
 
@@ -183,3 +183,4 @@ screen -h 2000 -S Rapture sh -c "exec /bin/bash -init-file ./$env_var_filename"
 
 # will execute after screen session exits
 rm $env_var_filename
+
