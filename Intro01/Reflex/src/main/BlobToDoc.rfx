@@ -125,19 +125,19 @@ introDataTranslated <-- DOC_URI+"/introDataTranslated";
 indexMap = { };
 dataMap = {};
 firstEntry = noheaders[0];
-for k in [ 1,0,3 ] do
+for k in [ 0,2 ] do
   key = headers[k];
   val = firstEntry[k]; 
   dataMap[key] = val;
 end
 
-key = headers[2];
+key = headers[1];
 dataMap[key] = indexMap;
 
 for datum in noheaders do
   if (size(datum) > 4) do
-    index = datum[2];
-    priceType = datum[4];
+    index = datum[1];
+    priceType = datum[3];
     indexValMap = indexMap[index];
     if (indexValMap == null) do
       indexValMap = {};
@@ -148,8 +148,8 @@ for datum in noheaders do
       priceTypeMap = {};
       indexValMap[priceType] = priceTypeMap;  
     end
-    datestr = datum[5];
-    val = cast(datum[6], 'number');
+    datestr = datum[4];
+    val = cast(datum[5], 'number');
     priceTypeMap[datestr] = val;
   end
 end
