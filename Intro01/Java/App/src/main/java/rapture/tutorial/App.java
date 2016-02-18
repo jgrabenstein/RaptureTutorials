@@ -1,11 +1,16 @@
 package rapture.tutorial;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.GnuParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.zip.DataFormatException;
+
 import rapture.common.BlobContainer;
 import rapture.common.RaptureURI;
 import rapture.common.Scheme;
@@ -17,388 +22,277 @@ import rapture.common.client.ScriptClient;
 import rapture.common.client.SimpleCredentialsProvider;
 import rapture.common.impl.jackson.JacksonUtil;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.Console;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.zip.DataFormatException;
-
 public class App {
-    private static ScriptClient client;
-    private HttpLoginApi loginApi;
-    private HttpBlobApi blobApi;
-    private HttpDocApi docApi;
-    private HttpSeriesApi seriesApi;
+	private ScriptClient client;
+	private HttpLoginApi loginApi;
+	private HttpBlobApi blobApi;
+	private HttpDocApi docApi;
+	private HttpSeriesApi seriesApi;
+
+	private static final String SERIES_AUTHORITY = "datacapture";
+	private static final String BLOB_AUTHORITY = "tutorialBlob";
+	private static final String DOC_AUTHORITY = "tutorialDoc";
+
+	private String blobRepoUri;
+	private String docRepoUri;
+	private String rawCsvUri;
+	private String jsonDocumentUri;
+
+	private static final String SERIES_TYPE_HEADER = "series_type";
+	private static final String PROVIDER_HEADER = "provider";
+	private static final String FREQUENCY_HEADER = "frequency";
+	private static final String INDEX_ID_HEADER = "index_id";
+	private static final int SERIES_TYPE_INDEX = 0;
+	private static final int PROVIDER_INDEX = 1;
+	private static final int INDEX_ID_INDEX = 2;
+	private static final int FREQUENCY_INDEX = 3;
+	private static final int PRICE_TYPE_INDEX = 4;
+	private static final int DATE_INDEX = 5;
+
+	public static final void main(String args[]) {
+		App tutorialApp = new App();
+
+		// This helper class "hides" the code to work out how to connect to the Rapture environment
+		// i.e. the host, username and password. It also determines what aspect of the tutorial is
+		// to be run.
+		TutorialHelper.parseOptions(args);
+
+		tutorialApp.init();
+
+		tutorialApp.runTutorial();
+	}
+
+	private void init() {
+		System.out.println("Starting up..");
+		System.out.println("Logging in to " + TutorialHelper.getHost());
+
+		// The Rapture login API requires a credentials provider (an interface). SimpleCredentialsProvider
+		// is a way of providing the username and password in code. Alternative implementations could prompt
+		// for a username and password via a UI.
+		SimpleCredentialsProvider creds = new SimpleCredentialsProvider(TutorialHelper.getUserName(),
+				new String(TutorialHelper.getPassword()));
+
+		// Here is where we connect to the Rapture environment
+		// If the login process fails we will throw an exception.
+		loginApi = new HttpLoginApi(TutorialHelper.getHost(), creds);
+		loginApi.login();
+
+		// The ScriptClient class is a convenient way to wrap up a logged in environment
+		// the api objects hanging off script client will use the same credentials already
+		// verified with a Rapture instance.
+		client = new ScriptClient(loginApi);
+
+		blobApi = client.getBlob();
+		docApi = client.getDoc();
+		seriesApi = client.getSeries();
+
+		// For our tutorial/demo we will ensure that the Rapture repositories are present
+		blobRepoUri = createBlobRepo();
+		docRepoUri = createDocumentRepo();
+
+		rawCsvUri = blobRepoUri + "introDataInbound";
+		jsonDocumentUri = docRepoUri + "introDataTranslated";
+
+		System.out.println("Logged in and initialized");
+	}
+
+	private void runTutorial() {
+		String currentStep = TutorialHelper.getCurrentStep();
+		if (currentStep.equals("all") || currentStep.equals("upload")) {
+			upload();
+		}
+
+		if (currentStep.equals("all") || currentStep.equals("blobToDoc")) {
+			blobToDoc();
+		}
+
+		if (currentStep.equals("all") || currentStep.equals("docToSeries")) {
+			docToSeries();
+		}
+
+		System.out.println("Done.");
+	}
+
+	private String createBlobRepo() {
+		String repoUri = RaptureURI.builder(Scheme.BLOB, BLOB_AUTHORITY).build().toString();
+
+		// If the blob repository does not exist, create it. The configuration in the demonstration
+		// creates a blob repository on MONGODB.
+		if (!blobApi.blobRepoExists(repoUri)) {
+			System.out.println("Creating new blob repo at " + repoUri);
+			String config = "BLOB {} USING MONGODB { prefix=\"" + BLOB_AUTHORITY + "\" }";
+			String metaConfig = "REP {} USING MEMORY { prefix=\"" + BLOB_AUTHORITY + "\" }";
+			blobApi.createBlobRepo(repoUri, config, metaConfig);
+		}
+
+		return repoUri;
+	}
+
+	private String createDocumentRepo() {
+		String repoUri = RaptureURI.builder(Scheme.DOCUMENT, DOC_AUTHORITY).build().toString();
+
+		if (!docApi.docRepoExists(repoUri)) {
+			System.out.println("Creating new document repo at " + repoUri);
+			// NREP is used for a VERSIONED document repository, in this case on MongoDB
+			String config = "NREP {} USING MONGODB { prefix=\"" + DOC_AUTHORITY + "\" }";
+			docApi.createDocRepo(repoUri, config);
+		}
+
+		return repoUri;
+	}
+
+	private void upload() {
+		String csvFile = TutorialHelper.getCsvFile();
+		try {
+			System.out.println("Reading CSV from file " + csvFile);
+			File fileHandle = new File(csvFile);
+			byte[] rawFileData = new byte[(int) fileHandle.length()];
+
+			FileInputStream fileInputStream = new FileInputStream(fileHandle);
+			fileInputStream.read(rawFileData);
+			fileInputStream.close();
+
+			System.out.println("Uploading CSV");
+			// This is the simple API call for taking a stream of bytes and uploading it as a blob
+			blobApi.putBlob(rawCsvUri, rawFileData, "text/csv");
+			System.out.println("CSV uploaded to " + rawCsvUri);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			abort("There was a problem reading the CSV " + csvFile);
+		}
+	}
+
+	private void blobToDoc() {
+		System.out.println("Retrieving raw CSV content from " + rawCsvUri);
+		// This is how you can retrieve blob data from Rapture
+		BlobContainer blobContainer = blobApi.getBlob(rawCsvUri);
+		if (blobContainer == null) {
+			abort("Nothing found at " + rawCsvUri + ". Please run step 'upload' to add the CSV to Rapture.");
+		}
+
+		byte[] rawCsvData = blobContainer.getContent();
+
+		System.out.println("Translating raw CSV content to a JSON document");
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(rawCsvData)));
+
+		try {
+			String delimiter = ",";
+			String csvLine = reader.readLine();
+			String[] headers = csvLine.split(delimiter);
+
+			String provider = "";
+			String seriesType = "";
+			String frequency = "";
+
+			IndexToPriceTypeMap indexToPriceTypeMap = new IndexToPriceTypeMap();
+			while ((csvLine = reader.readLine()) != null) {
+				String[] data = csvLine.split(delimiter);
+				if (headers.length != data.length) {
+					throw new DataFormatException("Invalid CSV format");
+				}
+
+				if (provider.isEmpty()) {
+					// Business rules tell us these will always be the same for
+					// every row in the CSV
+					provider = data[PROVIDER_INDEX];
+					seriesType = data[SERIES_TYPE_INDEX];
+					frequency = data[FREQUENCY_INDEX];
+				}
+
+				// Build a nested map of the rest of the data
+				PriceTypeToDateMap currentPriceTypeToDateMap = new PriceTypeToDateMap();
+				DateToPriceMap currentDateToPriceMap = new DateToPriceMap();
+				for (int i = INDEX_ID_INDEX; i < data.length - 1; i++) {
+					switch (i) {
+					case INDEX_ID_INDEX:
+						if (!indexToPriceTypeMap.containsKey(data[i])) {
+							indexToPriceTypeMap.put(data[i], new PriceTypeToDateMap());
+						}
+						currentPriceTypeToDateMap = indexToPriceTypeMap.get(data[i]);
+						break;
+					case FREQUENCY_INDEX:
+						continue;
+					case PRICE_TYPE_INDEX:
+						if (!currentPriceTypeToDateMap.containsKey(data[i])) {
+							currentPriceTypeToDateMap.put(data[i], new DateToPriceMap());
+						}
+						currentDateToPriceMap = currentPriceTypeToDateMap.get(data[i]);
+						break;
+					case DATE_INDEX:
+						currentDateToPriceMap.put(data[i], Double.parseDouble(data[i + 1]));
+						break;
+					}
+				}
+			}
+
+			Map<String, Object> finalMap = new LinkedHashMap<String, Object>();
+			finalMap.put(PROVIDER_HEADER, provider);
+			finalMap.put(SERIES_TYPE_HEADER, seriesType);
+			finalMap.put(FREQUENCY_HEADER, frequency);
+			finalMap.put(INDEX_ID_HEADER, indexToPriceTypeMap);
+
+			// JacksonUtil (using the Jackson JSON/Object parser) is used to convert a map of maps into a JSON formatted
+			// text string, which we then put into Rapture.
+			String jsonDocument = JacksonUtil.jsonFromObject(finalMap);
+
+			System.out.println("Storing JSON document in Rapture");
+			docApi.putDoc(jsonDocumentUri, jsonDocument);
+		} catch (IOException e) {
+			e.printStackTrace();
+			abort("There was a problem reading the CSV.");
+		} catch (DataFormatException e) {
+			e.printStackTrace();
+			abort("There was a problem with the format of the CSV.");
+		}
+	}
+
+	class DateToPriceMap extends TreeMap<String, Double> {
+	}
+
+	class PriceTypeToDateMap extends TreeMap<String, DateToPriceMap> {
+	}
+
+	class IndexToPriceTypeMap extends TreeMap<String, PriceTypeToDateMap> {
+	}
+
+	private void docToSeries() {
+		String seriesRepoUri = RaptureURI.builder(Scheme.SERIES, SERIES_AUTHORITY).build().toString();
+		System.out.println("Adding price data from " + jsonDocumentUri + " to series repo " + seriesRepoUri);
+
+		String jsonDocument = docApi.getDoc(jsonDocumentUri);
+		if (jsonDocument == null) {
+			abort("No data found at " + jsonDocumentUri
+					+ ". Please run step 'blobToDoc' to transform the raw CSV into a Rapture document.");
+		}
+
+		Map<String, Object> outerMap = JacksonUtil.getMapFromJson(jsonDocument);
+		Map<String, Object> innerMap = (Map<String, Object>) outerMap.get(INDEX_ID_HEADER);
+
+		String seriesUriBase = seriesRepoUri + outerMap.get(SERIES_TYPE_HEADER) + "/" + outerMap.get(PROVIDER_HEADER)
+				+ "/";
+		for (Map.Entry<String, Object> indexMapEntry : innerMap.entrySet()) {
+			String seriesUriWithIndex = seriesUriBase + indexMapEntry.getKey() + "/" + outerMap.get(FREQUENCY_HEADER)
+					+ "/";
+
+			for (Map.Entry<String, Object> priceTypeMapEntry : ((Map<String, Object>) indexMapEntry.getValue())
+					.entrySet()) {
+				String seriesUriWithPriceType = seriesUriWithIndex + priceTypeMapEntry.getKey();
+
+				for (Map.Entry<String, Double> dateMapEntry : ((Map<String, Double>) priceTypeMapEntry.getValue())
+						.entrySet()) {
+					// In this case we are writing the series data one point at a time. The key is (will be) a text formatted
+					// date style string, the value will be a double.
+					seriesApi.addDoubleToSeries(seriesUriWithPriceType, dateMapEntry.getKey(), dateMapEntry.getValue());
+				}
+			}
+		}
+	}
+
+	private void abort(String reason) {
+		System.out.println();
+		System.out.println(reason);
+		System.exit(1);
+	}
 
-    private static String host;
-    private static String username;
-    private static char[] password;
-    private static String csvFile;
-    private static String currentStep = "";
-
-    private static String[] steps = {"upload", "blobToDoc", "docToSeries", "all"};
-
-    private static final String SERIES_AUTHORITY = "datacapture";
-    private static final String BLOB_AUTHORITY = "tutorialBlob";
-    private static final String DOC_AUTHORITY = "tutorialDoc";
-
-    private String blobRepoUri;
-    private String docRepoUri;
-    private String rawCsvUri;
-    private String jsonDocumentUri;
-
-    private static final String SERIES_TYPE_HEADER = "series_type";
-    private static final String PROVIDER_HEADER = "provider";
-    private static final String FREQUENCY_HEADER = "frequency";
-    private static final String INDEX_ID_HEADER = "index_id";
-    private static final int SERIES_TYPE_INDEX = 0;
-    private static final int PROVIDER_INDEX = 1;
-    private static final int INDEX_ID_INDEX = 2;
-    private static final int FREQUENCY_INDEX = 3;
-    private static final int PRICE_TYPE_INDEX = 4;
-    private static final int DATE_INDEX = 5;
-
-    public static final void main(String args[]) {
-        App tutorialApp = new App();
-
-        parseOptions(args);
-        tutorialApp.init();
-
-        tutorialApp.runTutorial();
-    }
-
-    private void init() {
-        System.out.println("Starting up..");
-        System.out.println("Logging in to " + host);
-
-        SimpleCredentialsProvider creds = new SimpleCredentialsProvider(username, new String(password));
-        java.util.Arrays.fill(password, ' ');
-
-        loginApi = new HttpLoginApi(host, creds);
-        loginApi.login();
-
-        client = new ScriptClient(loginApi);
-
-        blobApi = client.getBlob();
-        docApi = client.getDoc();
-        seriesApi = client.getSeries();
-
-        blobRepoUri = createBlobRepo();
-        docRepoUri = createDocumentRepo();
-
-        rawCsvUri = blobRepoUri + "introDataInbound";
-        jsonDocumentUri = docRepoUri + "introDataTranslated";
-
-        System.out.println("Logged in and initialized");
-    }
-
-    private void runTutorial() {
-        if (currentStep.equals("all") || currentStep.equals("upload")) {
-            upload();
-        }
-
-        if (currentStep.equals("all") || currentStep.equals("blobToDoc")) {
-            blobToDoc();
-        }
-
-        if (currentStep.equals("all") || currentStep.equals("docToSeries")) {
-            docToSeries();
-        }
-
-        System.out.println("Done.");
-    }
-
-
-    private String createBlobRepo() {
-        String repoUri = RaptureURI.builder(Scheme.BLOB, BLOB_AUTHORITY).build().toString();
-
-        if(!blobApi.blobRepoExists(repoUri)) {
-            System.out.println("Creating new blob repo at " + repoUri);
-            String config = "BLOB {} USING MONGODB { prefix=\"" + BLOB_AUTHORITY + "\" }";
-            String metaConfig = "REP {} USING MEMORY { prefix=\"" + BLOB_AUTHORITY + "\" }";
-            blobApi.createBlobRepo(repoUri, config, metaConfig);
-        }
-
-        return repoUri;
-    }
-
-
-    private String createDocumentRepo() {
-        String repoUri = RaptureURI.builder(Scheme.DOCUMENT, DOC_AUTHORITY).build().toString();
-
-        if(!docApi.docRepoExists(repoUri)) {
-            System.out.println("Creating new document repo at " + repoUri);
-            String config = "NREP {} USING MONGODB { prefix=\"" + DOC_AUTHORITY + "\" }";
-            docApi.createDocRepo(repoUri, config);
-        }
-
-        return repoUri;
-    }
-
-    private void upload() {
-        try {
-            System.out.println("Reading CSV from file " + csvFile);
-            File fileHandle = new File(csvFile);
-            byte[] rawFileData = new byte[(int) fileHandle.length()];
-
-            FileInputStream fileInputStream = new FileInputStream(fileHandle);
-            fileInputStream.read(rawFileData);
-            fileInputStream.close();
-
-            System.out.println("Uploading CSV");
-            blobApi.putBlob(rawCsvUri, rawFileData, "text/csv");
-            System.out.println("CSV uploaded to " + rawCsvUri);
-
-        } catch(IOException e) {
-            e.printStackTrace();
-            abort("There was a problem reading the CSV " + csvFile);
-        }
-    }
-
-    private void blobToDoc() {
-        System.out.println("Retrieving raw CSV content from " + rawCsvUri);
-        BlobContainer blobContainer = blobApi.getBlob(rawCsvUri);
-        if (blobContainer == null) {
-            abort("Nothing found at " + rawCsvUri + ". Please run step 'upload' to add the CSV to Rapture.");
-        }
-
-        byte[] rawCsvData = blobContainer.getContent();
-
-        System.out.println("Translating raw CSV content to a JSON document");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(rawCsvData)));
-
-        try {
-            String delimiter = ",";
-            String csvLine = reader.readLine();
-            String[] headers = csvLine.split(delimiter);
-
-            String provider = "";
-            String seriesType = "";
-            String frequency = "";
-
-            IndexToPriceTypeMap indexToPriceTypeMap = new IndexToPriceTypeMap();
-            while ((csvLine = reader.readLine()) != null) {
-                String[] data = csvLine.split(delimiter);
-                if (headers.length != data.length) {
-                    throw new DataFormatException("Invalid CSV format");
-                }
-
-                if (provider.isEmpty()) {
-                    // Business rules tell us these will always be the same for every row in the CSV
-                    provider = data[PROVIDER_INDEX];
-                    seriesType = data[SERIES_TYPE_INDEX];
-                    frequency = data[FREQUENCY_INDEX];
-                }
-
-                // Build a nested map of the rest of the data
-                PriceTypeToDateMap currentPriceTypeToDateMap = new PriceTypeToDateMap();
-                DateToPriceMap currentDateToPriceMap = new DateToPriceMap();
-                for (int i = INDEX_ID_INDEX; i < data.length - 1; i++) {
-                    switch (i) {
-                    case INDEX_ID_INDEX:
-                        if (!indexToPriceTypeMap.containsKey(data[i])) {
-                            indexToPriceTypeMap.put(data[i], new PriceTypeToDateMap());
-                        }
-                        currentPriceTypeToDateMap = indexToPriceTypeMap.get(data[i]);
-                        break;
-                    case FREQUENCY_INDEX:
-                        continue;
-                    case PRICE_TYPE_INDEX:
-                        if (!currentPriceTypeToDateMap.containsKey(data[i])) {
-                            currentPriceTypeToDateMap.put(data[i], new DateToPriceMap());
-                        }
-                        currentDateToPriceMap = currentPriceTypeToDateMap.get(data[i]);
-                        break;
-                    case DATE_INDEX:
-                        currentDateToPriceMap.put(data[i], Double.parseDouble(data[i + 1]));
-                        break;
-                    }
-                }
-            }
-
-            Map<String, Object> finalMap = new LinkedHashMap<String, Object>();
-            finalMap.put(PROVIDER_HEADER, provider);
-            finalMap.put(SERIES_TYPE_HEADER, seriesType);
-            finalMap.put(FREQUENCY_HEADER, frequency);
-            finalMap.put(INDEX_ID_HEADER, indexToPriceTypeMap);
-
-            String jsonDocument = JacksonUtil.jsonFromObject(finalMap);
-
-            System.out.println("Storing JSON document in Rapture");
-            docApi.putDoc(jsonDocumentUri, jsonDocument);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            abort("There was a problem reading the CSV.");
-        }
-        catch (DataFormatException e) {
-            e.printStackTrace();
-            abort("There was a problem with the format of the CSV.");
-        }
-    }
-
-    class DateToPriceMap extends TreeMap<String, Double> {}
-    class PriceTypeToDateMap extends TreeMap<String, DateToPriceMap> {}
-    class IndexToPriceTypeMap extends TreeMap<String, PriceTypeToDateMap> {}
-
-    private void docToSeries() {
-        String seriesRepoUri = RaptureURI.builder(Scheme.SERIES, SERIES_AUTHORITY).build().toString();
-        System.out.println("Adding price data from " + jsonDocumentUri + " to series repo " + seriesRepoUri);
-
-        String jsonDocument = docApi.getDoc(jsonDocumentUri);
-        if (jsonDocument == null) {
-            abort("No data found at " + jsonDocumentUri + ". Please run step 'blobToDoc' to transform the raw CSV into a Rapture document.");
-        }
-
-        Map<String, Object> outerMap = JacksonUtil.getMapFromJson(jsonDocument);
-        Map<String, Object> innerMap = (Map<String, Object>) outerMap.get(INDEX_ID_HEADER);
-
-        String seriesUriBase = seriesRepoUri + outerMap.get(SERIES_TYPE_HEADER) + "/" + outerMap.get(PROVIDER_HEADER) + "/";
-        for (Map.Entry<String, Object> indexMapEntry: innerMap.entrySet()) {
-            String seriesUriWithIndex = seriesUriBase + indexMapEntry.getKey() + "/" + outerMap.get(FREQUENCY_HEADER) + "/";
-
-            for (Map.Entry<String, Object> priceTypeMapEntry: ((Map<String, Object>) indexMapEntry.getValue()).entrySet()) {
-                String seriesUriWithPriceType = seriesUriWithIndex + priceTypeMapEntry.getKey();
-
-                for (Map.Entry<String, Double> dateMapEntry: ((Map<String, Double>) priceTypeMapEntry.getValue()).entrySet()) {
-                    seriesApi.addDoubleToSeries(seriesUriWithPriceType, dateMapEntry.getKey(), dateMapEntry.getValue());
-                }
-            }
-        }
-    }
-
-    private void abort(String reason) {
-        System.out.println();
-        System.out.println(reason);
-        System.exit(1);
-    }
-
-    public static Options getOptions() {
-        String stepList = "";
-        for (String step: steps) {
-            stepList += " " + step;
-        }
-
-        Options options = new Options();
-        options.addOption("h", "host", true, "Rapture host")
-                .addOption("u", "user", true, "Rapture username")
-                .addOption("p", "password", true, "Rapture password")
-                .addOption("f", "file", true, "Fully qualified path to CSV file")
-                .addOption("s", "step", true, "Step to execute: " + stepList)
-                .addOption("?", "help", false, "Display this help message");
-        return options;
-    }
-
-    public static void parseOptions(String[] commandLineArguments) {
-        CommandLineParser parser = new GnuParser();
-
-        Options gnuOptions = getOptions();
-        CommandLine commandLine;
-        try {
-            commandLine = parser.parse(gnuOptions, commandLineArguments);
-            boolean missingOptions = false;
-
-            if ( commandLine.hasOption("h") ) {
-                host = commandLine.getOptionValue("h");
-            }
-            else {
-                host = System.getenv("RAPTURE_HOST");
-            }
-            if (host == null) {
-                System.out.println("No Rapture host specified. Please set the environment variable RAPTURE_HOST or supply the -h option on the command line.");
-                missingOptions = true;
-            }
-
-            if ( commandLine.hasOption("u") ) {
-                username = commandLine.getOptionValue("u");
-            }
-            else {
-                username = System.getenv("RAPTURE_USER");
-            }
-            if (username == null) {
-                System.out.println("No Rapture user specified. Please set the environment variable RAPTURE_USER or supply the -u option on the command line.");
-                missingOptions = true;
-            }
-
-            if ( commandLine.hasOption("p") ) {
-                password = ((String) commandLine.getOptionValue("p")).toCharArray();
-            }
-            else {
-                String envPasswd = System.getenv("RAPTURE_PASSWORD");
-                if (envPasswd != null) {
-                    password = envPasswd.toCharArray();
-                }
-            }
-            if (password == null) {
-                Console cons;
-                if ((cons = System.console()) == null || (password = cons.readPassword("%s", "Password:")) == null) {
-                    System.out.println("No Rapture password specified. Please set the environment variable RAPTURE_PASSWORD or supply the -p option on the command line.");
-                    missingOptions = true;
-                }
-            }
-
-            if ( commandLine.hasOption("s") ) {
-                currentStep = commandLine.getOptionValue("s");
-            }
-            if (!Arrays.asList(steps).contains(currentStep)) {
-                System.out.println("No tutorial step specified. Please supply the -s option on the command line.");
-                missingOptions = true;
-            }
-
-            if ( commandLine.hasOption("f") ) {
-                csvFile = commandLine.getOptionValue("f");
-            }
-            else {
-                csvFile = System.getenv("RAPTURE_TUTORIAL_CSV");
-            }
-            if (csvFile == null && currentStep.equals("upload")) {
-                System.out.println("No CSV specified. Please set the environment variable RAPTURE_TUTORIAL_CSV or supply the -f option on the command line.");
-                missingOptions = true;
-            }
-
-            if (missingOptions || commandLine.hasOption("?")) {
-                displayHelp();
-            }
-        }
-        catch (ParseException parseException) {
-            System.err.println("Encountered exception while parsing command line options:\n" + parseException.getMessage());
-        }
-    }
-
-    public static void displayHelp() {
-        PrintWriter writer = new PrintWriter(System.out);
-        HelpFormatter helpFormatter = new HelpFormatter();
-
-        int printedRowWidth = 80;
-        String commandLineSyntax = "App";
-        String header = "Options:";
-        Options options = getOptions();
-        int spacesBeforeOption = 2;
-        int spacesBeforeOptionDescription = 2;
-        String footer = "";
-        boolean displayUsage = true;
-
-        helpFormatter.printHelp(
-                writer,
-                printedRowWidth,
-                commandLineSyntax,
-                header,
-                options,
-                spacesBeforeOption,
-                spacesBeforeOptionDescription,
-                footer,
-                displayUsage);
-        writer.close();
-
-        System.exit(0);
-    }
 }
-

@@ -1,6 +1,6 @@
 // This is a tutorial script demonstrating the Reflex programming language.
-// 
-// For detailed instructions and further information see 
+//
+// For detailed instructions and further information see
 // https://incapture.atlassian.net/wiki/display/PDT/Rapture+Getting+Started%3A+REFLEX//
 //
 // Reflex and Rapture are trademarks of Incapture Technologies LLC
@@ -27,7 +27,7 @@ if (!#blob.blobRepoExists(BLOB_URI)) do
      #blob.createBlobRepo(BLOB_URI, "BLOB {} USING MONGODB {prefix=\""+BLOB_AUTHORITY+"\" }", "REP {} USING MONGODB { prefix=\""+BLOB_AUTHORITY+"\"}");
 end
 if (!#doc.docRepoExists(DOC_URI)) do
-    #doc.createDocRepo(DOC_URI, "REP {} USING MONGODB {prefix=\""+DOC_AUTHORITY+"\"}");
+    #doc.createDocRepo(DOC_URI, "NREP {} USING MONGODB {prefix=\""+DOC_AUTHORITY+"\"}");
 end
 if (!#series.seriesRepoExists(SERIES_URI)) do
     #series.createSeriesRepo(SERIES_URI, "SREP {} USING MONGODB {prefix=\""+SERIES_AUTHORITY+"\"}");
@@ -94,6 +94,6 @@ for line in csv.subList(1, size(csv)) do
    else do
      println("Line has less than 2 values: it will be skipped");
    end
-end 
+end
 println("\nDone\n");
 return("Done");

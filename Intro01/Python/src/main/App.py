@@ -44,19 +44,19 @@ def retrieveParams():
 			user = os.environ.get('RAPTURE_USER')
 		except:
 			hasErrors = True
-			errors.append("No Rapture user specified. Please set the environment variable RAPTURE_USER or supply the -u option on the command line.")			
+			errors.append("No Rapture user specified. Please set the environment variable RAPTURE_USER or supply the -u option on the command line.")
 	if not password:
 		try:
 			password = os.environ.get('RAPTURE_PASSWORD')
 		except:
 			hasErrors = True
-			errors.append("No Rapture password specified. Please set the environment variable RAPTURE_PASSWORD or supply the -p option on the command line.")	
+			errors.append("No Rapture password specified. Please set the environment variable RAPTURE_PASSWORD or supply the -p option on the command line.")
 	if not file_location:
 		try:
 			file_location = os.environ.get('RAPTURE_TUTORIAL_CSV')
 		except:
 			hasErrors = True
-			errors.append("No CSV specified. Please set the environment variable RAPTURE_TUTORIAL_CSV or supply the -f option on the command line.")	
+			errors.append("No CSV specified. Please set the environment variable RAPTURE_TUTORIAL_CSV or supply the -f option on the command line.")
 	if not step:
 		hasErrors = True
 		errors.append("No demo step specified. Please supply the -s option on the command line.")
@@ -108,17 +108,17 @@ def upload(file_location):
 	# Import csv file
 	with open(file_location, 'rb') as csvFile:
 		print "Reading CSV from file "+file_location
-		
+
 		rawFileData = csvFile.read()
-	
+
 	# Create blob repo
 	blobRepoUri = "//tutorialBlob"
 	rawCsvUri = blobRepoUri + "/introDataInbound.csv"
 	config = "BLOB {} USING MONGODB {prefix=\"tutorialBlob\"}"
-	metaConfig = "REP {} USING MEMORY {prefix=\"tutorialBlob\"}"
+	metaConfig = "REP {} USING MONGODB {prefix=\"tutorialBlob\"}"
 	if(rapture.doBlob_BlobRepoExists(blobRepoUri)):
 		print "Repo exists, cleaning & remaking"
-		rapture.doBlob_DeleteBlobRepo(blobRepoUri)	
+		rapture.doBlob_DeleteBlobRepo(blobRepoUri)
 	rapture.doBlob_CreateBlobRepo(blobRepoUri, config, metaConfig)
 
 	# Encode and Store Blob
@@ -150,7 +150,7 @@ def blobToDoc():
 		docUri = docRepoUri + "/introDataTranslated"
 		config = "NREP {} USING MONGODB {prefix=\"tutorialDoc\"}"
 		if(rapture.doDoc_DocRepoExists(docRepoUri)):
-			rapture.doDoc_DeleteDocRepo(docRepoUri)	
+			rapture.doDoc_DeleteDocRepo(docRepoUri)
 		rapture.doDoc_CreateDocRepo(docRepoUri, config)
 
 		#CREATE ONE FLAT JSON
@@ -191,7 +191,7 @@ def blobToDoc():
 		for x in indxID:
 			indx_idUpdate.update({x:priceTypeDict})
 		Order['index_id'] = indx_idUpdate
-		
+
 		#Add date:price to correct index_id & price_type
 		for index_id in Order['index_id']:
 			#Use disposable dict to reset data for each index_id
@@ -208,7 +208,7 @@ def blobToDoc():
 						if item['price_type'] == x:
 							disposableDict[x].update({item['date']:float(item['index_price'])})
 			Order['index_id'][index_id] = disposableDict
-		
+
 
 		#PUT THE CSV DATA RETRIEVED FROM A BLOB & TRANSLATED INTO THE DOCUMENT REPOSITORY
 		rapture.doDoc_PutDoc(docUri, json.dumps(Order, sort_keys=False))
@@ -235,21 +235,21 @@ def docToSeries():
 		# Retrieve each document
 		# Convert json string to a python dict object
 		doc = ast.literal_eval(rapture.doDoc_GetDoc(docUri))
-		
+
 		# Generate specific URI's based on data points
-		seriesUri = "//datacapture" + "/" 
-		seriesUri = seriesUri + str(doc['series_type']) + "/" 
-		seriesUri = seriesUri + str(doc['provider']) + "/"  
+		seriesUri = "//datacapture" + "/"
+		seriesUri = seriesUri + str(doc['series_type']) + "/"
+		seriesUri = seriesUri + str(doc['provider']) + "/"
 		disposableUri = seriesUri
 		for x in doc['index_id']:
-			#Reset base URI's so that one long URI is not created 
+			#Reset base URI's so that one long URI is not created
 			seriesUri = disposableUri
-			seriesUri = seriesUri + str(x) +"/" 
+			seriesUri = seriesUri + str(x) +"/"
 			tailoredSeriesUri = seriesUri
 			for priceType in doc['index_id'][x]:
-				#Reset base URI's so that one long URI is not created 
+				#Reset base URI's so that one long URI is not created
 				seriesUri = tailoredSeriesUri
-				seriesUri = seriesUri + str(doc['frequency']) + "/" 
+				seriesUri = seriesUri + str(doc['frequency']) + "/"
 				seriesUri = seriesUri + str(priceType)
 				for date in doc['index_id'][x][priceType].keys():
 					for price in doc['index_id'][x][priceType].values():
@@ -280,14 +280,3 @@ def startDemo():
 
 print
 startDemo()
-
-
-
-
-
-
-
-
-
-
-
