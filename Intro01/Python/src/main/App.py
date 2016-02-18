@@ -158,12 +158,10 @@ def blobToDoc():
 		rowData = {}
 		docIndex = 0
 		blobData = list()
-		print rows
 		# Skip the first frow since it contains the keys, & skip last row because it is an empty line
 		for row in rows[1:-1]:
 			rowData = {keys[0]:row[0],keys[1]:row[1],keys[2]:row[2],keys[3]:row[3],keys[4]:row[4],keys[5]:row[5]}
 			blobData.append(rowData)
-		print blobData
 		#This is the top level of json/dict that we will be inserting
 		Order = OrderedDict()
 		for entry in blobData:
@@ -171,7 +169,6 @@ def blobToDoc():
 			Order['frequency'] = entry['frequency']
 			Order['index_id'] = {}
 		index_id = list()
-		print Order
 		#Add index_id's to the master json/dict
 		for x in blobData:
 			index_id.append(x['index_id'])
@@ -234,10 +231,9 @@ def docToSeries():
 
 	# Check if datacapture repo exists
 	if rapture.doSeries_SeriesRepoExists("//datacapture"):
-		# Retrieve each document
+		# Retrieve document
 		# Convert json string to a python dict object
 		doc = ast.literal_eval(rapture.doDoc_GetDoc(docUri))
-
 		# Generate specific URI's based on data points
 		seriesUri = "//datacapture" + "/"
 		seriesUri = seriesUri + str(doc['series_type']) + "/"
@@ -257,6 +253,8 @@ def docToSeries():
 					for price in doc['index_id'][x][priceType].values():
 						# Store each date and price in the appropriate series
 						rapture.doSeries_AddDoubleToSeries(seriesUri, date, float(price))
+
+						
 		print "Successfully updated series"
 	else:
 		print "Please make sure that demoData plugin is installed"
