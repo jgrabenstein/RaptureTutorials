@@ -1,6 +1,6 @@
 // This is a tutorial script demonstrating the Reflex programming language.
-// 
-// For detailed instructions and further information see 
+//
+// For detailed instructions and further information see
 // https://incapture.atlassian.net/wiki/display/PDT/Rapture+Getting+Started%3A+REFLEX//
 //
 // Reflex and Rapture are trademarks of Incapture Technologies LLC
@@ -27,7 +27,7 @@ if (!#blob.blobRepoExists(BLOB_URI)) do
      #blob.createBlobRepo(BLOB_URI, "BLOB {} USING MONGODB {prefix=\""+BLOB_AUTHORITY+"\" }", "REP {} USING MONGODB { prefix=\""+BLOB_AUTHORITY+"\"}");
 end
 if (!#doc.docRepoExists(DOC_URI)) do
-    #doc.createDocRepo(DOC_URI, "REP {} USING MONGODB {prefix=\""+DOC_AUTHORITY+"\"}");
+    #doc.createDocRepo(DOC_URI, "NREP {} USING MONGODB {prefix=\""+DOC_AUTHORITY+"\"}");
 end
 if (!#series.seriesRepoExists(SERIES_URI)) do
     #series.createSeriesRepo(SERIES_URI, "SREP {} USING MONGODB {prefix=\""+SERIES_AUTHORITY+"\"}");
@@ -36,10 +36,10 @@ end
 // **********************
 // If the data blob does not exist then attempt to load it.
 // Note that the REPL window cannot access the local file system.
-// This will only work when invoked using RaptureRunner. 
+// This will only work when invoked using RaptureRunner.
 // **********************
 
-CSV_FILE = split(CSV_PATH, "/", false); 
+CSV_FILE = split(CSV_PATH, "/", false);
 rawCsvUri = BLOB_URI+"/"+CSV_FILE[size(CSV_FILE)-1];
 
 if (!#blob.blobExists(rawCsvUri)) do

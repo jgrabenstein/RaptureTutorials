@@ -2,12 +2,12 @@ project.version = '1.0.0'
 
 apply plugin: 'java'
 
-def gradleProjects() { 
+def gradleProjects() {
     return subprojects.findAll { new File(it.projectDir, 'build.gradle').exists() }
-} 
+}
 
-configure(gradleProjects()) { 
-    project.version = rootProject.version 
+configure(gradleProjects()) {
+    project.version = rootProject.version
     apply plugin: 'application'
     repositories {
         mavenCentral()
@@ -16,7 +16,7 @@ configure(gradleProjects()) {
         }
     }
     dependencies {
-        compile "com.rapture:RaptureCore:2.0.+"
+        compile "com.rapture:RaptureAPI:2.0.+"
     }
     startScripts {
         // add etc folder to the classpath to pick up cfg files

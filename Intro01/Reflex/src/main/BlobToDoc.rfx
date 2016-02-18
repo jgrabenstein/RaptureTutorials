@@ -1,6 +1,6 @@
 // This is a tutorial script demonstrating the Reflex programming language.
-// 
-// For detailed instructions and further information see 
+//
+// For detailed instructions and further information see
 // https://incapture.atlassian.net/wiki/display/PDT/Rapture+Getting+Started%3A+REFLEX//
 //
 // Reflex and Rapture are trademarks of Incapture Technologies LLC
@@ -27,7 +27,7 @@ if (!#blob.blobRepoExists(BLOB_URI)) do
      #blob.createBlobRepo(BLOB_URI, "BLOB {} USING MONGODB {prefix=\""+BLOB_AUTHORITY+"\" }", "REP {} USING MONGODB { prefix=\""+BLOB_AUTHORITY+"\"}");
 end
 if (!#doc.docRepoExists(DOC_URI)) do
-    #doc.createDocRepo(DOC_URI, "REP {} USING MONGODB {prefix=\""+DOC_AUTHORITY+"\"}");
+    #doc.createDocRepo(DOC_URI, "NREP {} USING MONGODB {prefix=\""+DOC_AUTHORITY+"\"}");
 end
 if (!#series.seriesRepoExists(SERIES_URI)) do
     #series.createSeriesRepo(SERIES_URI, "SREP {} USING MONGODB {prefix=\""+SERIES_AUTHORITY+"\"}");
@@ -36,7 +36,7 @@ end
 // **********************
 // If the data blob does not exist then attempt to load it.
 // Note that the REPL window cannot access the local file system.
-// This will only work when invoked using RaptureRunner. 
+// This will only work when invoked using RaptureRunner.
 // **********************
 
 rawCsvUri = BLOB_URI+"/"+CSV_FILE;
@@ -111,7 +111,7 @@ noheaders --> DOC_URI+"/introDataTranslated";
 
 introDataTranslated <-- DOC_URI+"/introDataTranslated";
 
-// The data can be referenced via the column values, thus: 
+// The data can be referenced via the column values, thus:
 //	introDataTranslated.HIST.Provider_1a.USGG2YR_Index_Dummy.DAILY.LOW
 
 
@@ -119,7 +119,7 @@ introDataTranslated <-- DOC_URI+"/introDataTranslated";
 // Output the processed data as a Document by creating a map and using the doc.putDoc operation
 // **********************
 
-// For the tutorial we have defined a common data format between all the languages 
+// For the tutorial we have defined a common data format between all the languages
 // Write the data as a map of maps using Provider, SeriesType, Frequency and IndexID as keys.");
 
 indexMap = { };
@@ -127,7 +127,7 @@ dataMap = {};
 firstEntry = noheaders[0];
 for k in [ 1,0,3 ] do
   key = headers[k];
-  val = firstEntry[k]; 
+  val = firstEntry[k];
   dataMap[key] = val;
 end
 
@@ -146,7 +146,7 @@ for datum in noheaders do
     priceTypeMap = indexValMap[priceType];
     if (priceTypeMap == null) do
       priceTypeMap = {};
-      indexValMap[priceType] = priceTypeMap;  
+      indexValMap[priceType] = priceTypeMap;
     end
     datestr = datum[5];
     val = cast(datum[6], 'number');
@@ -155,7 +155,7 @@ for datum in noheaders do
 end
 #doc.putDoc(DOC_URI+"/introDataTranslated", json(dataMap));
 
-println("Added JSON document to Rapture at " + DOC_URI+"/introDataTranslated"); 
+println("Added JSON document to Rapture at " + DOC_URI+"/introDataTranslated");
 
 println("\nDone\n");
 return("Done");
