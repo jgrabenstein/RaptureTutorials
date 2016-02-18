@@ -144,7 +144,6 @@ def blobToDoc():
 		blob_string = "[[\"" + blob_string.replace(',', "\",\"").replace('\n', "\"],[\"") + "\"]]"
 		# Convert string to python list
 		rows = ast.literal_eval(blob_string)
-
 		# Create doc repo
 		docRepoUri = "//tutorialDoc"
 		docUri = docRepoUri + "/introDataTranslated"
@@ -159,17 +158,20 @@ def blobToDoc():
 		rowData = {}
 		docIndex = 0
 		blobData = list()
-		for row in rows[1:]:
-			rowData = {keys[0]:row[0],keys[1]:row[1],keys[2]:row[2],keys[3]:row[3],keys[4]:row[4],keys[5]:row[5],keys[6]:row[6]}
+		print rows
+		# Skip the first frow since it contains the keys, & skip last row because it is an empty line
+		for row in rows[1:-1]:
+			rowData = {keys[0]:row[0],keys[1]:row[1],keys[2]:row[2],keys[3]:row[3],keys[4]:row[4],keys[5]:row[5]}
 			blobData.append(rowData)
+		print blobData
 		#This is the top level of json/dict that we will be inserting
 		Order = OrderedDict()
 		for entry in blobData:
-			Order['provider'] = entry['provider']
 			Order['series_type'] = entry['series_type']
 			Order['frequency'] = entry['frequency']
 			Order['index_id'] = {}
 		index_id = list()
+		print Order
 		#Add index_id's to the master json/dict
 		for x in blobData:
 			index_id.append(x['index_id'])
@@ -239,7 +241,7 @@ def docToSeries():
 		# Generate specific URI's based on data points
 		seriesUri = "//datacapture" + "/"
 		seriesUri = seriesUri + str(doc['series_type']) + "/"
-		seriesUri = seriesUri + str(doc['provider']) + "/"
+		seriesUri = seriesUri + "TutorialIntro_Python/"
 		disposableUri = seriesUri
 		for x in doc['index_id']:
 			#Reset base URI's so that one long URI is not created
