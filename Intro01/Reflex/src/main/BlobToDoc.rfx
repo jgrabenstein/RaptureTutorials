@@ -42,8 +42,6 @@ end
 // This will only work when invoked using RaptureRunner.
 // **********************
 
-rawCsvUri = BLOB_URI+"/"+CSV_FILE;
-
 if (!#blob.blobExists(rawCsvUri)) do
   println("Data has not been uploaded to the BLOB repository.");
   assert(false);
