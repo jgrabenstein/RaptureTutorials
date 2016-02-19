@@ -39,15 +39,13 @@ public class App {
 	private String jsonDocumentUri;
 
 	private static final String SERIES_TYPE_HEADER = "series_type";
-	private static final String PROVIDER_HEADER = "provider";
 	private static final String FREQUENCY_HEADER = "frequency";
 	private static final String INDEX_ID_HEADER = "index_id";
 	private static final int SERIES_TYPE_INDEX = 0;
-	private static final int PROVIDER_INDEX = 1;
-	private static final int INDEX_ID_INDEX = 2;
-	private static final int FREQUENCY_INDEX = 3;
-	private static final int PRICE_TYPE_INDEX = 4;
-	private static final int DATE_INDEX = 5;
+	private static final int INDEX_ID_INDEX = 1;
+	private static final int FREQUENCY_INDEX = 2;
+	private static final int PRICE_TYPE_INDEX = 3;
+	private static final int DATE_INDEX = 4;
 
 	public static final void main(String args[]) {
 		App tutorialApp = new App();
@@ -121,7 +119,7 @@ public class App {
 		if (!blobApi.blobRepoExists(repoUri)) {
 			System.out.println("Creating new blob repo at " + repoUri);
 			String config = "BLOB {} USING MONGODB { prefix=\"" + BLOB_AUTHORITY + "\" }";
-			String metaConfig = "REP {} USING MEMORY { prefix=\"" + BLOB_AUTHORITY + "\" }";
+			String metaConfig = "REP {} USING MONGODB { prefix=\"" + BLOB_AUTHORITY + "\" }";
 			blobApi.createBlobRepo(repoUri, config, metaConfig);
 		}
 
@@ -181,7 +179,6 @@ public class App {
 			String csvLine = reader.readLine();
 			String[] headers = csvLine.split(delimiter);
 
-			String provider = "";
 			String seriesType = "";
 			String frequency = "";
 
@@ -192,10 +189,9 @@ public class App {
 					throw new DataFormatException("Invalid CSV format");
 				}
 
-				if (provider.isEmpty()) {
+				if (seriesType.isEmpty()) {
 					// Business rules tell us these will always be the same for
 					// every row in the CSV
-					provider = data[PROVIDER_INDEX];
 					seriesType = data[SERIES_TYPE_INDEX];
 					frequency = data[FREQUENCY_INDEX];
 				}
@@ -227,7 +223,6 @@ public class App {
 			}
 
 			Map<String, Object> finalMap = new LinkedHashMap<String, Object>();
-			finalMap.put(PROVIDER_HEADER, provider);
 			finalMap.put(SERIES_TYPE_HEADER, seriesType);
 			finalMap.put(FREQUENCY_HEADER, frequency);
 			finalMap.put(INDEX_ID_HEADER, indexToPriceTypeMap);
@@ -269,8 +264,7 @@ public class App {
 		Map<String, Object> outerMap = JacksonUtil.getMapFromJson(jsonDocument);
 		Map<String, Object> innerMap = (Map<String, Object>) outerMap.get(INDEX_ID_HEADER);
 
-		String seriesUriBase = seriesRepoUri + outerMap.get(SERIES_TYPE_HEADER) + "/" + outerMap.get(PROVIDER_HEADER)
-				+ "/";
+		String seriesUriBase = seriesRepoUri + outerMap.get(SERIES_TYPE_HEADER) + "/TutorialIntro_Java/";
 		for (Map.Entry<String, Object> indexMapEntry : innerMap.entrySet()) {
 			String seriesUriWithIndex = seriesUriBase + indexMapEntry.getKey() + "/" + outerMap.get(FREQUENCY_HEADER)
 					+ "/";
@@ -278,7 +272,7 @@ public class App {
 			for (Map.Entry<String, Object> priceTypeMapEntry : ((Map<String, Object>) indexMapEntry.getValue())
 					.entrySet()) {
 				String seriesUriWithPriceType = seriesUriWithIndex + priceTypeMapEntry.getKey();
-
+				System.out.println("Adding price data to series " + seriesUriWithPriceType);
 				for (Map.Entry<String, Double> dateMapEntry : ((Map<String, Double>) priceTypeMapEntry.getValue())
 						.entrySet()) {
 					// In this case we are writing the series data one point at a time. The key is (will be) a text formatted

@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -60,6 +61,13 @@ public class ReportApp {
     private void run(String[] args) {
         readLoginInfo(args);
         log.info("Starting ReportApp...");
+        //ask whether they are working with java, rfx, or py series
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Are we analyzing series from Java, Reflex or Python?: ");
+        String input = scanner.next();
+        String language = input.substring(0,1).toUpperCase()+input.substring(1).toLowerCase();
+        scanner.close();
+        log.info("We are analyzing "+language+"-created series");
         HttpLoginApi login = new HttpLoginApi(host, credentials);
         login.login();
         HttpSeriesApi series = new HttpSeriesApi(login);
@@ -67,7 +75,7 @@ public class ReportApp {
         for (Map.Entry<String, String> entry : INDEX_IDS.entrySet()) {
             log.info("Processing: " + entry.getKey());
             // make the api call to the rapture series api to get the points
-            List<SeriesPoint> points = series.getPoints(String.format("series://datacapture/HIST/Provider_1a/%s/DAILY/%s", entry.getKey(), FIELD));
+            List<SeriesPoint> points = series.getPoints(String.format("series://datacapture/HIST/TutorialIntro_"+language+"/%s/DAILY/%s", entry.getKey(), FIELD));
             // only graph the last NUM_POINTS points
             points = points.subList(points.size() - NUM_POINTS, points.size());
             for (SeriesPoint point : points) {
