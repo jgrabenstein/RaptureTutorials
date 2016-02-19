@@ -3,7 +3,7 @@ ECHO ***************************************************************
 ECHO Starting Rapture Demo Client Environment Setup
 SET "REFLEX_RUNNER_LATEST=https://github.com/RapturePlatform/Rapture/releases/latest"
 SET "REFLEX_RUNNER_DOWNLOAD_PREFIX=https://github.com/RapturePlatform/Rapture/releases/download"
-SET "RAPTURE_DEMO_HOME_DIR=%CD%\.."
+SET "RAPTURE_SETUP_DIR=%CD%"
 
 REM "*************************************************************"
 REM get etienne credentials to setup env info
@@ -56,13 +56,15 @@ IF NOT EXIST %CD%\ReflexRunner-%RRUNNER_LATEST_TAG%.zip (
 )
 DEL rrlocation.txt
 
-REM Set the csvv(introDataInbound) path and reflex runner bin
+REM Set the csv(introDataInbound) path and reflex runner bin
 REM Have to revisit the RAPTURE_TUTORIAL_CSV to make it more scalabale as we add more tutorials!
-FOR /f "delims=" %%F in ('dir /b /s "%RAPTURE_DEMO_HOME_DIR%\introDataInbound.csv" 2^>nul') do set RAPTURE_TUTORIAL_CSV=%%F
-SET "PATH=%PATH%;%RAPTURE_DEMO_HOME_DIR%\Setup\ReflexRunner-%RRUNNER_LATEST_TAG%\bin"
+SET "TUTORIAL=Intro01"
+FOR /f "delims=" %%F in ('dir /b /s "%RAPTURE_SETUP_DIR%\..\%TUTORIAL%\resources\introDataInbound.csv" 2^>nul') do set RAPTURE_TUTORIAL_CSV=%%F
+SET "PATH=%PATH%;%RAPTURE_SETUP_DIR%\ReflexRunner-%RRUNNER_LATEST_TAG%\bin"
+SET "PATH=%PATH%;%RAPTURE_SETUP_DIR%\ReflexRunner\bin"
 
 REM leave user in home dir
-cd %RAPTURE_DEMO_HOME_DIR%
+cd %RAPTURE_SETUP_DIR%\..
 ECHO Setup completed
 ECHO ***************************************************************
 
@@ -76,5 +78,6 @@ SET "REFLEX_RUNNER_DOWNLOAD_PREFIX="
 SET "RRUNNER_LATEST_TAG="
 SET "REFLEX_RUNNER_LATEST="
 SET "RRUNNER_LATEST_REDIRECT_URL="
+SET "RAPTURE_SETUP_DIR="
 SET "user="
 SET "pass="
