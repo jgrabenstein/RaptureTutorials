@@ -264,7 +264,7 @@ public class App {
 		Map<String, Object> outerMap = JacksonUtil.getMapFromJson(jsonDocument);
 		Map<String, Object> innerMap = (Map<String, Object>) outerMap.get(INDEX_ID_HEADER);
 
-		String seriesUriBase = seriesRepoUri + outerMap.get(SERIES_TYPE_HEADER) + "/";
+		String seriesUriBase = seriesRepoUri + outerMap.get(SERIES_TYPE_HEADER) + "/TutorialIntro_Java/";
 		for (Map.Entry<String, Object> indexMapEntry : innerMap.entrySet()) {
 			String seriesUriWithIndex = seriesUriBase + indexMapEntry.getKey() + "/" + outerMap.get(FREQUENCY_HEADER)
 					+ "/";
