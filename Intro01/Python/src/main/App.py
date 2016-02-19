@@ -221,6 +221,7 @@ def docToSeries():
 
 	# Check that docs exists and retrieve them
 	docUri = docRepoUri + "/introDataTranslated"
+	seriesRepoUri = "//datacapture"
 	check = rapture.doDoc_DocExists(docUri)
 	try:
 		assert check == True
@@ -230,12 +231,13 @@ def docToSeries():
 	docContent = ast.literal_eval(rapture.doDoc_GetDoc(docUri))
 
 	# Check if datacapture repo exists
-	if rapture.doSeries_SeriesRepoExists("//datacapture"):
+	if rapture.doSeries_SeriesRepoExists(seriesRepoUri):
 		# Retrieve document
+		print "Adding price data from "+docUri+" to series repo "+seriesRepoUri
 		# Convert json string to a python dict object
 		doc = ast.literal_eval(rapture.doDoc_GetDoc(docUri))
 		# Generate specific URI's based on data points
-		seriesUri = "//datacapture" + "/"
+		seriesUri = seriesRepoUri + "/"
 		seriesUri = seriesUri + str(doc['series_type']) + "/"
 		seriesUri = seriesUri + "TutorialIntro_Python/"
 		disposableUri = seriesUri
@@ -250,6 +252,7 @@ def docToSeries():
 				seriesUri = seriesUri + str(doc['frequency']) + "/"
 				seriesUri = seriesUri + str(priceType)
 				for date in doc['index_id'][x][priceType].keys():
+					print "Adding price data to series: " + seriesUri
 					for price in doc['index_id'][x][priceType].values():
 						# Store each date and price in the appropriate series
 						rapture.doSeries_AddDoubleToSeries(seriesUri, date, float(price))

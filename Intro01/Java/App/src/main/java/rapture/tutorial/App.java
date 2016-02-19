@@ -272,7 +272,7 @@ public class App {
 			for (Map.Entry<String, Object> priceTypeMapEntry : ((Map<String, Object>) indexMapEntry.getValue())
 					.entrySet()) {
 				String seriesUriWithPriceType = seriesUriWithIndex + priceTypeMapEntry.getKey();
-
+				System.out.println("Adding price data to series " + seriesUriWithPriceType);
 				for (Map.Entry<String, Double> dateMapEntry : ((Map<String, Double>) priceTypeMapEntry.getValue())
 						.entrySet()) {
 					// In this case we are writing the series data one point at a time. The key is (will be) a text formatted
