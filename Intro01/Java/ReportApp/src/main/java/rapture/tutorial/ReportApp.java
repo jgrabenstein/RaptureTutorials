@@ -67,7 +67,7 @@ public class ReportApp {
         for (Map.Entry<String, String> entry : INDEX_IDS.entrySet()) {
             log.info("Processing: " + entry.getKey());
             // make the api call to the rapture series api to get the points
-            List<SeriesPoint> points = series.getPoints(String.format("series://datacapture/HIST/Provider_1a/%s/DAILY/%s", entry.getKey(), FIELD));
+            List<SeriesPoint> points = series.getPoints(String.format("series://datacapture/HIST/TutorialIntro_Java/%s/DAILY/%s", entry.getKey(), FIELD));
             // only graph the last NUM_POINTS points
             points = points.subList(points.size() - NUM_POINTS, points.size());
             for (SeriesPoint point : points) {
