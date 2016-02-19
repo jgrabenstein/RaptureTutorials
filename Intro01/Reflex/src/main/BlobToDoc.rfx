@@ -13,11 +13,14 @@ BLOB_URI="blob://"+BLOB_AUTHORITY;
 DOC_URI="document://"+DOC_AUTHORITY;
 SERIES_URI="series://"+SERIES_AUTHORITY;
 
-CSV_FILE = ENV.RAPTURE_TUTORIAL_CSV;
-if (CSV_FILE == null) do
-  CSV_FILE = "introDataInbound.csv";
-  println("No CSV specified. Defaulting to "+CSV_FILE);
+CSV_PATH = ENV.RAPTURE_TUTORIAL_CSV;
+if (CSV_PATH == null) do
+  CSV_PATH = "introDataInbound.csv";
+  println("No CSV specified. Defaulting to "+CSV_PATH);
 end
+
+CSV_FILE = split(CSV_PATH, "/", false);
+rawCsvUri = BLOB_URI+"/"+CSV_FILE[size(CSV_FILE)-1];
 
 // **********************
 // Create repos if needed
