@@ -64,8 +64,10 @@ public class ReportApp {
         log.info("Starting ReportApp...");
         //ask whether they are working with java, rfx, or py series
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Are we analyzing series from Java, Reflex or Python?: ");
-        String language = scanner.next().substring(0,1).toUpperCase()+scanner.next().substring(1);
+        System.out.println("Are we analyzing series from Java, Reflex or Python?: ");
+        String language = scanner.nextLine().substring(0,1).toUpperCase()+scanner.next().substring(1);
+        scanner.close();
+        log.info("We are analyzing "+language+"-created series");
         HttpLoginApi login = new HttpLoginApi(host, credentials);
         login.login();
         HttpSeriesApi series = new HttpSeriesApi(login);
@@ -80,7 +82,6 @@ public class ReportApp {
                 dataSet.addValue(Double.parseDouble(point.getValue()), entry.getValue(), point.getColumn());
             }
         }
-        scanner.close();
         // create a graph given the data set of points that we have
         JFreeChart chart = ChartFactory.createLineChart(TITLE_CHART, "Date", "Price", dataSet, PlotOrientation.VERTICAL, true, true, false);
         chart.getCategoryPlot().getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.UP_90);
