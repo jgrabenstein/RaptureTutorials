@@ -39,7 +39,6 @@ public class App {
 	private String jsonDocumentUri;
 
 	private static final String SERIES_TYPE_HEADER = "series_type";
-	private static final String PROVIDER_HEADER = "provider";
 	private static final String FREQUENCY_HEADER = "frequency";
 	private static final String INDEX_ID_HEADER = "index_id";
 	private static final int SERIES_TYPE_INDEX = 0;
@@ -121,7 +120,7 @@ public class App {
 		if (!blobApi.blobRepoExists(repoUri)) {
 			System.out.println("Creating new blob repo at " + repoUri);
 			String config = "BLOB {} USING MONGODB { prefix=\"" + BLOB_AUTHORITY + "\" }";
-			String metaConfig = "REP {} USING MEMORY { prefix=\"" + BLOB_AUTHORITY + "\" }";
+			String metaConfig = "REP {} USING MONGODB { prefix=\"" + BLOB_AUTHORITY + "\" }";
 			blobApi.createBlobRepo(repoUri, config, metaConfig);
 		}
 
@@ -227,7 +226,6 @@ public class App {
 			}
 
 			Map<String, Object> finalMap = new LinkedHashMap<String, Object>();
-			finalMap.put(PROVIDER_HEADER, provider);
 			finalMap.put(SERIES_TYPE_HEADER, seriesType);
 			finalMap.put(FREQUENCY_HEADER, frequency);
 			finalMap.put(INDEX_ID_HEADER, indexToPriceTypeMap);
@@ -269,8 +267,7 @@ public class App {
 		Map<String, Object> outerMap = JacksonUtil.getMapFromJson(jsonDocument);
 		Map<String, Object> innerMap = (Map<String, Object>) outerMap.get(INDEX_ID_HEADER);
 
-		String seriesUriBase = seriesRepoUri + outerMap.get(SERIES_TYPE_HEADER) + "/" + outerMap.get(PROVIDER_HEADER)
-				+ "/";
+		String seriesUriBase = seriesRepoUri + outerMap.get(SERIES_TYPE_HEADER) + "/";
 		for (Map.Entry<String, Object> indexMapEntry : innerMap.entrySet()) {
 			String seriesUriWithIndex = seriesUriBase + indexMapEntry.getKey() + "/" + outerMap.get(FREQUENCY_HEADER)
 					+ "/";
