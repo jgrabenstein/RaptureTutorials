@@ -27,7 +27,6 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
 
-import rapture.common.RaptureFolderInfo;
 import rapture.common.SeriesPoint;
 import rapture.common.client.HttpBlobApi;
 import rapture.common.client.HttpLoginApi;
