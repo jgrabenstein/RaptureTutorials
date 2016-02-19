@@ -73,9 +73,6 @@ public class ReportApp {
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
         for (Map.Entry<String, String> entry : INDEX_IDS.entrySet()) {
             log.info("Processing: " + entry.getKey());
-            String seriesUri = "series://datacapture/HIST";
-            int depth = 1;
-            Map<String, RaptureFolderInfo> directories = series.listSeriesByUriPrefix(seriesUri, depth);
             // make the api call to the rapture series api to get the points
             List<SeriesPoint> points = series.getPoints(String.format("series://datacapture/HIST/TutorialIntro_"+language+"/%s/DAILY/%s", entry.getKey(), FIELD));
             // only graph the last NUM_POINTS points
