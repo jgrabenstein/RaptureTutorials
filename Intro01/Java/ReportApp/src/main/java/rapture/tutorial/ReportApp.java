@@ -64,7 +64,7 @@ public class ReportApp {
         //ask whether they are working with java, rfx, or py series
         Scanner scanner = new Scanner(System.in);
         System.out.println("Are we analyzing series from Java, Reflex or Python?: ");
-        String language = scanner.nextLine().substring(0,1).toUpperCase()+scanner.next().substring(1);
+        String language = scanner.nextLine().substring(0,1).toUpperCase()+scanner.nextLine().substring(1);
         scanner.close();
         log.info("We are analyzing "+language+"-created series");
         HttpLoginApi login = new HttpLoginApi(host, credentials);
