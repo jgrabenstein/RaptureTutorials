@@ -42,11 +42,10 @@ public class App {
 	private static final String FREQUENCY_HEADER = "frequency";
 	private static final String INDEX_ID_HEADER = "index_id";
 	private static final int SERIES_TYPE_INDEX = 0;
-	private static final int PROVIDER_INDEX = 1;
-	private static final int INDEX_ID_INDEX = 2;
-	private static final int FREQUENCY_INDEX = 3;
-	private static final int PRICE_TYPE_INDEX = 4;
-	private static final int DATE_INDEX = 5;
+	private static final int INDEX_ID_INDEX = 1;
+	private static final int FREQUENCY_INDEX = 2;
+	private static final int PRICE_TYPE_INDEX = 3;
+	private static final int DATE_INDEX = 4;
 
 	public static final void main(String args[]) {
 		App tutorialApp = new App();
@@ -180,7 +179,6 @@ public class App {
 			String csvLine = reader.readLine();
 			String[] headers = csvLine.split(delimiter);
 
-			String provider = "";
 			String seriesType = "";
 			String frequency = "";
 
@@ -191,10 +189,9 @@ public class App {
 					throw new DataFormatException("Invalid CSV format");
 				}
 
-				if (provider.isEmpty()) {
+				if (seriesType.isEmpty()) {
 					// Business rules tell us these will always be the same for
 					// every row in the CSV
-					provider = data[PROVIDER_INDEX];
 					seriesType = data[SERIES_TYPE_INDEX];
 					frequency = data[FREQUENCY_INDEX];
 				}
@@ -267,7 +264,7 @@ public class App {
 		Map<String, Object> outerMap = JacksonUtil.getMapFromJson(jsonDocument);
 		Map<String, Object> innerMap = (Map<String, Object>) outerMap.get(INDEX_ID_HEADER);
 
-		String seriesUriBase = seriesRepoUri + outerMap.get(SERIES_TYPE_HEADER) + "/";
+		String seriesUriBase = seriesRepoUri + outerMap.get(SERIES_TYPE_HEADER) + "/TutorialIntro_Java/";
 		for (Map.Entry<String, Object> indexMapEntry : innerMap.entrySet()) {
 			String seriesUriWithIndex = seriesUriBase + indexMapEntry.getKey() + "/" + outerMap.get(FREQUENCY_HEADER)
 					+ "/";
