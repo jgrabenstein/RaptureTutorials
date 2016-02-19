@@ -65,7 +65,7 @@ public class ReportApp {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Are we analyzing series from Java, Reflex or Python?: ");
         String input = scanner.next();
-        String language = input.substring(0,1).toUpperCase()+input.substring(1);
+        String language = input.substring(0,1).toUpperCase()+input.substring(1).toLowerCase();
         scanner.close();
         log.info("We are analyzing "+language+"-created series");
         HttpLoginApi login = new HttpLoginApi(host, credentials);
