@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -26,6 +27,7 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
 
+import rapture.common.RaptureFolderInfo;
 import rapture.common.SeriesPoint;
 import rapture.common.client.HttpBlobApi;
 import rapture.common.client.HttpLoginApi;
@@ -60,14 +62,22 @@ public class ReportApp {
     private void run(String[] args) {
         readLoginInfo(args);
         log.info("Starting ReportApp...");
+        //ask whether they are working with java, rfx, or py series
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Are we analyzing series from Java, Reflex or Python?: ");
+        String language = scanner.next().substring(0,1).toUpperCase()+scanner.next().substring(1);
+        scanner.close();
         HttpLoginApi login = new HttpLoginApi(host, credentials);
         login.login();
         HttpSeriesApi series = new HttpSeriesApi(login);
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
         for (Map.Entry<String, String> entry : INDEX_IDS.entrySet()) {
             log.info("Processing: " + entry.getKey());
+            String seriesUri = "series://datacapture/HIST";
+            int depth = 1;
+            Map<String, RaptureFolderInfo> directories = series.listSeriesByUriPrefix(seriesUri, depth);
             // make the api call to the rapture series api to get the points
-            List<SeriesPoint> points = series.getPoints(String.format("series://datacapture/HIST/TutorialIntro_Java/%s/DAILY/%s", entry.getKey(), FIELD));
+            List<SeriesPoint> points = series.getPoints(String.format("series://datacapture/HIST/TutorialIntro_"+language+"/%s/DAILY/%s", entry.getKey(), FIELD));
             // only graph the last NUM_POINTS points
             points = points.subList(points.size() - NUM_POINTS, points.size());
             for (SeriesPoint point : points) {
