@@ -3,6 +3,9 @@ HOST="http://developer.incapture.net:8080"
 REFLEX_RUNNER_LATEST_HOST="https://github.com"
 REFLEX_RUNNER_LATEST="$REFLEX_RUNNER_LATEST_HOST/RapturePlatform/Rapture/releases/latest"
 
+# write the export statements to a file to be sourced later
+env_var_filename=".rapture_client.$RANDOM.env"
+
 cur_dir=$(pwd)
 pattern="(.*RaptureTutorials).*"
 if [[ $cur_dir =~ $pattern ]]; then
@@ -111,8 +114,7 @@ if [ -z "$reflex_runner_path" ]; then
   fi
 fi
 
-# write the export statements to a file to be sourced later
-env_var_filename=".rapture_client.$RANDOM.env"
+
 
 if [ -n "$reflex_runner_path" ] && [ !$reflex_runner_is_in_path ] ; then
   add_to_path=$(dirname $reflex_runner_path)
@@ -157,7 +159,7 @@ do
 done
 
 echo "export RAPTURE_TUTORIAL_CSV=$csv_path" >> $env_var_filename
-
+echo "export RAPTURE_HOME=$rapture_tutorials_dir" >> $env_var_filename
 
 
 # Also write a welcome banner to the file and change the prompt so it's easier for the user
@@ -183,4 +185,3 @@ screen -h 2000 -S Rapture sh -c "exec /bin/bash -init-file ./$env_var_filename"
 
 # will execute after screen session exits
 rm $env_var_filename
-

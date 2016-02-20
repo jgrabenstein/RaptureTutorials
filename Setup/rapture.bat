@@ -1,15 +1,16 @@
-@echo off 
+@echo off
 ECHO ***************************************************************
 ECHO Starting Rapture Demo Client Environment Setup
 SET "REFLEX_RUNNER_LATEST=https://github.com/RapturePlatform/Rapture/releases/latest"
 SET "REFLEX_RUNNER_DOWNLOAD_PREFIX=https://github.com/RapturePlatform/Rapture/releases/download"
 SET "RAPTURE_SETUP_DIR=%CD%"
+SET "RAPTURE_HOME=%CD%\.."
 
 REM "*************************************************************"
 REM get etienne credentials to setup env info
 SET "etienneurl=developer.incapture.net"
-SET /P user=Enter Etienne User: 
-SET /P pass=Enter Etienne Password: 
+SET /P user=Enter Incapture User:
+SET /P pass=Enter Incapture Password:
 
 REM "*************************************************************"
 REM create a hashed password usin md5.exe
@@ -23,7 +24,7 @@ SET "LOGIN_URL=http://%etienneurl%:8080/login/login?user=%user%^&password=%hashp
 SET "SERVICE_URL=http://%etienneurl%:8080/curtisscript/getEnvInfo?username=%user%"
 
 REM "*************************************************************"
-REM call login url to get cookie and then get the enn details 
+REM call login url to get cookie and then get the enn details
 %CD%\tools\curl --silent --cookie-jar cookiefile.txt %LOGIN_URL% > nul 2>&1
 %CD%\tools\curl --silent --cookie cookiefile.txt %SERVICE_URL% > tmpenvinfo.txt
 
