@@ -19,9 +19,8 @@ if (CSV_PATH == null) do
   println("No CSV specified. Defaulting to "+CSV_PATH);
 end
 
-//CSV_FILE = split(CSV_PATH, "/", false);
-//rawCsvUri = BLOB_URI+"/"+CSV_FILE[size(CSV_FILE)-1];
-CSV_FILE= "introDataInbound.csv";
+csvfile = file(CSV_PATH, "CSV");
+CSV_FILE = csvfile.getNodeName();
 rawCsvUri = BLOB_URI+"/"+CSV_FILE;
 
 // **********************
