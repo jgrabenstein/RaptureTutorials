@@ -39,15 +39,17 @@ end
 // This will only work when invoked using RaptureRunner.
 // **********************
 
-CSV_FILE = split(CSV_PATH, "/", false);
-rawCsvUri = BLOB_URI+"/"+CSV_FILE[size(CSV_FILE)-1];
+csvfile = file(CSV_PATH, "CSV");
+CSV_FILE = csvfile.getNodeName();
+rawCsvUri = BLOB_URI+"/"+CSV_FILE;
 
 if (!#blob.blobExists(rawCsvUri)) do
   println("Reading CSV from file " + CSV_PATH);
-  file(CSV_PATH, "CSV") --> rawCsvUri;
+  
+  csvfile --> rawCsvUri;
   println("CSV uploaded to "+ rawCsvUri);
 else do
-  println("Data has already been uploaded to the BLOB repository.");
+  println("Data has already been uploaded to the BLOB repository as "+rawCsvUri);
 end
 
 println("\nDone\n");
