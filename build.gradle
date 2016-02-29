@@ -36,7 +36,7 @@ configure(gradleProjects()) {
 task zipAll(type: Zip) {
     dependsOn gradleProjects().installDist
     from '.'
-    into project.name
+    into 'RaptureTutorials' 
     exclude '**/*.zip'
     exclude '**/.gradle'
     exclude '**/.classpath'
