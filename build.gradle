@@ -1,4 +1,5 @@
 project.version = '1.0.0'
+addTimestampToVersion();
 
 apply plugin: 'java'
 
@@ -30,6 +31,18 @@ configure(gradleProjects()) {
             windowsScript.text = windowsScript.text.replace('%APP_HOME%\\lib\\etc', '%APP_HOME%\\lib\\*;%APP_HOME%\\etc')
             unixScript.text = unixScript.text.replace('$APP_HOME/lib/etc', '$APP_HOME/etc')
         }
+    }
+}
+
+void addTimestampToVersion() {
+    File timestamp = new File('timestamp.txt');
+    if (timestamp.exists() && project.hasProperty('tag') && project.tag.equals('true')) {
+        project.ext.timestamp = timestamp.text.trim()
+        println "Using timestamp from file: [${project.ext.timestamp}]"
+        project.version += ".${project.ext.timestamp}"
+    }
+    else {
+        project.version += '.99999999999999'
     }
 }
 
