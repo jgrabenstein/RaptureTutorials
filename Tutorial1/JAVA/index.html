@@ -1,183 +1,301 @@
 <!DOCTYPE html>
-<!-- saved from url=(0090)https://incapture.atlassian.net/wiki/plugins/viewsource/viewpagesrc.action?pageId=71630907 -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>View Source</title>
-        <link rel="canonical" href="https://incapture.atlassian.net/wiki/pages/viewpage.action?pageId=$action.page.id">
-        <script>
-window.WRM=window.WRM||{};window.WRM._unparsedData=window.WRM._unparsedData||{};window.WRM._unparsedErrors=window.WRM._unparsedErrors||{};
-WRM._unparsedData["com.atlassian.plugins.atlassian-plugins-webresource-plugin:context-path.context-path"]="\"/wiki\"";
-WRM._unparsedData["com.atlassian.plugins.atlassian-plugins-webresource-rest:web-resource-manager.resource-base-url-pattern"]="\"(?:/wiki(?:/s/.*?/_)?/download|//d1ixbz5qgnvms3\\\\.cloudfront\\\\.net/incapture\\\\.atlassian\\\\.net/wiki(?:/s/.*?/_)?/download)\"";
-if(window.WRM._dataArrived)window.WRM._dataArrived();</script>
-<link type="text/css" rel="stylesheet" href="./Tutorial_JAVA_files/batch.css" media="all">
-<!--[if lt IE 9]>
-<link type="text/css" rel="stylesheet" href="//d1ixbz5qgnvms3.cloudfront.net/incapture.atlassian.net/wiki/s/000a09a525c066bad12450ab87d749eb-CDN/en_GB/6428/2ea41027c91142646414d0fb5d19218adf96fb83/f6fc99cd925974d8fcaaa74d4e8c1f41/_/download/contextbatch/css/_super/batch.css?atlassian.aui.raphael.disabled=true&amp;conditionalComment=lt+IE+9&amp;jquery.external=true&amp;relative-url=true"  media="all">
-<![endif]-->
-<!--[if lte IE 9]>
-<link type="text/css" rel="stylesheet" href="//d1ixbz5qgnvms3.cloudfront.net/incapture.atlassian.net/wiki/s/000a09a525c066bad12450ab87d749eb-CDN/en_GB/6428/2ea41027c91142646414d0fb5d19218adf96fb83/f6fc99cd925974d8fcaaa74d4e8c1f41/_/download/contextbatch/css/_super/batch.css?atlassian.aui.raphael.disabled=true&amp;conditionalComment=lte+IE+9&amp;jquery.external=true&amp;relative-url=true"  media="all">
-<![endif]-->
-<link type="text/css" rel="stylesheet" href="./Tutorial_JAVA_files/batch(1).css" media="all">
-<link type="text/css" rel="stylesheet" href="./Tutorial_JAVA_files/batch(2).css" media="all">
-<link type="text/css" rel="stylesheet" href="./Tutorial_JAVA_files/batch(3).css" media="all">
-<!--[if lte IE 9]>
-<link type="text/css" rel="stylesheet" href="//d1ixbz5qgnvms3.cloudfront.net/incapture.atlassian.net/wiki/s/ab37dc21819eccdc9e77d6fc35522331-CDN/en_GB/6428/2ea41027c91142646414d0fb5d19218adf96fb83/24652ae65cfb418cb7fc33f6ce4ac990/_/download/contextbatch/css/editor-content,-_super/batch.css?conditionalComment=lte+IE+9&amp;confluence.view.edit.transition=true&amp;relative-url=true"  media="all">
-<![endif]-->
-<link type="text/css" rel="stylesheet" href="./Tutorial_JAVA_files/colors.css" media="all">
-
+<html>
+    <head>
+        <title>PRODUCT : Rapture Getting Started: Java</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
 
-    <body class="mceContentBody aui-theme-default wiki-content fullsize">
-        <p>&nbsp;</p>         <div class="contentLayout2">
-<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<p>&nbsp;</p><p>&nbsp;</p></div>
-</div>
-<div class="cell normal" data-type="normal">
-<div class="innerCell">
-<h1>Tutorial&nbsp;1: Your first Rapture Project&nbsp;</h1><p><u>Objectives:</u></p><ol><li>Use of the RIM user interface to interact with Rapture managed data&nbsp;</li><li>Use of a client-side JAVA app to highlight the Rapture API&nbsp;</li></ol><p><u>This will cover the following steps:</u></p><ol><li>Uploading a CSV file to a blob repo in your RIM instance</li><li>Translating raw CSV data file into document data type</li><li>Creating a series using document created in step #2</li><li>Running a graph based report from series data in step #3 and saving as blob pdf</li></ol><p><u>For the purposes of this tutorial:</u></p><ul><li>A Java sample app is provided to allow you to exercise code and see the output in cmd line and follow along in the RIM user interface</li><li>It is recommended to also look at the source code</li><li>In this tutorial mac conventions are used for command line work</li><li>Windows commands are similar and an App.bat is provided</li></ul></div>
-</div>
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<table class="wysiwyg-macro" data-macro-name="note" data-macro-id="6ef462f6-0d17-4f06-b8fb-4b62877741a4" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e25vdGV9&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><p>Before beginning this demonstration of Rapture it is expected that your environment satisfies the following pre-requisites</p><ol><li>Java 7 or 8 JRE is installed. At a terminal run j<em>ava -version</em> to check</li><li>If building the Java code on mac<ol><li>Follow this <a href="https://help.github.com/articles/set-up-git/">setup guide for git</a></li><li><span style="line-height: 1.42857;">brew install gradle</span></li></ol></li></ol></td></tr></tbody></table></div>
-</div>
-</div>
-<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<hr><p>&nbsp;</p><p>&nbsp;</p></div>
-</div>
-<div class="cell normal" data-type="normal">
-<div class="innerCell">
-<hr><h2>Create new Repos for use in this Tutorial</h2><p>&nbsp;The first step in this tutorial is to login to your RIM instance and create the data repositories.</p><p>&nbsp;</p><table class="confluenceTable"><tbody><tr><th class="confluenceTh"><p>Process</p></th><th class="confluenceTh">&nbsp;</th><th class="confluenceTh">&nbsp;</th></tr><tr><td colspan="3" class="confluenceTd"><p>Login to your demo environment using url and credentials provided during signup</p></td></tr><tr><td colspan="1" class="confluenceTd"><span>Create a Document repository using RIM's&nbsp;</span><strong><em>+ Add</em></strong><span>&nbsp;Repositories interface:</span><ol><li>Set&nbsp;<strong>Name</strong>&nbsp;to&nbsp;<em>tutorialDoc</em></li><li>Set&nbsp;<strong>Type</strong>&nbsp;to&nbsp;<em>Document</em></li><li>Set&nbsp;<strong>Data System</strong>&nbsp;to&nbsp;<em>MongoDB</em></li><li>Press the&nbsp;<strong>OK</strong>&nbsp;Button</li></ol></td><td colspan="1" class="confluenceTd">&nbsp;</td><td colspan="1" class="confluenceTd"><img class="confluence-embedded-image" width="248" src="./Tutorial_JAVA_files/Screen Shot 2016-02-05 at 11.19.16 AM.png" data-image-src="/wiki/download/attachments/71630907/Screen%20Shot%202016-02-05%20at%2011.19.16%20AM.png?version=1&amp;modificationDate=1454699967816&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="71631120" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Screen Shot 2016-02-05 at 11.19.16 AM.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="71630907" data-linked-resource-container-version="57" title="PRODUCT &gt; Rapture Getting Started: JAVA &gt; Screen Shot 2016-02-05 at 11.19.16 AM.png" data-location="PRODUCT &gt; Rapture Getting Started: JAVA &gt; Screen Shot 2016-02-05 at 11.19.16 AM.png" data-image-height="350" data-image-width="227"></td></tr><tr><td colspan="1" class="confluenceTd">Create a Blob repository again using&nbsp;RIM's&nbsp;<strong><em>+ Add</em>&nbsp;</strong>Repositories interface:<ol><li>Set&nbsp;<strong>Name</strong>&nbsp;to&nbsp;<em>tutorialBlob</em></li><li>Set&nbsp;<strong>Type</strong>&nbsp;to&nbsp;<em>Blob</em></li><li>Set&nbsp;<strong>Data System</strong>&nbsp;to&nbsp;<em>MongoDB</em></li><li>Press the&nbsp;<strong>OK</strong>&nbsp;Button</li></ol></td><td colspan="1" class="confluenceTd">&nbsp;</td><td colspan="1" class="confluenceTd"><img class="confluence-embedded-image" src="./Tutorial_JAVA_files/image2016-2-4 13-40-21.png" data-image-src="/wiki/download/attachments/71630907/image2016-2-4%2013%3A40%3A21.png?version=1&amp;modificationDate=1454635162878&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="71631040" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-2-4 13:40:21.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="71630907" data-linked-resource-container-version="57" title="PRODUCT &gt; Rapture Getting Started: JAVA &gt; image2016-2-4 13:40:21.png" data-location="PRODUCT &gt; Rapture Getting Started: JAVA &gt; image2016-2-4 13:40:21.png" data-image-height="382" data-image-width="235"></td></tr><tr><td colspan="3" class="confluenceTd">With the two repositories in place we are ready to move onto the next step in the tutorial: upload a CSV file.</td></tr></tbody></table></div>
-</div>
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<hr><p>&nbsp;</p><table class="wysiwyg-macro" data-macro-name="info" data-macro-id="8d040aa2-5c27-4ce5-8224-7b49f7bf4810" data-macro-parameters="title=Create Repos" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2luZm86dGl0bGU9Q3JlYXRlIFJlcG9zfQ&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><p>To Add a repo simply select "+ ADD" under REPOSITORIES.</p><p><img class="confluence-embedded-image" src="./Tutorial_JAVA_files/Screen Shot 2016-02-05 at 11.06.47 AM.png" data-image-src="/wiki/download/attachments/71630907/Screen%20Shot%202016-02-05%20at%2011.06.47%20AM.png?version=1&amp;modificationDate=1454699508107&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="71631117" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Screen Shot 2016-02-05 at 11.06.47 AM.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="71630907" data-linked-resource-container-version="57" title="PRODUCT &gt; Rapture Getting Started: JAVA &gt; Screen Shot 2016-02-05 at 11.06.47 AM.png" data-location="PRODUCT &gt; Rapture Getting Started: JAVA &gt; Screen Shot 2016-02-05 at 11.06.47 AM.png" data-image-height="172" data-image-width="257"></p></td></tr></tbody></table></div>
-</div>
-</div>
-<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<hr><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p></div>
-</div>
-<div class="cell normal" data-type="normal">
-<div class="innerCell">
-<hr><h2>Build the project</h2><p>If you git cloned the project (see&nbsp;<a href="https://incapture.atlassian.net/wiki/display/PDT/Rapture+Getting+Started+Guide#RaptureGettingStartedGuide-Setupyourclientenvironment.">main page under Set up your client environment</a>) then please build the Java project.</p><p>This will output java executables here: &nbsp;<span>/Intro01/Java/App/build/install/App/bin&nbsp;<span style="color: rgb(255,0,0);"><strong>(FIX THIS)</strong></span></span></p><p><span><br></span></p><table class="wysiwyg-macro" data-macro-name="div" data-macro-id="8fcded1c-3521-416b-98d6-b8cfd36de8d6" data-macro-parameters="id=getcode|style=color:white;background-color:black;padding:20px;border:white;border-color: gray;border-radius: 5px;" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2RpdjpzdHlsZT1jb2xvcjp3aGl0ZTtiYWNrZ3JvdW5kLWNvbG9yOmJsYWNrO3BhZGRpbmc6MjBweDtib3JkZXI6d2hpdGU7Ym9yZGVyLWNvbG9yOiBncmF5O2JvcmRlci1yYWRpdXM6IDVweDt8aWQ9Z2V0Y29kZX0&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>$ cd&nbsp;RaptureTutorials/Intro01</pre><pre>$ ./gradlew build&nbsp;installApp</pre></td></tr></tbody></table></div>
-</div>
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<hr><p>&nbsp;</p><p>&nbsp;</p></div>
-</div>
-</div>
-<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<hr><p>&nbsp;</p><p>&nbsp;</p></div>
-</div>
-<div class="cell normal" data-type="normal">
-<div class="innerCell">
-<hr><h2>Capture Data&nbsp;– Load a CSV</h2><ol><li>cd&nbsp;RaptureTutorials/Intro01/Java/App/build/install/App/bin <span style="color: rgb(255,0,0);"><strong>(FIX THIS)</strong></span></li><li><p>Run the Java exe with following parameters<br><br></p><table class="wysiwyg-macro" data-macro-name="div" data-macro-id="dbc04b7d-efbc-4843-8a06-bc2d46bf5df6" data-macro-parameters="id=getcode|style=color:white;background-color:black;padding:20px;border:white;border-color: gray;border-radius: 5px;" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2RpdjpzdHlsZT1jb2xvcjp3aGl0ZTtiYWNrZ3JvdW5kLWNvbG9yOmJsYWNrO3BhZGRpbmc6MjBweDtib3JkZXI6d2hpdGU7Ym9yZGVyLWNvbG9yOiBncmF5O2JvcmRlci1yYWRpdXM6IDVweDt8aWQ9Z2V0Y29kZX0&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>$ /App -s upload &lt;CSV file location&gt; -p &lt;RIM env password&gt;</pre></td></tr></tbody></table></li></ol><p>At this point we have uploaded the CSV file into the&nbsp;<a href="blob://tutorialBlob repository">blob://tutorialBlob repository</a>.&nbsp;</p><p>Look at the code in&nbsp;RaptureTutorials/Intro01/Java/App/src/main/java/rapture/tutorial/App.java in the&nbsp;upload() method.</p><p>Next up we will run code to translate the CSV file (in the blob repo) to a document (stored in a document repo).</p><p>&nbsp;</p><p><span style="color: rgb(255,0,0);"><strong>(FIX THIS)&nbsp;– no crazy paths like that please.&nbsp;</strong></span></p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="2c7b926c-b651-4823-89aa-06f8de6f83bd" data-macro-parameters="language=bash|theme=Midnight" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6bGFuZ3VhZ2U9YmFzaHx0aGVtZT1NaWRuaWdodH0&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>$ ./App -s upload -f ../../../../../../resources/introDataInbound.csv -p &lt;your RIM env password&gt;
-Starting up..
-Logging in to http://&lt;RIM env name&gt;.incapture.net:8665/rapture
-Logged in and initialized
-Reading CSV from file ../../../../../../resources/introDataInbound.csv
-Uploading CSV
-CSV uploaded to blob://tutorialBlob/introDataInbound
-Done.</pre></td></tr></tbody></table><h3>You can now view the CSV in Rapture Information Manager.</h3><p><span style="color: rgb(255,0,0);"><strong>(ADD SCREENSHOT)</strong></span></p></div>
-</div>
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<hr><p>&nbsp;</p><table class="wysiwyg-macro" data-macro-name="info" data-macro-id="f77da24e-7dce-44e9-8838-c6f1870ce7bd" data-macro-parameters="title=In this step" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2luZm86dGl0bGU9SW4gdGhpcyBzdGVwfQ&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><p>Run upload script to load CSV into Blob</p><p>View Blob</p></td></tr></tbody></table></div>
-</div>
-</div>
-<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<hr><p>&nbsp;</p><p>&nbsp;</p></div>
-</div>
-<div class="cell normal" data-type="normal">
-<div class="innerCell">
-<hr><h2>Translate Data&nbsp;– Create documents from the blob</h2><p>Again in the same folder&nbsp;Intro01/Java/App/build/install/App/bin run&nbsp;the Java exe with following parameters:&nbsp;<span style="color: rgb(255,0,0);"><strong>(FIX THIS)</strong></span></p><p>&nbsp;</p><table class="wysiwyg-macro" data-macro-name="div" data-macro-id="3564394e-8741-445f-99e6-d55e394a2a59" data-macro-parameters="id=getcode|style=color:white;background-color:black;padding:20px;border:white;border-color: gray;border-radius: 5px;" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2RpdjpzdHlsZT1jb2xvcjp3aGl0ZTtiYWNrZ3JvdW5kLWNvbG9yOmJsYWNrO3BhZGRpbmc6MjBweDtib3JkZXI6d2hpdGU7Ym9yZGVyLWNvbG9yOiBncmF5O2JvcmRlci1yYWRpdXM6IDVweDt8aWQ9Z2V0Y29kZX0&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>$ ./App -s blobToDoc -p &lt;RIM env password&gt;</pre></td></tr></tbody></table><p>&nbsp;</p><p>At this point the CSV (blob) data has been converted into a document type, which is in this repository: <a href="document://tutorialDoc/introDataInbound">document://tutorialDoc/introDataInbound</a></p><p>Look at the code in&nbsp;RaptureTutorials/Intro01/Java/App/src/main/java/rapture/tutorial/App.java in the&nbsp;blobToDoc() method.</p><p>Next up we will look at creating series data from the document.</p><p>&nbsp;</p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="537a9e5c-54f8-4102-910c-c4e38e019ee0" data-macro-parameters="language=bash|theme=Midnight" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6bGFuZ3VhZ2U9YmFzaHx0aGVtZT1NaWRuaWdodH0&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>$ ./App -s blobToDoc -p &lt;your RIM env password&gt;
-Starting up..
-Logging in to http://&lt;RIM env name&gt;.incapture.net:8665/rapture
-Logged in and initialized
-Retrieving raw CSV content from blob://tutorialBlob/introDataInbound
-Translating raw CSV content to a JSON document
-Storing JSON document in Rapture
-Done.</pre></td></tr></tbody></table><h3>You can now view your document in the Rapture Information Manager browser:</h3><p><span style="color: rgb(255,0,0);"><strong>(ADD SCREENSHOT)</strong></span></p></div>
-</div>
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<hr><p>&nbsp;</p><p>&nbsp;</p></div>
-</div>
-</div>
-<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<hr><p>&nbsp;</p><p>&nbsp;</p></div>
-</div>
-<div class="cell normal" data-type="normal">
-<div class="innerCell">
-<hr><h2>Analyze Data&nbsp;– Create series data from documents</h2><p>This step will take the document and create a series&nbsp;</p><p>Again in the same folder&nbsp;Intro01/Java/App/build/install/App/bin run&nbsp;the Java exe with following parameters:&nbsp;<span style="color: rgb(255,0,0);"><strong>(FIX THIS)</strong></span></p><p>&nbsp;</p><table class="wysiwyg-macro" data-macro-name="div" data-macro-id="d19dde7c-b10e-4e2a-856c-f2d69d07599e" data-macro-parameters="id=getcode|style=color:white;background-color:black;padding:20px;border:white;border-color: gray;border-radius: 5px;" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2RpdjpzdHlsZT1jb2xvcjp3aGl0ZTtiYWNrZ3JvdW5kLWNvbG9yOmJsYWNrO3BhZGRpbmc6MjBweDtib3JkZXI6d2hpdGU7Ym9yZGVyLWNvbG9yOiBncmF5O2JvcmRlci1yYWRpdXM6IDVweDt8aWQ9Z2V0Y29kZX0&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>$ ./App -s docToSeries -p &lt;RIM env password&gt;</pre></td></tr></tbody></table><p>&nbsp;</p><p>At this point a a series has been created using data from&nbsp;<span><a href="document://tutorialDoc/introDataInbound">document://tutorialDoc/introDataInbound</a>.</span></p><p>&nbsp;<span>Look at the code in&nbsp;RaptureTutorials/Intro01/Java/App/src/main/java/rapture/tutorial/App.java in the&nbsp;docToSeries() method.</span></p><p>Next we will create a pdf from the series repository.</p><p>&nbsp;</p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="d9d429f4-e7a2-4cf3-b5cc-858afe63c4cd" data-macro-parameters="language=bash|theme=Midnight" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6bGFuZ3VhZ2U9YmFzaHx0aGVtZT1NaWRuaWdodH0&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>$ ./App -s docToSeries -p &lt;your RIM env password&gt;
-Starting up..
-Logging in to http://&lt;RIM env name&gt;.incapture.net:8665/rapture
-Logged in and initialized
-Adding price data from document://tutorialDoc/introDataTranslated to series at series://datacapture/introDataInbound
-Done.</pre></td></tr></tbody></table><h3>Your data has now been stored in Rapture Information Manager in three forms: raw CSV, JSON document, and series data. You can view it from the RIM web interface.</h3><p><span style="color: rgb(255,0,0);"><strong>(ADD SCREENSHOT)</strong></span></p></div>
-</div>
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<hr><p>&nbsp;</p><table class="wysiwyg-macro" data-macro-name="info" data-macro-id="44ac0efb-eb46-4d63-afc6-330cf4fb773d" data-macro-parameters="title=In this step" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2luZm86dGl0bGU9SW4gdGhpcyBzdGVwfQ&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><p>Run translate script to create Doc</p><p>View Doc</p></td></tr></tbody></table></div>
-</div>
-</div>
-<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<hr><p>&nbsp;</p></div>
-</div>
-<div class="cell normal" data-type="normal">
-<div class="innerCell">
-<hr><h2>Distribute Data&nbsp;– create reports from series Data</h2><p>This step will produce a pdf from the series data.</p><ol><li>Go to this folder&nbsp;Intro01/Java/ReportApp/build/install/ReportApp/bin&nbsp;<span style="color: rgb(255,0,0);"><strong>(FIX THIS)</strong></span></li><li><p>Run this command</p><table class="wysiwyg-macro" data-macro-name="div" data-macro-id="a1c0e27c-7e48-403a-9e76-548f4db8bd83" data-macro-parameters="id=getcode|style=color:white;background-color:black;padding:20px;border:white;border-color: gray;border-radius: 5px;" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2RpdjpzdHlsZT1jb2xvcjp3aGl0ZTtiYWNrZ3JvdW5kLWNvbG9yOmJsYWNrO3BhZGRpbmc6MjBweDtib3JkZXI6d2hpdGU7Ym9yZGVyLWNvbG9yOiBncmF5O2JvcmRlci1yYWRpdXM6IDVweDt8aWQ9Z2V0Y29kZX0&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>$ ./ReportApp</pre></td></tr></tbody></table></li><li>Once it is finished, a file called&nbsp;<strong>output.pdf</strong>&nbsp;should be in your current directory which you can open with your PDF reader</li></ol><p>&nbsp;</p><p>Look at the code in&nbsp;RaptureTutorials/Intro01/Java/ReportApp/src/main/java/rapture/tutorial/ReportApp.java.</p><p>&nbsp;</p><table class="wysiwyg-macro" data-macro-name="code" data-macro-id="5e2282f4-83f2-4314-8b2e-d1d1e73ad538" data-macro-parameters="language=bash|theme=Midnight" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6bGFuZ3VhZ2U9YmFzaHx0aGVtZT1NaWRuaWdodH0&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="PLAIN_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>$ ./ReportApp
-Password: &lt;enter your RIM env password here&gt;
-15:19:25,012  INFO [main] (ReportApp.java:61) - Starting ReportApp...
-15:19:25,613  INFO [main] (ReportApp.java:67) - Processing: AUDUSD_CURNCY_Dummy
-15:19:26,146  INFO [main] (ReportApp.java:67) - Processing: USGG2YR_Index_Dummy
-15:19:27,683  INFO [main] (ReportApp.java:80) - Successfully generated report: output.pdf
-15:19:27,738  INFO [main] (ReportApp.java:86) - Successfully uploaded report: output.pdf</pre></td></tr></tbody></table><h3><strong>You can also use the RIM user interface to see the pdf on Rapture</strong></h3><p>&nbsp;<strong><a href="blob://blobmongo/folder1/output.pdf">blob://blobmongo/folder1/output.pdf</a></strong></p><p><span style="color: rgb(255,0,0);"><strong>(ADD SCREENSHOT)</strong></span></p></div>
-</div>
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<hr><p>&nbsp;</p><table class="wysiwyg-macro" data-macro-name="info" data-macro-id="cbbdecaf-2252-4331-92fd-def24ad792c7" data-macro-parameters="title=In this step" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2luZm86dGl0bGU9SW4gdGhpcyBzdGVwfQ&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><p>Run analyze script to create/update Series</p><p>View Series</p></td></tr></tbody></table></div>
-</div>
-</div>
-<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<hr><p>&nbsp;</p><p>&nbsp;</p></div>
-</div>
-<div class="cell normal" data-type="normal">
-<div class="innerCell">
-<hr><h2>5. Reset Data (Optional)</h2><p>&nbsp;</p><table class="wysiwyg-macro" data-macro-name="note" data-macro-id="fe8c084e-21fb-4fb1-a5b4-91d7ac820bf1" data-macro-parameters="title=Reset data" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e25vdGU6dGl0bGU9UmVzZXQgZGF0YX0&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><p>Follow these steps to reset your demo environment.</p><ol><li>Using RIM, go to Scripts/Tutorial01/tutorialCleanup.rfx and click open.</li><li>Execute the script using the "Run Script" button</li></ol></td></tr></tbody></table></div>
-</div>
-<div class="cell sidebars" data-type="sidebars">
-<div class="innerCell">
-<hr><p>&nbsp;</p><p>&nbsp;</p></div>
-</div>
-</div>
-<div class="columnLayout single" data-layout="single">
-<div class="cell normal" data-type="normal">
-<div class="innerCell">
-<p>&nbsp;</p></div>
-</div>
-</div>
-<div class="columnLayout single" data-layout="single">
-<div class="cell normal" data-type="normal">
-<div class="innerCell">
-<p>&nbsp;</p></div>
-</div>
-</div>
-</div>
-        <p>&nbsp;</p>
-    
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            PRODUCT : Rapture Getting Started: Java
+                        </span>
+                    </h1>
+                </div>
 
-</body></html>
+                <div id="content" class="view">
+                    <div class="page-metadata">
+
+
+
+
+
+
+
+            Created by <span class='author'> Andrew Clark</span>, last modified by <span class='editor'> Jeremy Flieder</span> on May 25, 2016
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <div class="contentLayout2">
+<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<p> </p><p> </p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<h1 id="RaptureGettingStarted:Java-Tutorial1:YourfirstRaptureJavaProject">Tutorial 1: Your first Rapture Java Project </h1><p><u>Objectives:</u></p><ol><li>Use of the RIM user interface to interact with Rapture managed data </li><li>Use of a client-side JAVA app to highlight the Rapture API </li></ol><p><u>This will cover the following steps:</u></p><ol><li>Uploading a CSV file to a blob repo in your RIM instance</li><li>Translating raw CSV data file into document data type</li><li>Creating a series using document created in step #2</li><li>Running a graph based report from series data in step #3 and saving as blob pdf</li></ol><p><u>For the purposes of this tutorial:</u></p><ul><li>A Java sample app is provided to allow you to exercise code and see the output in cmd line and follow along in the RIM user interface</li><li>It is recommended to also look at the source code</li><li>In this tutorial mac conventions are used for command line work</li><li>Windows commands are similar and an App.bat is provided</li></ul></div>
+</div>
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<div class="confluence-information-macro confluence-information-macro-note"><span class="aui-icon aui-icon-small aui-iconfont-warning confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>Before beginning this demonstration of Rapture it is expected that your environment satisfies the following pre-requisites</p><ol><li>Java 7 or 8 JRE is installed. At a terminal run j<em>ava -version</em> to check</li><li>If building the Java code on mac<ol><li>Follow this <a href="https://help.github.com/articles/set-up-git/" class="external-link" rel="nofollow">setup guide for git</a></li><li><span style="line-height: 1.42857;">brew install gradle</span></li></ol></li></ol></div></div></div>
+</div>
+</div>
+<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<hr/><p> </p><p> </p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr/><h2 id="RaptureGettingStarted:Java-1.CreatenewReposforuseinthisTutorial">1. Create new Repos for use in this Tutorial</h2><p> The first step in this tutorial is to login to your RIM instance and create the data repositories.</p><div class="table-wrap"><table class="wrapped confluenceTable"><colgroup><col/><col/><col/></colgroup><tbody><tr><th class="confluenceTh"><p>Process</p></th><th class="confluenceTh"> </th><th class="confluenceTh"> </th></tr><tr><td colspan="3" class="confluenceTd"><p>Login to your demo environment using url and credentials provided during signup</p></td></tr><tr><td colspan="1" class="confluenceTd"><span>Create a Document repository using RIM's </span><strong><em>+ Add</em></strong><span> Repositories interface:</span><ol><li>Set <strong>Name</strong> to <em>tutorialDoc</em></li><li>Set <strong>Type</strong> to <em>Document</em></li><li>Set <strong>Data System</strong> to <em>MongoDB</em></li><li>Press the <strong>OK</strong> Button</li></ol></td><td colspan="1" class="confluenceTd"> </td><td colspan="1" class="confluenceTd"><div class="content-wrapper"><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" width="248" src="attachments/71630907/71631120.png" data-image-src="attachments/71630907/71631120.png" data-unresolved-comment-count="0" data-linked-resource-id="71631120" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Screen Shot 2016-02-05 at 11.19.16 AM.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="71630907" data-linked-resource-container-version="73"></span></div></td></tr><tr><td colspan="1" class="confluenceTd">if not already added create a Blob repository again using RIM's <strong><em>+ Add</em> </strong>Repositories interface:<ol><li>Set <strong>Name</strong> to <em>tutorialBlob</em></li><li>Set <strong>Type</strong> to <em>Blob</em></li><li>Set <strong>Data System</strong> to <em>MongoDB</em></li><li>Press the <strong>OK</strong> Button</li></ol></td><td colspan="1" class="confluenceTd"> </td><td colspan="1" class="confluenceTd"><div class="content-wrapper"><span class="confluence-embedded-file-wrapper"><img class="confluence-embedded-image" src="attachments/71630907/71631040.png" data-image-src="attachments/71630907/71631040.png" data-unresolved-comment-count="0" data-linked-resource-id="71631040" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-2-4 13:40:21.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="71630907" data-linked-resource-container-version="73"></span></div></td></tr><tr><td colspan="3" class="confluenceTd">With the two repositories in place we are ready to move onto the next step in the tutorial: upload a CSV file.</td></tr></tbody></table></div></div>
+</div>
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<hr/><p> </p><div class="confluence-information-macro confluence-information-macro-information"><p class="title">Create Repos</p><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>To Add a repo simply select &quot;+ ADD&quot; under REPOSITORIES.</p><p><span class="confluence-embedded-file-wrapper"><img class="confluence-embedded-image" src="attachments/71630907/71631117.png" data-image-src="attachments/71630907/71631117.png" data-unresolved-comment-count="0" data-linked-resource-id="71631117" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Screen Shot 2016-02-05 at 11.06.47 AM.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="71630907" data-linked-resource-container-version="73"></span></p></div></div></div>
+</div>
+</div>
+<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<hr/><p> </p><p> </p><p> </p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr/><h2 id="RaptureGettingStarted:Java-2.Buildtheproject">2. Build the project</h2><p>If you git cloned the project (see <a href="https://incapture.atlassian.net/wiki/display/PDT/Rapture+Getting+Started+Guide#RaptureGettingStartedGuide-Setupyourclientenvironment." rel="nofollow">main page under Set up your client environment</a>) then please build the Java project.</p><p><span>From the setup process you will be in the RaptureTutorials directory already and issue the gradlew build command:</span></p><div
+        id="getcode"                style="color:white;background-color:black;padding:20px;border:white;border-color: gray;border-radius: 5px;"              >
+    <pre>$ ./gradlew build installDist</pre>
+</div>
+</div>
+</div>
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<hr/><p> </p><p> </p></div>
+</div>
+</div>
+<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<p> </p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<p>The App.exe demo program used to run various actions against the environment using Rapture's client API uses an argument pattern like this:</p><div
+        id="getcode"                style="color:white;background-color:black;padding:20px;border:white;border-color: gray;border-radius: 5px;"              >
+    <pre>$ /App -s &lt;command&gt; -p &lt;RIM env password&gt;</pre>
+</div>
+</div>
+</div>
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<div class="confluence-information-macro confluence-information-macro-information"><p class="title">Windows users</p><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>a batch file is also provided: App.bat</p></div></div></div>
+</div>
+</div>
+<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<hr/><p> </p><p> </p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr/><h2 id="RaptureGettingStarted:Java-3.CaptureData–LoadaCSV">3. Capture Data – Load a CSV</h2><p>Run the test program to upload the csv file to a blob in your Rapture instance:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: bash; gutter: false; theme: Midnight" data-theme="Midnight">$ cd $RAPTURE_HOME/Intro01/Java/App/build/install/App/bin
+$ ./App -s upload -p &lt;your RIM env password&gt;</pre>
+</div></div><p> </p><p>At this point we have uploaded the CSV file into the <a href="blob://tutorialBlob repository" rel="nofollow">blob://tutorialBlob repository</a>. </p><p>Look at the <a href="https://github.com/Incapture/RaptureTutorials/blob/master/Intro01/Java/App/src/main/java/rapture/tutorial/App.java" class="external-link" rel="nofollow">upload</a>() in the RaptureTutorials project to see the API calls used.</p><p>Look at the RIM interface to see the blob you uploaded.</p><p style="margin-left: 30.0px;"><span style="color: rgb(255,0,0);"><strong><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" height="250" src="attachments/71630907/73170956.png" data-image-src="attachments/71630907/73170956.png" data-unresolved-comment-count="0" data-linked-resource-id="73170956" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Screen Shot 2016-02-19 at 11.52.32 AM.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="71630907" data-linked-resource-container-version="73"></span><br/></strong></span></p><p><span style="color: rgb(0,0,0);">Next up we will run code to translate the CSV file (in the blob repo) to a document (in the document repo).</span></p></div>
+</div>
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<hr/><p> </p><div class="confluence-information-macro confluence-information-macro-information"><p class="title">In this step</p><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>Run upload script to load CSV into Blob</p><p>View Blob</p></div></div><div class="confluence-information-macro confluence-information-macro-information"><p class="title">Windows users</p><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p><span><span>A batch file is provided: App.bat</span></span></p><p><span>Use %RAPTURE_HOME% if needed</span></p></div></div></div>
+</div>
+</div>
+<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<hr/><p> </p><p> </p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr/><h2 id="RaptureGettingStarted:Java-4.TranslateData–Createdocumentsfromtheblob">4. Translate Data – Create documents from the blob</h2><p>Again in the same folder $<span>RAPTURE_HOME/</span>Intro01/Java/App/build/install/App/bin run the Java exe with following parameters:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: bash; gutter: false; theme: Midnight" data-theme="Midnight">$ ./App -s blobToDoc -p &lt;your RIM env password&gt;</pre>
+</div></div><p> </p><p>At this point the CSV (blob) data has been converted into a document type, which is in this repository: <a href="document://tutorialDoc/introDataTranslated" rel="nofollow">document://tutorialDoc/introDataTranslated</a></p><p>Look at the <a href="https://github.com/Incapture/RaptureTutorials/blob/master/Intro01/Java/App/src/main/java/rapture/tutorial/App.java" class="external-link" rel="nofollow">blobToDoc</a>() <span>in the RaptureTutorials project to see the API calls used.</span></p><p><span>Look at the RIM interface to see the document you created.</span></p><p style="margin-left: 30.0px;"><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" height="250" src="attachments/71630907/73170959.png" data-image-src="attachments/71630907/73170959.png" data-unresolved-comment-count="0" data-linked-resource-id="73170959" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Screen Shot 2016-02-19 at 11.58.03 AM.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="71630907" data-linked-resource-container-version="73"></span></p><p>Next up we will look at creating series data from the document.</p></div>
+</div>
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<div class="confluence-information-macro confluence-information-macro-information"><p class="title">In this step</p><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>Run translate step to create Doc</p><p>View Doc</p></div></div><div class="confluence-information-macro confluence-information-macro-information"><p class="title">Windows users</p><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p><span><span>A batch file is provided: App.bat</span></span></p><p><span>Use %RAPTURE_HOME% if needed</span></p></div></div></div>
+</div>
+</div>
+<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<hr/><p> </p><p> </p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr/><h2 id="RaptureGettingStarted:Java-5.AnalyzeData–Createseriesdatafromdocuments">5. Analyze Data – Create series data from documents</h2><p>Again in the same folder <span>$</span><span>RAPTURE_HOME</span>Intro01/Java/App/build/install/App/bin run the Java exe with following parameters:</p><div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<pre class="syntaxhighlighter-pre" data-syntaxhighlighter-params="brush: bash; gutter: false; theme: Midnight" data-theme="Midnight">$ ./App -s docToSeries -p &lt;your RIM env password&gt;</pre>
+</div></div><p>At this point a a series has been created using data from <a href="document://tutorialDoc/introDataTranslated" rel="nofollow">document://tutorialDoc/introDataTranslated</a>.</p><p>Look at the <a href="https://github.com/Incapture/RaptureTutorials/blob/master/Intro01/Java/App/src/main/java/rapture/tutorial/App.java" class="external-link" rel="nofollow">docToSeries</a>() <span>in the RaptureTutorials project to see the API calls used.</span></p><p>Your data has now been stored in Rapture Information Manager in three forms: raw CSV, JSON document, and series data.</p><p>You can view the series on the RIM web interface.</p><p style="margin-left: 30.0px;"><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" height="250" src="attachments/71630907/73170960.png" data-image-src="attachments/71630907/73170960.png" data-unresolved-comment-count="0" data-linked-resource-id="73170960" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Screen Shot 2016-02-19 at 12.02.16 PM.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="71630907" data-linked-resource-container-version="73"></span></p><p><span>Next we will create a pdf from the series repository.</span></p></div>
+</div>
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<hr/><p> </p><div class="confluence-information-macro confluence-information-macro-information"><p class="title">In this step</p><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>Run analyze step to create Series</p><p>View Series</p></div></div><div class="confluence-information-macro confluence-information-macro-information"><p class="title">Windows users</p><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p><span><span>A batch file is provided: App.bat</span></span></p><p><span>Use %RAPTURE_HOME% if needed</span></p></div></div></div>
+</div>
+</div>
+<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<hr/><p> </p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr/><h2 id="RaptureGettingStarted:Java-6.DistributeData–createreportsfromseriesData">6. Distribute Data – create reports from series Data</h2><p>This step will produce a pdf from the series data. The pdf is saved to your local directory and also the Rapture Instance.</p><p> </p><div
+        id="getcode"                style="color:white;background-color:black;padding:20px;border:white;border-color: gray;border-radius: 5px;"              >
+    <pre>$ cd $RAPTURE_HOME/Intro01/Java/ReportApp/build/install/ReportApp/bin</pre><div><pre>$ ./ReportApp</pre></div>
+</div>
+<p> </p><p>Look at the ReportApp <a class="external-link" href="https://github.com/Incapture/RaptureTutorials/blob/master/Intro01/Java/ReportApp/src/main/java/rapture/tutorial/ReportApp.java" rel="nofollow">code</a> in RaptureTutorials project.</p><p>You can look at the pdf on the RIM interface at this url <strong><a href="blob://tutorialBlob/output.pdf" rel="nofollow">blob://tutorialBlob/output.pdf</a></strong></p><p style="margin-left: 30.0px;"><strong><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" height="250" src="attachments/71630907/73170961.png" data-image-src="attachments/71630907/73170961.png" data-unresolved-comment-count="0" data-linked-resource-id="73170961" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Screen Shot 2016-02-19 at 12.04.28 PM.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="71630907" data-linked-resource-container-version="73"></span></strong></p></div>
+</div>
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<hr/><p> </p><div class="confluence-information-macro confluence-information-macro-information"><p class="title">In this step</p><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>Run report step to create PDF</p><p>View PDF and Blob</p></div></div><div class="confluence-information-macro confluence-information-macro-information"><p class="title">Windows users</p><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>A batch file is provided: Report.bat</p><p>Use %RAPTURE_HOME% if needed</p></div></div></div>
+</div>
+</div>
+<div class="columnLayout three-with-sidebars" data-layout="three-with-sidebars">
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<hr/><p> </p><p> </p></div>
+</div>
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<hr/><h2 id="RaptureGettingStarted:Java-7.ResetData(Optional)">7. Reset Data (Optional)</h2><p> </p><div class="confluence-information-macro confluence-information-macro-note"><p class="title">Reset data</p><span class="aui-icon aui-icon-small aui-iconfont-warning confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><p>Follow these steps to reset your demo environment.</p><ol><li>Using RIM, go to Scripts/Tutorial01/tutorialCleanup.rfx and click open.</li><li>Execute the script using the &quot;Run Script&quot; button</li></ol></div></div></div>
+</div>
+<div class="cell sidebars" data-type="sidebars">
+<div class="innerCell">
+<hr/><p> </p><p> </p></div>
+</div>
+</div>
+<div class="columnLayout single" data-layout="single">
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<p> </p></div>
+</div>
+</div>
+<div class="columnLayout single" data-layout="single">
+<div class="cell normal" data-type="normal">
+<div class="innerCell">
+<p> </p></div>
+</div>
+</div>
+</div>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630886.docx">ReflexDemo.docx</a> (application/vnd.openxmlformats-officedocument.wordprocessingml.document)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630887.zip">RCMDemo.zip</a> (application/zip)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630888.zip">ReflexRunner.zip</a> (application/zip)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630889.png">image2016-1-15 15:31:19.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630890.png">image2016-1-15 15:31:1.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630891.png">image2016-1-14 10:34:23.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630892.png">image2016-1-14 10:32:12.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630893.png">image2016-1-14 10:31:43.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630894.png">image2016-1-14 10:31:18.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630895.pdf">Reflex Language Reference_v1pt10.pdf</a> (application/pdf)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630896.png">image2016-1-8 9:31:40.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630897.png">image2016-1-8 9:31:14.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630898.png">image2016-1-7 16:3:41.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630899.png">image2016-1-7 16:3:16.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630900.png">image2016-1-7 16:2:30.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630901.png">image2015-6-16 12:50:33.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630902.png">image2015-6-16 12:52:48.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630903.png">image2015-6-16 12:54:26.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630904.png">resultPrintHello.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630905.png">initial.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71630906.png">step4result.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71631040.png">image2016-2-4 13:40:21.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71631117.png">Screen Shot 2016-02-05 at 11.06.47 AM.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71631118.png">Screen Shot 2016-02-05 at 11.17.05 AM.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71631119.png">Screen Shot 2016-02-05 at 11.17.40 AM.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/71631120.png">Screen Shot 2016-02-05 at 11.19.16 AM.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/73170956.png">Screen Shot 2016-02-19 at 11.52.32 AM.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/73170959.png">Screen Shot 2016-02-19 at 11.58.03 AM.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/73170960.png">Screen Shot 2016-02-19 at 12.02.16 PM.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/71630907/73170961.png">Screen Shot 2016-02-19 at 12.04.28 PM.png</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+
+
+                </div>             </div>
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on May 26, 2016 13:54</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

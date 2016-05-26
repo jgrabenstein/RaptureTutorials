@@ -1,78 +1,81 @@
 <!DOCTYPE html>
-<!-- saved from url=(0090)https://incapture.atlassian.net/wiki/plugins/viewsource/viewpagesrc.action?pageId=72319060 -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>View Source</title>
-        <link rel="canonical" href="https://incapture.atlassian.net/wiki/pages/viewpage.action?pageId=$action.page.id">
-        <script>
-window.WRM=window.WRM||{};window.WRM._unparsedData=window.WRM._unparsedData||{};window.WRM._unparsedErrors=window.WRM._unparsedErrors||{};
-WRM._unparsedData["com.atlassian.plugins.atlassian-plugins-webresource-plugin:context-path.context-path"]="\"/wiki\"";
-WRM._unparsedData["com.atlassian.plugins.atlassian-plugins-webresource-rest:web-resource-manager.resource-base-url-pattern"]="\"(?:/wiki(?:/s/.*?/_)?/download|//d1ixbz5qgnvms3\\\\.cloudfront\\\\.net/incapture\\\\.atlassian\\\\.net/wiki(?:/s/.*?/_)?/download)\"";
-if(window.WRM._dataArrived)window.WRM._dataArrived();</script>
-<link type="text/css" rel="stylesheet" href="./RIM_Overview_files/batch.css" media="all">
-<!--[if lt IE 9]>
-<link type="text/css" rel="stylesheet" href="//d1ixbz5qgnvms3.cloudfront.net/incapture.atlassian.net/wiki/s/000a09a525c066bad12450ab87d749eb-CDN/en_GB/6428/2ea41027c91142646414d0fb5d19218adf96fb83/f6fc99cd925974d8fcaaa74d4e8c1f41/_/download/contextbatch/css/_super/batch.css?atlassian.aui.raphael.disabled=true&amp;conditionalComment=lt+IE+9&amp;jquery.external=true&amp;relative-url=true"  media="all">
-<![endif]-->
-<!--[if lte IE 9]>
-<link type="text/css" rel="stylesheet" href="//d1ixbz5qgnvms3.cloudfront.net/incapture.atlassian.net/wiki/s/000a09a525c066bad12450ab87d749eb-CDN/en_GB/6428/2ea41027c91142646414d0fb5d19218adf96fb83/f6fc99cd925974d8fcaaa74d4e8c1f41/_/download/contextbatch/css/_super/batch.css?atlassian.aui.raphael.disabled=true&amp;conditionalComment=lte+IE+9&amp;jquery.external=true&amp;relative-url=true"  media="all">
-<![endif]-->
-<link type="text/css" rel="stylesheet" href="./RIM_Overview_files/batch(1).css" media="all">
-<link type="text/css" rel="stylesheet" href="./RIM_Overview_files/batch(2).css" media="all">
-<link type="text/css" rel="stylesheet" href="./RIM_Overview_files/batch(3).css" media="all">
-<!--[if lte IE 9]>
-<link type="text/css" rel="stylesheet" href="//d1ixbz5qgnvms3.cloudfront.net/incapture.atlassian.net/wiki/s/ab37dc21819eccdc9e77d6fc35522331-CDN/en_GB/6428/2ea41027c91142646414d0fb5d19218adf96fb83/24652ae65cfb418cb7fc33f6ce4ac990/_/download/contextbatch/css/editor-content,-_super/batch.css?conditionalComment=lte+IE+9&amp;confluence.view.edit.transition=true&amp;relative-url=true"  media="all">
-<![endif]-->
-<link type="text/css" rel="stylesheet" href="./RIM_Overview_files/colors.css" media="all">
-
+<html>
+    <head>
+        <title>PRODUCT : Rapture Information Manager Overview</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
 
-    <body class="mceContentBody aui-theme-default wiki-content fullsize">
-        <p>&nbsp;</p>         <div class="contentLayout2">
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            PRODUCT : Rapture Information Manager Overview
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+
+
+
+
+
+
+
+            Created by <span class='author'> Andrew Clark</span>, last modified by <span class='editor'> C Y Tan</span> on Mar 14, 2016
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <div class="contentLayout2">
 <div class="columnLayout single" data-layout="single">
 <div class="cell normal" data-type="normal">
 <div class="innerCell">
-<hr><h1>Introduction to your Rapture Information Manager</h1><p><span style="color: rgb(0,0,0);">This guide will introduce you to the Rapture Information Manager (RIM) application which is running on a hosted instance. &nbsp;RIM is built on Incapture's Rapture Platform. The RIM application is one part of&nbsp;Rapture Data&nbsp;– the data-lifecycle manager built on Rapture.&nbsp;&nbsp;You can interact with RIM through its web interface, or though exposed APIs. For the demo we are exposing three flavors of API: Java, Python and Reflex.&nbsp;</span></p><p><span style="color: rgb(0,0,0);">This guide will introduce you to the basic interactions with Rapture, and walk you through the Capture, Curate, Search and Distribute steps that the RIM supports.&nbsp;<span>To help you get started, sample data has been pre-loaded onto your Rapture instance.&nbsp;</span></span></p><p><strong>Who is this for?</strong>&nbsp;</p><p>&nbsp;Retrieving data and making it available for subsequent access is a common data processing problem across industries.&nbsp;The RIM application built on&nbsp;Rapture&nbsp;makes this easy to achieve in a consistent, robust and scalable way. This product will be of interest to users across various domains who are tasked with managing complex data in a controlled and audited manner.&nbsp;</p><p><strong>What are the goals of this Intro?&nbsp;</strong></p><ul><li>Develop an understanding of certain key concepts in Rapture, the underlying platform which powers the RIM application</li><li>Load and transform datasets&nbsp;in your RIM application; learn how to perform these operations in a few different ways:&nbsp;<ul><li>Server and client side Reflex scripts</li><li>Client-side Java API calls</li><li>Client-side Python API calls<strong><br></strong></li></ul></li></ul><p><strong>Additional Information</strong>&nbsp;</p><ul><li>Reflex is a scripting language developed here at Incapture Technologies. It is a procedural language designed for performing data manipulation on a Rapture Platform.&nbsp;<ul><li>We will demonstrate how to perform various operations using Reflex as part of this tutorial; for those interested in learning more, please check out the&nbsp;<a class="confluence-link" href="https://incapture.atlassian.net/wiki/download/attachments/72319060/Reflex%20Language%20Reference_v1pt10.pdf?version=1&amp;modificationDate=1455053669115&amp;api=v2" data-linked-resource-container-id="72319060" data-linked-resource-container-version="1" data-linked-resource-content-type="application/pdf" data-linked-resource-id="72319048" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Reflex Language Reference_v1pt10.pdf" data-base-url="https://incapture.atlassian.net/wiki">Reflex Language Reference</a>. &nbsp;</li></ul></li><li>For further reading on the underlying Rapture platform, please check out additional resources on our&nbsp;<a href="https://incapture.atlassian.net/wiki/display/PUB/Public">Public Wiki</a>.</li><li>Latest API&nbsp;<a href="http://repo.incapturesolutions.com/apidoc/#_introduction">documentation</a></li></ul><p>For sales or other general inquiries, please contact&nbsp;<a href="mailto:sales@incapturetechnologies.com">sales@incapturetechnologies.com</a></p></div>
+<hr/><h1 id="RaptureInformationManagerOverview-IntroductiontoyourRaptureInformationManager">Introduction to your Rapture Information Manager</h1><p><span style="color: rgb(0,0,0);">This guide will introduce you to the Rapture Information Manager (RIM) application which is running on a hosted instance.  RIM is built on Incapture's Rapture Platform. The RIM application is one part of Rapture Data – the data-lifecycle manager built on Rapture.  You can interact with RIM through its web interface, or through exposed APIs. For the demo we are exposing three flavors of API: Java, Python and Reflex. </span></p><p><span style="color: rgb(0,0,0);">This guide will introduce you to the basic interactions with Rapture, and walk you through the Capture, Curate, Search and Distribute steps that the RIM supports. <span>To help you get started, sample data has been pre-loaded onto your Rapture instance. </span></span></p><p><strong>Who is this for?</strong> </p><p> Retrieving data and making it available for subsequent access is a common data processing problem across industries. The RIM application built on Rapture makes this easy to achieve in a consistent, robust and scalable way. This product will be of interest to users across various domains who are tasked with managing complex data in a controlled and audited manner. </p><p><strong>What are the goals of this Intro? </strong></p><ul><li>Develop an understanding of certain key concepts in Rapture, the underlying platform which powers the RIM application</li><li>Load and transform datasets in your RIM application; learn how to perform these operations in a few different ways: <ul><li>Server and client side Reflex scripts</li><li>Client-side Java API calls</li><li>Client-side Python API calls<strong><br/></strong></li></ul></li></ul><p><strong>Additional Information</strong> </p><ul><li>Reflex is a scripting language developed here at Incapture Technologies. It is a procedural language designed for performing data manipulation on a Rapture Platform. <ul><li>We will demonstrate how to perform various operations using Reflex as part of this tutorial; for those interested in learning more, please check out the <a href="attachments/72319060/72319048.pdf" data-linked-resource-id="72319048" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Reflex Language Reference_v1pt10.pdf" data-nice-type="PDF Document" data-linked-resource-content-type="application/pdf" data-linked-resource-container-id="72319060" data-linked-resource-container-version="2">Reflex Language Reference</a>.  </li></ul></li><li>For further reading on the underlying Rapture platform, please check out additional resources on our <a href="https://incapture.atlassian.net/wiki/display/PUB/Public" rel="nofollow">Public Wiki</a>.</li><li>Latest API <a href="http://repo.incapturesolutions.com/apidoc/#_introduction" class="external-link" rel="nofollow">documentation</a></li></ul><p>For sales or other general inquiries, please contact <a href="mailto:sales@incapturetechnologies.com" class="external-link" rel="nofollow">sales@incapturetechnologies.com</a></p></div>
 </div>
 </div>
 <div class="columnLayout single" data-layout="single">
 <div class="cell normal" data-type="normal">
 <div class="innerCell">
-<hr><h1>What is in your demo instance?</h1><ul><li><strong style="line-height: 1.42857;"><span style="color: rgb(0,0,0);">Rapture Information Manager</span></strong><ul><li><p class="_mce_tagged_br">Web interface supporting CRUD operations on Rapture managed data (Documents, Series, Blobs)</p></li><li><p class="_mce_tagged_br">Reflex REPL (Rapture's server and client side scripting language)</p></li></ul></li></ul><ul><li><p><strong><span style="color: rgb(0,0,0);">Core Rapture API</span></strong></p><ul><li>Instance of a single Rapture API server</li><li>API access to Document,&nbsp;Series and Blob repository types</li></ul></li></ul></div>
+<hr/><h1 id="RaptureInformationManagerOverview-Whatisinyourdemoinstance?">What is in your demo instance?</h1><ul><li><strong style="line-height: 1.42857;"><span style="color: rgb(0,0,0);">Rapture Information Manager</span></strong><ul><li><p class="_mce_tagged_br">Web interface supporting CRUD operations on Rapture managed data (Documents, Series, Blobs)</p></li><li><p class="_mce_tagged_br">Reflex REPL (Rapture's server and client side scripting language)</p></li></ul></li></ul><ul><li><p><strong><span style="color: rgb(0,0,0);">Core Rapture API</span></strong></p><ul><li>Instance of a single Rapture API server</li><li>API access to Document, Series and Blob repository types</li></ul></li></ul></div>
 </div>
 </div>
 <div class="columnLayout single" data-layout="single">
 <div class="cell normal" data-type="normal">
 <div class="innerCell">
-<p><img class="editor-inline-macro" src="./RIM_Overview_files/macro" data-macro-name="anchor" data-macro-id="9b4558c5-48b8-4916-8387-9491709c9b90" data-macro-default-parameter="GetDemoEnv" data-macro-schema-version="1"></p><p>If you haven't already signed up for RIM demo, click <u><a href="http://etienne.incapture.net/#/register">here</a></u> to get started.&nbsp;</p><p>You will register, login into your dashboard and request a demo RIM environment. That request kicks off an automated provisioning system that will spin up an environment and install sample data on it. You should expect to get two emails in the process to indicate progress and login details. We implemented the request and provisioning system ourselves using Rapture, MongoDB,&nbsp;<a href="https://www.docker.com/">Docker</a> and <a href="https://www.tutum.co/">Tutum</a> on ec2. &nbsp;</p><p>Of course, sometimes things in life don't go according to plan! if you are experiencing any problems our friendly support folks will reach out and get you moving again. Contact us at&nbsp;support<a style="text-decoration: underline;" href="mailto:sales@incapturetechnologies.com">@incapturetechnologies.com</a></p></div>
+<p><span class="confluence-anchor-link" id="RaptureInformationManagerOverview-GetDemoEnv"></span></p><p>If you haven't already signed up for RIM demo, click <u><a href="http://etienne.incapture.net/#/register" class="external-link" rel="nofollow">here</a></u> to get started. </p><p>You will register, login into your dashboard and request a demo RIM environment. That request kicks off an automated provisioning system that will spin up an environment and install sample data on it. You should expect to get two emails in the process to indicate progress and login details. We implemented the request and provisioning system ourselves using Rapture, MongoDB, <a href="https://www.docker.com/" class="external-link" rel="nofollow">Docker</a> and <a href="https://www.tutum.co/" class="external-link" rel="nofollow">Tutum</a> on ec2.  </p><p>Of course, sometimes things in life don't go according to plan! if you are experiencing any problems our friendly support folks will reach out and get you moving again. Contact us at support<a style="text-decoration: underline;" href="mailto:sales@incapturetechnologies.com" class="external-link" rel="nofollow">@incapturetechnologies.com</a></p></div>
 </div>
 </div>
 <div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
 <div class="cell aside" data-type="aside">
 <div class="innerCell">
-<hr><h1>RIM Overview</h1><p><span style="color: rgb(0,0,0);">Now that you have access to a demo environment you can login to RIM to use both the user interface and the underlying Rapture platform API.</span></p><p>&nbsp;</p><table class="wysiwyg-macro" data-macro-name="info" data-macro-id="94eacc7d-ba70-4588-b158-e38778f6e31a" data-macro-parameters="title=Default Login" data-macro-schema-version="1" style="background-image: url(/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2luZm86dGl0bGU9RGVmYXVsdCBMb2dpbn0&amp;locale=en_GB&amp;version=2); background-repeat: no-repeat;" data-macro-body-type="RICH_TEXT"><tbody><tr><td class="wysiwyg-macro-body"><pre>Username: { as you selected }</pre><pre>Password: { temporary password from email }</pre></td></tr></tbody></table><p>This section gives a quick introduction to Rapture's native (or managed) data types and use of RIM's user interface.</p></div>
+<hr/><h1 id="RaptureInformationManagerOverview-RIMOverview">RIM Overview</h1><p><span style="color: rgb(0,0,0);">Now that you have access to a demo environment you can login to RIM to use both the user interface and the underlying Rapture platform API.</span></p><p> </p><div class="confluence-information-macro confluence-information-macro-information"><p class="title">Default Login</p><span class="aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon"></span><div class="confluence-information-macro-body"><pre>Username: { as you selected }</pre><pre>Password: { temporary password from email }</pre></div></div><p>This section gives a quick introduction to Rapture's native (or managed) data types and use of RIM's user interface.</p></div>
 </div>
 <div class="cell normal" data-type="normal">
 <div class="innerCell">
-<hr><p><img class="confluence-embedded-image" src="./RIM_Overview_files/image2016-2-4 13-31-41.png" data-image-src="/wiki/download/attachments/72319060/image2016-2-4%2013%3A31%3A41.png?version=1&amp;modificationDate=1455053669275&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="72319038" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-2-4 13:31:41.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="72319060" data-linked-resource-container-version="1" title="PRODUCT &gt; Rapture Information Manager Overview &gt; image2016-2-4 13:31:41.png" data-location="PRODUCT &gt; Rapture Information Manager Overview &gt; image2016-2-4 13:31:41.png" data-image-height="445" data-image-width="1000"></p><p>&nbsp;</p><p>&nbsp;</p></div>
+<hr/><p><span class="confluence-embedded-file-wrapper"><img class="confluence-embedded-image" src="attachments/72319060/72319038.png" data-image-src="attachments/72319060/72319038.png" data-unresolved-comment-count="0" data-linked-resource-id="72319038" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-2-4 13:31:41.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="72319060" data-linked-resource-container-version="2"></span></p><p> </p><p> </p></div>
 </div>
 </div>
 <div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
 <div class="cell aside" data-type="aside">
 <div class="innerCell">
-<hr><p><strong>Using RIM&nbsp;interface</strong></p><p><span style="color: rgb(0,0,0);">When you open RIM you will be presented with a list of all&nbsp;<strong>Repositories</strong>&nbsp;which hold all&nbsp;<em>Data</em>&nbsp;in&nbsp;<em>Rapture</em>. &nbsp;Sample data is preloaded and will be used during the tutorial.</span></p><p>As you browse this data, keep in mind a few key concepts:</p><p><em><strong>Repository</strong></em></p><p>A<span style="color: rgb(49,49,63);">&nbsp;place to store information. A repository has a name (unique in a given Rapture instance) and an underlying implementation. The idea is that application developers interact with a repository using a consistent API and Rapture takes care of the details of how to manage the information in the underlying implementation. The&nbsp;</span><em>implementation</em><span style="color: rgb(49,49,63);">&nbsp;in this case refers to a database system and the systems supported currently cover a wide range of technologies from traditional relational databases to the newer “distributed key-value stores”.</span>&nbsp;</p><p>There are three major types of repositories:&nbsp;</p><ul><li>Document</li><li>Blob</li><li>Series</li></ul><p>The following sections get into more detail for each repository type.</p></div>
+<hr/><p><strong>Using RIM interface</strong></p><p><span style="color: rgb(0,0,0);">When you open RIM you will be presented with a list of all <strong>Repositories</strong> which hold all <em>Data</em> in <em>Rapture</em>.  Sample data is preloaded and will be used during the tutorial.</span></p><p>As you browse this data, keep in mind a few key concepts:</p><p><em><strong>Repository</strong></em></p><p>A<span style="color: rgb(49,49,63);"> place to store information. A repository has a name (unique in a given Rapture instance) and an underlying implementation. The idea is that application developers interact with a repository using a consistent API and Rapture takes care of the details of how to manage the information in the underlying implementation. The </span><em>implementation</em><span style="color: rgb(49,49,63);"> in this case refers to a database system and the systems supported currently cover a wide range of technologies from traditional relational databases to the newer “distributed key-value stores”.</span> </p><p>There are three major types of repositories: </p><ul><li>Document</li><li>Blob</li><li>Series</li></ul><p>The following sections get into more detail for each repository type.</p></div>
 </div>
 <div class="cell normal" data-type="normal">
 <div class="innerCell">
-<hr><p><img class="confluence-embedded-image" src="./RIM_Overview_files/image2016-2-4 13-37-6.png" data-image-src="/wiki/download/attachments/72319060/image2016-2-4%2013%3A37%3A6.png?version=1&amp;modificationDate=1455053669314&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="72319035" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-2-4 13:37:6.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="72319060" data-linked-resource-container-version="1" title="PRODUCT &gt; Rapture Information Manager Overview &gt; image2016-2-4 13:37:6.png" data-location="PRODUCT &gt; Rapture Information Manager Overview &gt; image2016-2-4 13:37:6.png" data-image-height="410" data-image-width="1021"></p></div>
+<hr/><p><span class="confluence-embedded-file-wrapper"><img class="confluence-embedded-image" src="attachments/72319060/72319035.png" data-image-src="attachments/72319060/72319035.png" data-unresolved-comment-count="0" data-linked-resource-id="72319035" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-2-4 13:37:6.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="72319060" data-linked-resource-container-version="2"></span></p></div>
 </div>
 </div>
 <div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
 <div class="cell aside" data-type="aside">
 <div class="innerCell">
-<p><em><strong>Document Repository</strong></em></p><p>U<span style="color: rgb(49,49,63);">sed to store structured data indexed by a unique text key;&nbsp;</span><span>usually formatted as a JSON structure.&nbsp;</span>In this trial product, the document repository is implemented on MongoDB running on Amazon EC2.&nbsp;</p><p>When you "OPEN" a document you will be able to view its contents fully, and optionally edit it (if you have the correct permissions).&nbsp;</p></div>
+<p><em><strong>Document Repository</strong></em></p><p>U<span style="color: rgb(49,49,63);">sed to store structured data indexed by a unique text key; </span><span>usually formatted as a JSON structure. </span>In this trial product, the document repository is implemented on MongoDB running on Amazon EC2. </p><p>When you &quot;OPEN&quot; a document you will be able to view its contents fully, and optionally edit it (if you have the correct permissions). </p></div>
 </div>
 <div class="cell normal" data-type="normal">
 <div class="innerCell">
-<p><img class="confluence-embedded-image" src="./RIM_Overview_files/image2016-2-4 17-8-33.png" data-image-src="/wiki/download/attachments/72319060/image2016-2-4%2017%3A8%3A33.png?version=1&amp;modificationDate=1455053669414&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="72319028" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-2-4 17:8:33.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="72319060" data-linked-resource-container-version="1" title="PRODUCT &gt; Rapture Information Manager Overview &gt; image2016-2-4 17:8:33.png" data-location="PRODUCT &gt; Rapture Information Manager Overview &gt; image2016-2-4 17:8:33.png" data-image-height="769" data-image-width="1019"></p></div>
+<p><span class="confluence-embedded-file-wrapper"><img class="confluence-embedded-image" src="attachments/72319060/72319028.png" data-image-src="attachments/72319060/72319028.png" data-unresolved-comment-count="0" data-linked-resource-id="72319028" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-2-4 17:8:33.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="72319060" data-linked-resource-container-version="2"></span></p></div>
 </div>
 </div>
 <div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
@@ -82,37 +85,153 @@ if(window.WRM._dataArrived)window.WRM._dataArrived();</script>
 </div>
 <div class="cell normal" data-type="normal">
 <div class="innerCell">
-<p><img class="confluence-embedded-image" height="682" width="1022" src="./RIM_Overview_files/image2016-2-8 13-18-6.png" data-image-src="/wiki/download/attachments/72319060/image2016-2-8%2013%3A18%3A6.png?version=1&amp;modificationDate=1455053669428&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="72319027" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-2-8 13:18:6.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="72319060" data-linked-resource-container-version="1" title="PRODUCT &gt; Rapture Information Manager Overview &gt; image2016-2-8 13:18:6.png" data-location="PRODUCT &gt; Rapture Information Manager Overview &gt; image2016-2-8 13:18:6.png" data-image-height="682" data-image-width="1022"></p></div>
+<p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" height="682" width="1022" src="attachments/72319060/72319027.png" data-image-src="attachments/72319060/72319027.png" data-unresolved-comment-count="0" data-linked-resource-id="72319027" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-2-8 13:18:6.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="72319060" data-linked-resource-container-version="2"></span></p></div>
 </div>
 </div>
 <div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
 <div class="cell aside" data-type="aside">
 <div class="innerCell">
-<p><em><strong>Series Repository</strong></em></p><p>A<span>&nbsp;keyed list of data points. In most applications, the key is a timestamp, and therefore the series represents how the data changes with time. The data points within a series can be simple types, such as numbers, or they can be data structures.&nbsp;</span></p></div>
+<p><em><strong>Series Repository</strong></em></p><p>A<span> keyed list of data points. In most applications, the key is a timestamp, and therefore the series represents how the data changes with time. The data points within a series can be simple types, such as numbers, or they can be data structures. </span></p></div>
 </div>
 <div class="cell normal" data-type="normal">
 <div class="innerCell">
-<p>&nbsp;</p></div>
+<p> </p></div>
 </div>
 </div>
 <div class="columnLayout two-left-sidebar" data-layout="two-left-sidebar">
 <div class="cell aside" data-type="aside">
 <div class="innerCell">
-<p><strong>Create your own Repos</strong></p><p>Before adding any data to RIM you need to create a data repository. This is easily done using&nbsp;RIM's UI. In the coding tutorial you will see how the underlying API works.</p><p>&nbsp;Rapture can create and manage its native data types on a wide variety of underlying NoSQL and SQL data systems. This allows a flexible approach when designing systems using Rapture to support both development and operational concerns.</p><p>&nbsp;In your demo environment we have only provisioned MongoDB as the backing for Document, Blobs and Series. We do support other implementations such as Cassandra and Redis.</p></div>
+<p><strong>Create your own Repos</strong></p><p>Before adding any data to RIM you need to create a data repository. This is easily done using RIM's UI. In the coding tutorial you will see how the underlying API works.</p><p> Rapture can create and manage its native data types on a wide variety of underlying NoSQL and SQL data systems. This allows a flexible approach when designing systems using Rapture to support both development and operational concerns.</p><p> In your demo environment we have only provisioned MongoDB as the backing for Document, Blobs and Series. We do support other implementations such as Cassandra and Redis.</p></div>
 </div>
 <div class="cell normal" data-type="normal">
 <div class="innerCell">
-<p><img class="confluence-embedded-image" src="./RIM_Overview_files/image2016-2-4 13-42-46.png" data-image-src="/wiki/download/attachments/72319060/image2016-2-4%2013%3A42%3A46.png?version=1&amp;modificationDate=1455053669401&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="72319029" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-2-4 13:42:46.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="72319060" data-linked-resource-container-version="1" title="PRODUCT &gt; Rapture Information Manager Overview &gt; image2016-2-4 13:42:46.png" data-location="PRODUCT &gt; Rapture Information Manager Overview &gt; image2016-2-4 13:42:46.png" data-image-height="386" data-image-width="237"><img class="confluence-embedded-image" src="./RIM_Overview_files/image2016-2-4 13-40-21.png" data-image-src="/wiki/download/attachments/72319060/image2016-2-4%2013%3A40%3A21.png?version=1&amp;modificationDate=1455053669340&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="72319033" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-2-4 13:40:21.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="72319060" data-linked-resource-container-version="1" title="PRODUCT &gt; Rapture Information Manager Overview &gt; image2016-2-4 13:40:21.png" data-location="PRODUCT &gt; Rapture Information Manager Overview &gt; image2016-2-4 13:40:21.png" data-image-height="382" data-image-width="235"></p></div>
+<p><span class="confluence-embedded-file-wrapper"><img class="confluence-embedded-image" src="attachments/72319060/72319029.png" data-image-src="attachments/72319060/72319029.png" data-unresolved-comment-count="0" data-linked-resource-id="72319029" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-2-4 13:42:46.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="72319060" data-linked-resource-container-version="2"></span><span class="confluence-embedded-file-wrapper"><img class="confluence-embedded-image" src="attachments/72319060/72319033.png" data-image-src="attachments/72319060/72319033.png" data-unresolved-comment-count="0" data-linked-resource-id="72319033" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image2016-2-4 13:40:21.png" data-base-url="https://incapture.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="72319060" data-linked-resource-container-version="2"></span></p></div>
 </div>
 </div>
 <div class="columnLayout single" data-layout="single">
 <div class="cell normal" data-type="normal">
 <div class="innerCell">
-<div class="page" title="Page 6"><div class="layoutArea"><div class="column"><p>&nbsp;</p></div></div></div></div>
+<div class="page" title="Page 6"><div class="layoutArea"><div class="column"><p> </p></div></div></div></div>
 </div>
 </div>
 </div>
-        <p>&nbsp;</p>
-    
+                    </div>
 
-</body></html>
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319027.png">image2016-2-8 13:18:6.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319028.png">image2016-2-4 17:8:33.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319029.png">image2016-2-4 13:42:46.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319030.png">image2016-2-4 13:42:15.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319031.png">image2016-2-4 13:41:34.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319032.png">image2016-2-4 13:40:42.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319033.png">image2016-2-4 13:40:21.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319034.png">image2016-2-4 13:37:41.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319035.png">image2016-2-4 13:37:6.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319036.png">image2016-2-4 13:36:20.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319037.png">image2016-2-4 13:32:52.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319038.png">image2016-2-4 13:31:41.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319039.docx">ReflexDemo.docx</a> (application/vnd.openxmlformats-officedocument.wordprocessingml.document)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319040.zip">RCMDemo.zip</a> (application/zip)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319041.zip">ReflexRunner.zip</a> (application/zip)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319042.png">image2016-1-15 15:31:19.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319043.png">image2016-1-15 15:31:1.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319044.png">image2016-1-14 10:34:23.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319045.png">image2016-1-14 10:32:12.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319046.png">image2016-1-14 10:31:43.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319047.png">image2016-1-14 10:31:18.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319048.pdf">Reflex Language Reference_v1pt10.pdf</a> (application/pdf)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319049.png">image2016-1-8 9:31:40.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319050.png">image2016-1-8 9:31:14.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319051.png">image2016-1-7 16:3:41.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319052.png">image2016-1-7 16:3:16.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319053.png">image2016-1-7 16:2:30.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319054.png">image2015-6-16 12:50:33.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319055.png">image2015-6-16 12:52:48.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319056.png">image2015-6-16 12:54:26.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319057.png">resultPrintHello.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319058.png">initial.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/72319060/72319059.png">step4result.png</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+
+
+                </div>             </div>
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on May 26, 2016 13:54</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>
