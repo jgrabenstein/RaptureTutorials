@@ -112,7 +112,7 @@ def upload(file_location):
 		rawFileData = csvFile.read()
 
 	# Create blob repo
-	blobRepoUri = "//tutorialBlob"
+	blobRepoUri = "blob://tutorialBlob"
 	rawCsvUri = blobRepoUri + "/introDataInbound.csv"
 	config = "BLOB {} USING MONGODB {prefix=\"tutorialBlob\"}"
 	metaConfig = "REP {} USING MONGODB {prefix=\"tutorialBlob\"}"
@@ -131,7 +131,7 @@ def upload(file_location):
 def blobToDoc():
 	global rapture
 
-	blobUri = "//tutorialBlob/introDataInbound.csv"
+	blobUri = "blob://tutorialBlob/introDataInbound.csv"
 
 	# Check that blob exists
 	if rapture.doBlob_BlobExists(blobUri):
@@ -221,7 +221,7 @@ def docToSeries():
 
 	# Check that docs exists and retrieve them
 	docUri = docRepoUri + "/introDataTranslated"
-	seriesRepoUri = "//datacapture"
+	seriesRepoUri = "series://datacapture"
 	check = rapture.doDoc_DocExists(docUri)
 	try:
 		assert check == True
@@ -257,7 +257,7 @@ def docToSeries():
 						# Store each date and price in the appropriate series
 						rapture.doSeries_AddDoubleToSeries(seriesUri, date, float(price))
 
-						
+
 		print "Successfully updated series"
 	else:
 		print "Please make sure that demoData plugin is installed"
