@@ -107,12 +107,12 @@ def upload(file_location):
 
 	# Import csv file
 	with open(file_location, 'rb') as csvFile:
-		print "Reading CSV from file "+file_location
+		print "Reading XML from file "+file_location
 
 		rawFileData = csvFile.read()
 
 	# Create blob repo
-	blobRepoUri = "//tutorialBlob"
+	blobRepoUri = "blob://tutorialBlob"
 	rawCsvUri = blobRepoUri + "/introDataInbound.csv"
 	config = "BLOB {} USING MONGODB {prefix=\"tutorialBlob\"}"
 	metaConfig = "REP {} USING MONGODB {prefix=\"tutorialBlob\"}"
@@ -122,16 +122,16 @@ def upload(file_location):
 	rapture.doBlob_CreateBlobRepo(blobRepoUri, config, metaConfig)
 
 	# Encode and Store Blob
-	print "Uploading CSV"
+	print "Uploading XML"
 	encoded_blob = base64.b64encode(str(rawFileData))
-	rapture.doBlob_PutBlob(rawCsvUri, encoded_blob, "text/csv")
+	rapture.doBlob_PutBlob(rawCsvUri, encoded_blob, "text/xml")
 
 	print "CSV successfully uploaded to "+rawCsvUri
 
 def blobToDoc():
 	global rapture
 
-	blobUri = "//tutorialBlob/introDataInbound.csv"
+	blobUri = "blob://tutorialBlob/introDataInbound.csv"
 
 	# Check that blob exists
 	if rapture.doBlob_BlobExists(blobUri):
@@ -221,7 +221,7 @@ def docToSeries():
 
 	# Check that docs exists and retrieve them
 	docUri = docRepoUri + "/introDataTranslated"
-	seriesRepoUri = "//datacapture"
+	seriesRepoUri = "series://datacapture"
 	check = rapture.doDoc_DocExists(docUri)
 	try:
 		assert check == True
@@ -257,7 +257,7 @@ def docToSeries():
 						# Store each date and price in the appropriate series
 						rapture.doSeries_AddDoubleToSeries(seriesUri, date, float(price))
 
-						
+
 		print "Successfully updated series"
 	else:
 		print "Please make sure that demoData plugin is installed"
