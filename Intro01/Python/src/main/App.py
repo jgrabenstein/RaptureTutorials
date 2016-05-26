@@ -107,7 +107,7 @@ def upload(file_location):
 
 	# Import csv file
 	with open(file_location, 'rb') as csvFile:
-		print "Reading XML from file "+file_location
+		print "Reading CSV from file "+file_location
 
 		rawFileData = csvFile.read()
 
@@ -122,9 +122,9 @@ def upload(file_location):
 	rapture.doBlob_CreateBlobRepo(blobRepoUri, config, metaConfig)
 
 	# Encode and Store Blob
-	print "Uploading XML"
+	print "Uploading CSV"
 	encoded_blob = base64.b64encode(str(rawFileData))
-	rapture.doBlob_PutBlob(rawCsvUri, encoded_blob, "text/xml")
+	rapture.doBlob_PutBlob(rawCsvUri, encoded_blob, "text/csv")
 
 	print "CSV successfully uploaded to "+rawCsvUri
 
