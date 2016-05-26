@@ -50,7 +50,7 @@ for i in keys(indexes) do
     priceMap = index[prices];
     for dateVal in keys(priceMap) do
       row = [];
-      row.add(docMap.series_type+"/TutorialIntro_Reflex");
+      row.add(docMap.series_type);
       row.add(i);
       row.add(docMap.frequency);
       row.add(prices);
@@ -64,13 +64,14 @@ end
 println("Adding price data from " + DOC_URI+"/introDataTranslated to series at " + SERIES_URI);
 
 // add each date/price pair to the series, using the following template for the URI:
-// seriesRepoUri + series_type + "/" + "index_id" + "/" + "frequency" + "/" + "price_type"
+// seriesRepoUri + series_type + "/TutorialIntro_Reflex/" + index_id + "/" + frequency + "/" + price_type
 // Since that is the order of the columns it's straightforward.
 // Note that this can also be dome using the push operator: csv --> SERIES_URI;
 
 
 for line in csv.subList(1, size(csv)) do
   location = SERIES_URI;
+  addlang = true; 
   columns = size(line);
   if (columns >= 2) do
      for field in line do
@@ -80,6 +81,11 @@ for line in csv.subList(1, size(csv)) do
          key = field;
        else do
          location = location+"/"+field;
+         // add TutorialIntro_Reflex to URI after the series_type
+         if (addlang) do 
+           addlang = false;
+           location = location + "/TutorialIntro_Reflex";
+         end
        end
        columns = columns - 1;
      end
