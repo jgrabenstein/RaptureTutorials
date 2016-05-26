@@ -50,7 +50,7 @@ for i in keys(indexes) do
     priceMap = index[prices];
     for dateVal in keys(priceMap) do
       row = [];
-      row.add(docMap.series_type);
+      row.add(docMap.series_type+"/TutorialIntro_Reflex");
       row.add(i);
       row.add(docMap.frequency);
       row.add(prices);
