@@ -1,3 +1,5 @@
+gradle.properties
+.DS_Store
 /build/
 .classpath
 .project
