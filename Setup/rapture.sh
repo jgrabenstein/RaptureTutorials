@@ -1,5 +1,5 @@
 #!/bin/bash
-HOST="http://developer2.incapture.net:8080"
+HOST="http://developer.incapture.net:8080"
 REFLEX_RUNNER_LATEST_HOST="https://github.com"
 REFLEX_RUNNER_LATEST="$REFLEX_RUNNER_LATEST_HOST/RapturePlatform/Rapture/releases/latest"
 
@@ -58,7 +58,7 @@ function get_download_link {
   local pattern="href=\"(.*ReflexRunner.*\.zip)\""
   local use_next_zip=false
   while read line; do
-    if $use_next_zip && [[ $line =~ $pattern ]]; then
+  if [[ $line =~ $pattern ]]; then
       download_link="${BASH_REMATCH[1]}"
       break
     elif [[ $line =~ release-downloads ]]; then
@@ -66,7 +66,7 @@ function get_download_link {
     fi
   done <<< "$page_html"
 
-  echo "$REFLEX_RUNNER_LATEST_HOST$download_link"
+  echo "$download_link"
 }
 
 function find_in_directory {
