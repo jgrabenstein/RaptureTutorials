@@ -8,7 +8,7 @@ SET "RAPTURE_HOME=%CD%\.."
 
 REM "*************************************************************"
 REM get etienne credentials to setup env info
-SET "etienneurl=developer2.incapture.net"
+SET "etienneurl=developer.incapture.net"
 SET /P user=Enter Incapture User:
 SET /P pass=Enter Incapture Password:
 
