@@ -1,5 +1,5 @@
 #!/bin/bash
-HOST="http://developer.incapture.net:8080"
+HOST="http://developer.incapture.net"
 REFLEX_RUNNER_LATEST_HOST="https://github.com"
 REFLEX_RUNNER_LATEST="$REFLEX_RUNNER_LATEST_HOST/RapturePlatform/Rapture/releases/latest"
 
